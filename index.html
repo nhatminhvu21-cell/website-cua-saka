@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>wed 16+</title>
+   <style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+    color: #222222;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1f2937;
+    padding: 15px 30px;
+}
+
+.navbar h2 {
+    color: white;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+}
+
+.hero {
+    text-align: center;
+    padding: 70px 20px;
+    background-color: #dbeafe;
+    <button onclick="changeGreeting()">Bấm thử đi</button>
+    <p id="greeting"></p>
+}
+
+.about,
+.hobbies {
+    padding: 30px;
+    text-align: center;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    background-color: white;
+    padding: 25px;
+    width: 200px;
+    min-height: 80px;
+    box-sizing: border-box;
+
+    border: 2px solid #d1d5db;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s ease,
+                transform 0.3s ease;
+}
+
+.card:hover {
+    background-color: #bfdbfe;
+    transform: translateY(-5px);
+}
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        padding: 40px 15px;
+    }
+
+    .about,
+    .hobbies {
+        padding: 20px 15px;
+    }
+
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+.menu a:hover {
+    color: #93c5fd;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.brand h2 {
+    margin: 0;
+    color: white;
+}
+</style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="menu">
+        <a href="#home">Trang chủ</a>
+        <a href="#about">Giới thiệu</a>
+        <a href="#hobbies">Sở thích</a>
+    </div>
+     <h2>SAKA</h2>
+</nav>
+
+<section id="home" class="hero">
+    <h1>gửi chị vy!</h1>
+    <p>chúc chị vy 20/10 vui vẻ.</p>
+    <button onclick="changeGreeting()">Bấm thử đi</button>
+    <button id="colorButton" onclick="changeBackground()">
+    Đổi màu nền
+</button>
+<p id="greeting">Chưa có lời chào!</p>
+<p id="counter">Bạn đã nhấn 0 lần.</p>
+<button onclick="increase()">Nhấn để tăng 1 tình cảm</button>
+<button onclick="resetCounter()">Đặt lại số đếm</button>
+</section>
+
+<section id="about" class="about">
+    <h2>chị vy là số một</h2>
+    <p>chị là nhất.</p>
+</section>
+
+<section id="hobbies" class="hobbies">
+    <h2>chúc chị</h2>
+
+    <div class="cards">
+        <div class="card">mạnh khỏe</div>
+        <div class="card">xinh đẹp</div>
+        <div class="card">giàu sang phú quý</div>
+    </div>
+</section>
+<script>
+function changeGreeting() {
+    document.getElementById("greeting").textContent =
+        "chị vy xinh đẹp!";
+}
+
+let isDark = false;
+
+function changeBackground() {
+    isDark = !isDark;
+
+    const button = document.getElementById("colorButton");
+
+    if (isDark) {
+        document.body.style.backgroundColor = "black";
+        button.textContent = "Chuyển sang nền sáng";
+    } else {
+        document.body.style.backgroundColor = "lightblue";
+        button.textContent = "Chuyển sang nền tối";
+    }
+}
+let count = Number(localStorage.getItem("myCount")) || 0;
+
+document.getElementById("counter").textContent =
+    "Bạn đã nhấn " + count + " lần.";
+
+function increase() {
+    count = count + 1;
+
+    localStorage.setItem("myCount", count);
+
+    document.getElementById("counter").textContent =
+        "Bạn đã nhấn " + count + " lần.";
+}
+function resetCounter() {
+    count = 0;
+
+    localStorage.setItem("myCount", count);
+
+    document.getElementById("counter").textContent =
+        "Bạn đã nhấn " + count + " lần.";
+}
+</script>
+</body>
+</html>
