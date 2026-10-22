@@ -6,7 +6,10 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <title>wedsite của saka</title>
    <style>
-
+body {
+  position: relative;
+  overflow-x: hidden;
+}
     body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -219,13 +222,20 @@ img:hover {
 }
 /* Cá nhỏ bơi ngang màn hình */
 .fish-swimmer {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 999;
   width: 90px;
-  pointer-events: none;
+  pointer-events: auto; /* đổi từ none */
+  cursor: grab;
+  touch-action: none;   /* để kéo bằng ngón tay trên điện thoại */
+  user-select: none;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+}
+
+.fish-swimmer.held {
+  cursor: grabbing;
 }
 
 .fish-swimmer svg {
@@ -593,41 +603,91 @@ window.addEventListener("load", function () {
     const fish = document.querySelector(".fish-swimmer");
     if (!fish) return;
 
-    // Người dùng tắt hiệu ứng chuyển động thì cho cá đứng yên
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reduceMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const speed = 1.2;   // tăng số này để cá bơi nhanh hơn
-    let x = Math.random() * (window.innerWidth - fish.offsetWidth);
-    let y = Math.random() * (window.innerHeight - fish.offsetHeight);
+    const speed = 1.2;
+    let direction = 1;
+    let held = false;      // true khi đang giữ cá
+    let grabDX = 0;        // khoảng lệch giữa chuột và góc cá
+    let grabDY = 0;
+
+    function pageWidth() {
+        return document.documentElement.clientWidth;
+    }
+    function pageHeight() {
+        return document.documentElement.scrollHeight;
+    }
+
+    let x = Math.random() * (pageWidth() - fish.offsetWidth);
+    let y = Math.random() * (pageHeight() - fish.offsetHeight);
     let targetX = x;
     let targetY = y;
-    let direction = 1;   // 1 = quay sang phải, -1 = quay sang trái
 
     function pickTarget() {
-        targetX = Math.random() * (window.innerWidth - fish.offsetWidth);
-        targetY = Math.random() * (window.innerHeight - fish.offsetHeight);
+        targetX = Math.random() * (pageWidth() - fish.offsetWidth);
+        targetY = Math.random() * (pageHeight() - fish.offsetHeight);
+    }
+
+    function render() {
+        fish.style.transform =
+            "translate(" + x + "px, " + y + "px) scaleX(" + direction + ")";
     }
 
     function swim() {
-        const dx = targetX - x;
-        const dy = targetY - y;
-        const distance = Math.hypot(dx, dy);
+        if (!held) {
+            const dx = targetX - x;
+            const dy = targetY - y;
+            const distance = Math.hypot(dx, dy);
 
-        if (distance < speed) {
-            pickTarget();
-        } else {
-            x += (dx / distance) * speed;
-            y += (dy / distance) * speed;
-            if (Math.abs(dx) > 1) direction = dx > 0 ? 1 : -1;
+            if (distance < speed) {
+                pickTarget();
+            } else {
+                x += (dx / distance) * speed;
+                y += (dy / distance) * speed;
+                if (Math.abs(dx) > 1) direction = dx > 0 ? 1 : -1;
+            }
+            render();
         }
-
-        fish.style.transform =
-            "translate(" + x + "px, " + y + "px) scaleX(" + direction + ")";
         requestAnimationFrame(swim);
     }
 
-    pickTarget();
-    swim();
+    // Bấm vào cá: giữ lại
+    fish.addEventListener("pointerdown", function (e) {
+        held = true;
+        fish.classList.add("held");
+        fish.setPointerCapture(e.pointerId);
+
+        // vị trí chuột trên cả trang (cộng thêm phần đã cuộn)
+        const pageX = e.clientX + window.scrollX;
+        const pageY = e.clientY + window.scrollY;
+        grabDX = pageX - x;
+        grabDY = pageY - y;
+    });
+
+    // Kéo cá theo chuột
+    fish.addEventListener("pointermove", function (e) {
+        if (!held) return;
+        const pageX = e.clientX + window.scrollX;
+        const pageY = e.clientY + window.scrollY;
+
+        x = Math.max(0, Math.min(pageX - grabDX, pageWidth() - fish.offsetWidth));
+        y = Math.max(0, Math.min(pageY - grabDY, pageHeight() - fish.offsetHeight));
+        render();
+    });
+
+    // Thả ra: cá bơi tiếp
+    function release() {
+        if (!held) return;
+        held = false;
+        fish.classList.remove("held");
+        pickTarget();
+    }
+    fish.addEventListener("pointerup", release);
+    fish.addEventListener("pointercancel", release);
+
+    if (!reduceMotion) swim();
+    render();
 });
 </script>
 <!-- Chú cá bơi trên website -->
