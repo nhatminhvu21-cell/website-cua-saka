@@ -37,8 +37,6 @@
     text-align: center;
     padding: 70px 20px;
     background-color: #dbeafe;
-    <button onclick="changeGreeting()">Bấm thử đi</button>
-    <p id="greeting"></p>
 }
 
 .about,
@@ -126,9 +124,187 @@
     margin: 0;
     color: white;
 }
+/* Hiệu ứng xuất hiện nhẹ nhàng */
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  animation: appear 1s ease-out both;
+}
+
+/* Chuyển động nhẹ khi rê chuột */
+a, button {
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+a:hover, button:hover {
+  opacity: 0.7;
+}
+
+/* Tôn trọng cài đặt giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+
+  a, button {
+    transition: none;
+  }
+}
+/* Hiệu ứng xuất hiện lần lượt */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Nội dung chính */
+header {
+  animation: fadeUp 0.8s ease-out both;
+}
+
+main {
+  animation: fadeUp 1s ease-out both;
+  animation-delay: 0.2s;
+}
+
+footer {
+  animation: fadeUp 1s ease-out both;
+  animation-delay: 0.4s;
+}
+
+/* Ảnh phóng to nhẹ khi rê chuột */
+img {
+  transition: transform 0.35s ease;
+}
+
+img:hover {
+  transform: scale(1.03);
+}
+
+/* Tắt chuyển động nếu người dùng yêu cầu */
+@media (prefers-reduced-motion: reduce) {
+  header,
+  main,
+  footer {
+    animation: none;
+  }
+
+  img {
+    transition: none;
+  }
+}
+/* Cá nhỏ bơi ngang màn hình */
+.fish-swimmer {
+  position: fixed;
+  left: 0;
+  bottom: 28px;
+  z-index: 999;
+  width: 72px;
+  color: #222;
+  pointer-events: none;
+
+  animation: fishSwim 18s linear infinite;
+}
+
+.fish-swimmer svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Bơi sang phải rồi quay đầu bơi sang trái */
+@keyframes fishSwim {
+  0% {
+    transform: translateX(-120px) scaleX(1);
+  }
+
+  49% {
+    transform: translateX(calc(100vw + 120px)) scaleX(1);
+  }
+
+  50% {
+    transform: translateX(calc(100vw + 120px)) scaleX(-1);
+  }
+
+  100% {
+    transform: translateX(-120px) scaleX(-1);
+  }
+}
+/* Ba chú cá lớn hơn gần tiêu đề */
+.title-fish {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin: 18px auto 26px;
+  color: #333;
+}
+
+.tiny-fish {
+  display: inline-block;
+  font-size: 48px;
+  line-height: 1.2;
+  animation: littleSwim 2.4s ease-in-out infinite;
+}
+
+.fish-one {
+  font-size: 42px;
+  animation-delay: 0s;
+}
+
+.fish-two {
+  font-size: 58px;
+  animation-delay: 0.4s;
+}
+
+.fish-three {
+  font-size: 46px;
+  animation-delay: 0.8s;
+}
+
+@keyframes littleSwim {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+
+  50% {
+    transform: translateY(-9px) rotate(5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tiny-fish {
+    animation: none;
+  }
+}
 </style>
 </head>
 <body>
+</div>
+    <div class="title-fish" aria-hidden="true">
+  <span class="tiny-fish fish-one">𓆝</span>
+  <span class="tiny-fish fish-two">𓆟</span>
+  <span class="tiny-fish fish-three">𓆝</span>
+</div>
   <nav class="navbar">
     <div class="menu">
         <a href="#home">Trang chủ</a>
@@ -208,5 +384,27 @@ function resetCounter() {
         "Bạn đã nhấn " + count + " lần.";
 }
 </script>
+<!-- Chú cá bơi trên website -->
+<div class="fish-swimmer" aria-hidden="true">
+  <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+    <g fill="currentColor">
+      <!-- Thân cá -->
+      <ellipse cx="43" cy="30" rx="29" ry="18"/>
+
+      <!-- Đuôi cá -->
+      <path d="M17 30 L0 13 L0 47 Z"/>
+
+      <!-- Vây trên -->
+      <path d="M38 14 L49 3 L59 15 Z"/>
+
+      <!-- Vây dưới -->
+      <path d="M38 45 L48 55 L57 45 Z"/>
+    </g>
+
+    <!-- Mắt cá -->
+    <circle cx="59" cy="25" r="2.5" fill="white"/>
+    <circle cx="60" cy="25" r="1.2" fill="black"/>
+  </svg>
+</div>
 </body>
 </html>
