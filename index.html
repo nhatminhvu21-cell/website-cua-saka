@@ -220,14 +220,12 @@ img:hover {
 /* Cá nhỏ bơi ngang màn hình */
 .fish-swimmer {
   position: fixed;
+  top: 0;
   left: 0;
-  bottom: 28px;
   z-index: 999;
-  width: 72px;
-  color: #222;
+  width: 90px;
   pointer-events: none;
-
-  animation: fishSwim 18s linear infinite;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
 }
 
 .fish-swimmer svg {
@@ -440,6 +438,31 @@ body.dark .fish-swimmer {
 .lightbox img:hover {
     transform: none; /* tắt hiệu ứng phóng to khi rê chuột */
 }
+.fish-tail {
+  transform-box: fill-box;
+  transform-origin: 100% 50%; /* xoay quanh chỗ đuôi nối với thân */
+  animation: tailWag 0.5s ease-in-out infinite alternate;
+}
+
+.fish-fin {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: finWave 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes tailWag {
+  from { transform: rotate(-12deg); }
+  to   { transform: rotate(12deg); }
+}
+
+@keyframes finWave {
+  from { transform: rotate(-4deg); }
+  to   { transform: rotate(4deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fish-tail, .fish-fin { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -566,27 +589,90 @@ function resetCounter() {
     localStorage.setItem("myCount", count);
     counterEl.textContent = "Bạn đã nhấn " + count + " lần.";
 }
+window.addEventListener("load", function () {
+    const fish = document.querySelector(".fish-swimmer");
+    if (!fish) return;
+
+    // Người dùng tắt hiệu ứng chuyển động thì cho cá đứng yên
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const speed = 1.2;   // tăng số này để cá bơi nhanh hơn
+    let x = Math.random() * (window.innerWidth - fish.offsetWidth);
+    let y = Math.random() * (window.innerHeight - fish.offsetHeight);
+    let targetX = x;
+    let targetY = y;
+    let direction = 1;   // 1 = quay sang phải, -1 = quay sang trái
+
+    function pickTarget() {
+        targetX = Math.random() * (window.innerWidth - fish.offsetWidth);
+        targetY = Math.random() * (window.innerHeight - fish.offsetHeight);
+    }
+
+    function swim() {
+        const dx = targetX - x;
+        const dy = targetY - y;
+        const distance = Math.hypot(dx, dy);
+
+        if (distance < speed) {
+            pickTarget();
+        } else {
+            x += (dx / distance) * speed;
+            y += (dy / distance) * speed;
+            if (Math.abs(dx) > 1) direction = dx > 0 ? 1 : -1;
+        }
+
+        fish.style.transform =
+            "translate(" + x + "px, " + y + "px) scaleX(" + direction + ")";
+        requestAnimationFrame(swim);
+    }
+
+    pickTarget();
+    swim();
+});
 </script>
 <!-- Chú cá bơi trên website -->
 <div class="fish-swimmer" aria-hidden="true">
-  <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-    <g fill="currentColor">
-      <!-- Thân cá -->
-      <ellipse cx="43" cy="30" rx="29" ry="18"/>
+  <svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="fishBody" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#38bdf8"/>
+  <stop offset="0.6" stop-color="#0284c7"/>
+  <stop offset="1" stop-color="#bae6fd"/>
+</linearGradient>
+<linearGradient id="fishFin" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0" stop-color="#0369a1" stop-opacity="0.95"/>
+  <stop offset="1" stop-color="#38bdf8" stop-opacity="0.8"/>
+</linearGradient>
+      <clipPath id="fishClip">
+        <path d="M28 35 C40 14 74 10 98 26 C108 32 112 35 114 35 C112 35 108 38 98 44 C74 60 40 56 28 35 Z"/>
+      </clipPath>
+    </defs>
 
-      <!-- Đuôi cá -->
-      <path d="M17 30 L0 13 L0 47 Z"/>
+    <!-- Đuôi (vẫy) -->
+    <path class="fish-tail" d="M32 35 C18 28 8 14 2 10 C6 24 6 46 2 60 C8 56 18 42 32 35 Z" fill="url(#fishFin)"/>
 
-      <!-- Vây trên -->
-      <path d="M38 14 L49 3 L59 15 Z"/>
+    <!-- Vây lưng và vây bụng -->
+    <path class="fish-fin" d="M50 18 C58 4 74 2 84 14 C72 14 62 16 50 18 Z" fill="url(#fishFin)"/>
+    <path class="fish-fin" d="M52 52 C56 62 66 66 74 60 C68 56 62 54 52 52 Z" fill="url(#fishFin)"/>
 
-      <!-- Vây dưới -->
-      <path d="M38 45 L48 55 L57 45 Z"/>
+    <!-- Thân cá -->
+    <path d="M28 35 C40 14 74 10 98 26 C108 32 112 35 114 35 C112 35 108 38 98 44 C74 60 40 56 28 35 Z" fill="url(#fishBody)"/>
+
+    <!-- Sọc và ánh sáng bụng (cắt gọn trong thân) -->
+    <g clip-path="url(#fishClip)">
+      <path d="M58 8 Q50 35 58 62" stroke="#fff" stroke-width="5" fill="none" opacity="0.55"/>
+      <path d="M72 8 Q64 35 72 62" stroke="#fff" stroke-width="5" fill="none" opacity="0.55"/>
+      <ellipse cx="68" cy="50" rx="28" ry="7" fill="#fff" opacity="0.25"/>
     </g>
 
-    <!-- Mắt cá -->
-    <circle cx="59" cy="25" r="2.5" fill="white"/>
-    <circle cx="60" cy="25" r="1.2" fill="black"/>
+    <!-- Mang, miệng -->
+    <path d="M88 24 Q82 35 88 46" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M113 35 Q108 38 104 37" stroke="#9a3412" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+    <!-- Mắt -->
+    <circle cx="100" cy="30" r="5.5" fill="#fff"/>
+    <circle cx="101.5" cy="30" r="3" fill="#1f2937"/>
+    <circle cx="102.5" cy="28.8" r="1" fill="#fff"/>
   </svg>
 </div>
 </body>
