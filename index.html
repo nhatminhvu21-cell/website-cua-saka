@@ -296,6 +296,56 @@ img:hover {
     animation: none;
   }
 }
+/* Góc ảnh nhỏ của Saka */
+.gallery-section {
+    padding: 35px 20px;
+    text-align: center;
+    background-color: #f3f4f6;
+}
+
+.gallery-section h2 {
+    margin-bottom: 10px;
+}
+
+.gallery-section p {
+    color: #6b7280;
+}
+
+.photo-gallery {
+    max-width: 900px;
+    margin: 25px auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+}
+
+.photo-card {
+    margin: 0;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.photo-card img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.photo-card figcaption {
+    padding: 13px;
+    color: #374151;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .photo-card img {
+        height: 190px;
+    }
+}
 </style>
 </head>
 <body>
@@ -331,7 +381,31 @@ img:hover {
     <h2>nếu bạn nhìn vào cái bàn và đọc nó 5 lần bạn sẽ thấy nó lạ</h2>
     <p>hÀi vcl.</p>
 </section>
+<section id="gallery" class="gallery-section">
+    <h2>một góc nhỏ của tui</h2>
+    <p>những thứ tui muốn lưu lại.</p>
 
+    <div class="photo-gallery">
+
+       <figure class="photo-card">
+    <a href="images/fish.jpg" target="_blank" rel="noopener">
+        <img src="images/fish.jpg" alt="Một chú cá">
+    </a>
+    <figcaption>cá 🐟</figcaption>
+</figure>
+        <figure class="photo-card">
+            <a href="images/drawing.jpg" target="_blank" rel="noopener">
+    <img src="images/drawing.jpg" alt="Tranh vẽ của tui">
+    </a>
+        </figure>
+
+        <figure class="photo-card">
+            <a href="images/sky.jpg" target="_blank" rel="noopener">
+    <img src="images/sky.jpg" alt="Bầu trời">
+</a>
+        </figure>
+    </div>
+</section>
 <section id="hobbies" class="hobbies">
     <h2>Đặc điểm của minh</h2>
 
