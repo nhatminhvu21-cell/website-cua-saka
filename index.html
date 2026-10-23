@@ -473,6 +473,282 @@ body.dark .fish-swimmer {
 @media (prefers-reduced-motion: reduce) {
   .fish-tail, .fish-fin { animation: none; }
 }
+
+/* ================= HIỆU ỨNG BIỂN CẢ ================= */
+body { --page-bg: #f3f4f6; }
+body.dark { --page-bg: #111827; }
+
+/* Hero thành mặt biển: nền chuyển màu + tia nắng + sóng */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 130px;
+  background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 55%, #7dd3fc 100%);
+}
+body.dark .hero {
+  background: linear-gradient(180deg, #1e3a5f 0%, #0f2a4a 60%, #0a1d36 100%);
+}
+
+.hero > * { position: relative; z-index: 2; }
+
+/* Tia nắng xuyên xuống nước */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -80px; right: -80px;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.30) 0 28px,
+    transparent 28px 130px
+  );
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%);
+          mask-image: linear-gradient(to bottom, #000, transparent 85%);
+  animation: lightRays 12s ease-in-out infinite alternate;
+}
+body.dark .hero::before {
+  background: repeating-linear-gradient(
+    100deg,
+    rgba(147, 197, 253, 0.12) 0 28px,
+    transparent 28px 130px
+  );
+}
+@keyframes lightRays {
+  from { transform: translateX(-45px); opacity: 0.5; }
+  to   { transform: translateX(45px);  opacity: 1; }
+}
+
+/* Sóng nhiều lớp ở đáy hero */
+.hero > .waves {
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 100px;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.wave {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 200%;
+  height: 100%;
+  animation: waveMove 14s linear infinite;
+}
+.wave-back  { fill: rgba(96, 165, 250, 0.35); animation-duration: 20s; animation-direction: reverse; }
+.wave-mid   { fill: rgba(59, 130, 246, 0.30); animation-duration: 14s; height: 85%; }
+.wave-front { fill: var(--page-bg);            animation-duration: 9s;  height: 65%; }
+
+@keyframes waveMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Bong bóng nổi lên */
+.bubbles {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+.bubble {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255, 255, 255, 0.95) 0 12%,
+    rgba(125, 211, 252, 0.25) 40%,
+    rgba(14, 165, 233, 0.12) 100%);
+  border: 1px solid rgba(14, 165, 233, 0.35);
+  animation: bubbleRise var(--dur) linear var(--delay) infinite;
+}
+@keyframes bubbleRise {
+  0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  10%  { opacity: 0.8; }
+  50%  { transform: translate(calc(var(--drift) * -1), -55vh) scale(1); }
+  90%  { opacity: 0.6; }
+  100% { transform: translate(var(--drift), -115vh) scale(1.1); opacity: 0; }
+}
+
+/* Gợn nước + bong bóng nhỏ khi bấm chuột */
+.ripple {
+  position: fixed;
+  width: 10px; height: 10px;
+  border: 2px solid rgba(14, 165, 233, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 6;
+  transform: translate(-50%, -50%) scale(1);
+  animation: rippleOut 0.9s ease-out forwards;
+}
+@keyframes rippleOut {
+  to { transform: translate(-50%, -50%) scale(12); opacity: 0; }
+}
+.bubble-pop {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 6;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95) 0 15%, rgba(125,211,252,0.3) 60%);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  animation: popRise 1.4s ease-out forwards;
+}
+@keyframes popRise {
+  from { transform: translate(0, 0); opacity: 0.9; }
+  to   { transform: translate(var(--px), -90px); opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding-bottom: 110px; }
+  .hero > .waves { height: 70px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before, .wave { animation: none; }
+  .bubbles, .ripple, .bubble-pop { display: none; }
+}
+
+/* ============ CÁ NHỎ BƠI QUA LẠI Ở HERO ============ */
+.hero > .hero-fish {
+  position: absolute;
+  inset: 0 0 100px 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hf {
+  position: absolute;
+  left: 0;
+  animation: heroSwim var(--dur) linear var(--delay) infinite;
+}
+.hf svg {
+  display: block;
+  width: var(--w);
+  height: auto;
+  animation: hfBob 1.8s ease-in-out infinite alternate;
+}
+@keyframes heroSwim {
+  0%   { transform: translateX(-90px) scaleX(1); }
+  49%  { transform: translateX(calc(100vw + 90px)) scaleX(1); }
+  50%  { transform: translateX(calc(100vw + 90px)) scaleX(-1); }
+  99%  { transform: translateX(-90px) scaleX(-1); }
+  100% { transform: translateX(-90px) scaleX(1); }
+}
+@keyframes hfBob {
+  from { transform: translateY(-6px) rotate(-3deg); }
+  to   { transform: translateY(6px)  rotate(3deg); }
+}
+
+/* ============ RONG BIỂN Ở ĐÁY TRANG ============ */
+.seabed {
+  position: relative;
+  height: 190px;
+  margin-top: 30px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, var(--page-bg) 0%, #bae6fd 40%, #38bdf8 100%);
+}
+body.dark .seabed {
+  background: linear-gradient(to bottom, var(--page-bg) 0%, #0f2a4a 45%, #0a1d36 100%);
+}
+.seabed .weeds {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+/* 3 lớp chiều sâu: xa mờ, giữa, gần rõ */
+.weeds .layer { position: absolute; inset: 0; }
+.weeds .layer.back  { opacity: 0.5;  filter: saturate(0.8) brightness(0.9); }
+.weeds .layer.mid   { opacity: 0.8; }
+.weeds .layer.front { opacity: 1; }
+
+.weed {
+  position: absolute;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  animation: weedSway var(--dur) ease-in-out var(--delay) infinite alternate;
+}
+body.dark .weed { filter: brightness(0.75); }
+
+/* Gốc đứng yên, ngọn lả đi (kiểu uốn theo dòng nước) */
+@keyframes weedSway {
+  from { transform: skewX(-6deg); }
+  to   { transform: skewX(6deg); }
+}
+
+/* Lá rong rung nhẹ */
+.leaf {
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+  animation: leafFlutter 2.2s ease-in-out infinite alternate;
+}
+.leaf .blade { fill: var(--leaf); }
+.leaf .rib   { fill: none; stroke: rgba(255, 255, 255, 0.4); stroke-width: 0.8; stroke-linecap: round; }
+@keyframes leafFlutter {
+  from { transform: rotate(-9deg); }
+  to   { transform: rotate(9deg); }
+}
+
+/* Cụm lá cỏ biển: mỗi lá một nhịp */
+.blade-g {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: bladeSway 2.6s ease-in-out infinite alternate;
+}
+@keyframes bladeSway {
+  from { transform: skewX(-5deg); }
+  to   { transform: skewX(5deg); }
+}
+
+/* Bong bóng nhỏ bốc lên từ đáy */
+.sb-bubble {
+  position: absolute;
+  bottom: 22px;
+  border-radius: 50%;
+  opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.25);
+  animation: sbRise var(--dur) ease-in var(--delay) infinite;
+}
+@keyframes sbRise {
+  0%   { transform: translateY(0);      opacity: 0; }
+  15%  { opacity: 0.85; }
+  100% { transform: translateY(-150px); opacity: 0; }
+}
+.sand {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  bottom: -14px;
+  height: 36px;
+  z-index: 2;
+  background: linear-gradient(to bottom, #f6e2b0, #e6c887);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+body.dark .sand { background: linear-gradient(to bottom, #8a7650, #5f4f33); }
+
+/* ============ CÁC THẺ NHẤP NHÔ NHƯ TRÔI TRÊN NƯỚC ============ */
+/* Dùng thuộc tính translate/rotate riêng để không đè hiệu ứng hover (transform) có sẵn */
+.card {
+  animation: cardFloat 4.5s ease-in-out infinite;
+}
+.cards .card:nth-child(2) { animation-duration: 5.4s; animation-delay: -1.6s; }
+.cards .card:nth-child(3) { animation-duration: 4.9s; animation-delay: -3.1s; }
+@keyframes cardFloat {
+  0%, 100% { translate: 0 0;     rotate: -1.2deg; }
+  50%      { translate: 0 -10px; rotate: 1.2deg; }
+}
+
+@media (max-width: 600px) {
+  .seabed { height: 150px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero > .hero-fish { display: none; }
+  .weed, .leaf, .blade-g, .card { animation: none; }
+  .sb-bubble { display: none; }
+}
 </style>
 </head>
 <body>
@@ -492,6 +768,40 @@ body.dark .fish-swimmer {
 </nav>
 
 <section id="home" class="hero">
+    <div class="waves" aria-hidden="true">
+        <svg class="wave wave-back" viewBox="0 0 2400 120" preserveAspectRatio="none"><path d="M0 60 Q150 20 300 60 T600 60 T900 60 T1200 60 T1500 60 T1800 60 T2100 60 T2400 60 V120 H0 Z"/></svg>
+        <svg class="wave wave-mid" viewBox="0 0 2400 120" preserveAspectRatio="none"><path d="M0 60 Q150 20 300 60 T600 60 T900 60 T1200 60 T1500 60 T1800 60 T2100 60 T2400 60 V120 H0 Z"/></svg>
+        <svg class="wave wave-front" viewBox="0 0 2400 120" preserveAspectRatio="none"><path d="M0 60 Q150 20 300 60 T600 60 T900 60 T1200 60 T1500 60 T1800 60 T2100 60 T2400 60 V120 H0 Z"/></svg>
+    </div>
+    <div class="hero-fish" aria-hidden="true">
+        <div class="hf" style="top:12%; --dur:22s; --delay:-4s; --w:52px; color:#f97316;">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+                <path class="fish-tail" d="M16 15 L2 4 C5 11 5 19 2 26 Z" fill="currentColor"/>
+                <path d="M14 15 C22 3 40 3 52 15 C40 27 22 27 14 15 Z" fill="currentColor"/>
+                <path d="M20 17 C28 22 38 22 46 17" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <circle cx="44" cy="12.5" r="2.6" fill="#fff"/>
+                <circle cx="44.8" cy="12.5" r="1.3" fill="#1f2937"/>
+            </svg>
+        </div>
+        <div class="hf" style="top:38%; --dur:17s; --delay:-11s; --w:38px; color:#facc15;">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+                <path class="fish-tail" d="M16 15 L2 4 C5 11 5 19 2 26 Z" fill="currentColor"/>
+                <path d="M14 15 C22 3 40 3 52 15 C40 27 22 27 14 15 Z" fill="currentColor"/>
+                <path d="M20 17 C28 22 38 22 46 17" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <circle cx="44" cy="12.5" r="2.6" fill="#fff"/>
+                <circle cx="44.8" cy="12.5" r="1.3" fill="#1f2937"/>
+            </svg>
+        </div>
+        <div class="hf" style="top:60%; --dur:26s; --delay:-18s; --w:46px; color:#fb7185;">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+                <path class="fish-tail" d="M16 15 L2 4 C5 11 5 19 2 26 Z" fill="currentColor"/>
+                <path d="M14 15 C22 3 40 3 52 15 C40 27 22 27 14 15 Z" fill="currentColor"/>
+                <path d="M20 17 C28 22 38 22 46 17" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <circle cx="44" cy="12.5" r="2.6" fill="#fff"/>
+                <circle cx="44.8" cy="12.5" r="1.3" fill="#1f2937"/>
+            </svg>
+        </div>
+    </div>
     <h1>Nơi một con cá bắt đầu!</h1>
     <p>Hồ cá miền nam.</p>
     <div class="button-group">
@@ -538,6 +848,18 @@ body.dark .fish-swimmer {
         <div class="card">đẹp trai</div>
     </div>
 </section>
+<div class="seabed" aria-hidden="true">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <linearGradient id="wg1" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#0f3d2a"/><stop offset="0.55" stop-color="#10b981"/><stop offset="1" stop-color="#6ee7b7"/></linearGradient>
+            <linearGradient id="wg2" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#1a3d12"/><stop offset="0.55" stop-color="#4d9a1c"/><stop offset="1" stop-color="#bef264"/></linearGradient>
+            <linearGradient id="wg3" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#0b3b3a"/><stop offset="0.55" stop-color="#0d9488"/><stop offset="1" stop-color="#99f6e4"/></linearGradient>
+            <linearGradient id="wg4" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#14401f"/><stop offset="0.55" stop-color="#22a653"/><stop offset="1" stop-color="#86efac"/></linearGradient>
+        </defs>
+    </svg>
+    <div class="weeds"></div>
+    <div class="sand"></div>
+</div>
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" alt="">
 </div>
@@ -690,6 +1012,7 @@ window.addEventListener("load", function () {
     render();
 });
 </script>
+<div class="bubbles" aria-hidden="true"></div>
 <!-- Chú cá bơi trên website -->
 <div class="fish-swimmer" aria-hidden="true">
   <svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg">
@@ -735,5 +1058,160 @@ window.addEventListener("load", function () {
     <circle cx="102.5" cy="28.8" r="1" fill="#fff"/>
   </svg>
 </div>
+
+<script>
+/* Hiệu ứng biển: bong bóng nổi + gợn nước khi bấm */
+(function () {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const layer = document.querySelector(".bubbles");
+    const total = window.innerWidth < 600 ? 12 : 22;
+
+    for (let i = 0; i < total; i++) {
+        const b = document.createElement("span");
+        const size = 6 + Math.random() * 26;
+        b.className = "bubble";
+        b.style.width = b.style.height = size + "px";
+        b.style.left = Math.random() * 100 + "%";
+        b.style.setProperty("--dur", 9 + Math.random() * 12 + "s");
+        b.style.setProperty("--delay", -Math.random() * 20 + "s");
+        b.style.setProperty("--drift", (Math.random() * 60 - 30) + "px");
+        layer.appendChild(b);
+    }
+
+    document.addEventListener("pointerdown", function (e) {
+        const ring = document.createElement("span");
+        ring.className = "ripple";
+        ring.style.left = e.clientX + "px";
+        ring.style.top = e.clientY + "px";
+        ring.addEventListener("animationend", function () { ring.remove(); });
+        document.body.appendChild(ring);
+
+        for (let i = 0; i < 4; i++) {
+            const pop = document.createElement("span");
+            const size = 5 + Math.random() * 9;
+            pop.className = "bubble-pop";
+            pop.style.width = pop.style.height = size + "px";
+            pop.style.left = e.clientX + "px";
+            pop.style.top = e.clientY + "px";
+            pop.style.setProperty("--px", (Math.random() * 60 - 30) + "px");
+            pop.style.animationDelay = Math.random() * 0.2 + "s";
+            pop.addEventListener("animationend", function () { pop.remove(); });
+            document.body.appendChild(pop);
+        }
+    });
+})();
+</script>
+
+<script>
+/* Rong biển ở đáy trang: 3 loại, 3 lớp chiều sâu, mọc thành cụm */
+(function () {
+    const box = document.querySelector(".seabed .weeds");
+    if (!box) return;
+
+    const rnd = function (a, b) { return a + Math.random() * (b - a); };
+    const pick = function (arr) { return arr[Math.floor(Math.random() * arr.length)]; };
+    const mobile = window.innerWidth < 600;
+
+    const palettes = [
+        { g: "wg1", leaf: "#10b981" },
+        { g: "wg2", leaf: "#65a30d" },
+        { g: "wg3", leaf: "#14b8a6" },
+        { g: "wg4", leaf: "#22c55e" }
+    ];
+
+    /* Rong kelp: thân cong + lá hai bên */
+    const kelpLeaves = [
+        [182, -38, 1], [160, 218, 1], [136, -34, 0.95], [114, 214, 0.95],
+        [90, -36, 0.85], [68, 216, 0.8], [44, -32, 0.65], [24, 212, 0.5]
+    ];
+    function kelp(pal) {
+        let out = '<path d="M30 200 C26 160 34 130 30 100 C26 70 34 40 30 8" fill="none" ' +
+                  'stroke="url(#' + pal.g + ')" stroke-width="4.5" stroke-linecap="round"/>';
+        kelpLeaves.forEach(function (l) {
+            out += '<g transform="translate(30 ' + l[0] + ') rotate(' + l[1] + ') scale(' + l[2] + ')">' +
+                   '<g class="leaf" style="animation-delay:' + (-Math.random() * 2.2).toFixed(2) + 's">' +
+                   '<path class="blade" d="M0 0 C8 -9 24 -10 34 -2 C24 7 8 6 0 0 Z"/>' +
+                   '<path class="rib" d="M2 0 C12 -2 24 -3 31 -2"/></g></g>';
+        });
+        return { w: 60, body: out, h: rnd(95, 150) };
+    }
+
+    /* Rong dải: một dải dài uốn lượn, thon dần về ngọn */
+    function ribbon(pal) {
+        const out =
+            '<path d="M20 200 C6 160 34 124 20 84 C10 54 26 28 20 2 C30 28 34 58 28 88 C22 128 42 164 28 200 Z" fill="url(#' + pal.g + ')"/>' +
+            '<path d="M24 196 C14 160 34 126 24 88 C18 60 28 34 22 8" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.2" stroke-linecap="round"/>';
+        return { w: 40, body: out, h: rnd(85, 145) };
+    }
+
+    /* Cụm lá cỏ biển: nhiều lá mảnh xòe quạt từ một gốc */
+    const tuftBlades = [
+        "M40 200 C37 160 22 130 12 78",
+        "M40 200 C38 150 30 110 28 56",
+        "M40 200 C41 140 46 100 42 28",
+        "M40 200 C44 150 56 118 62 62",
+        "M40 200 C46 165 62 140 72 104"
+    ];
+    function tuft(pal) {
+        let out = "";
+        tuftBlades.forEach(function (d, k) {
+            out += '<g class="blade-g" style="animation-delay:' + (-Math.random() * 2.6).toFixed(2) +
+                   's;animation-duration:' + rnd(2.2, 3.4).toFixed(2) + 's">' +
+                   '<path d="' + d + '" fill="none" stroke="url(#' + pal.g + ')" stroke-width="' +
+                   (4.2 + (k % 2) * 0.8) + '" stroke-linecap="round"/></g>';
+        });
+        return { w: 80, body: out, h: rnd(55, 95) };
+    }
+
+    const types = [kelp, kelp, ribbon, ribbon, tuft];
+
+    /* [lớp, tỉ lệ kích thước, số cụm desktop, số cụm mobile, độ chậm] */
+    const layers = [
+        ["back",  0.65, 8, 4, 1.5],
+        ["mid",   0.85, 8, 4, 1.2],
+        ["front", 1.00, 6, 3, 1.0]
+    ];
+
+    layers.forEach(function (L) {
+        const layer = document.createElement("div");
+        layer.className = "layer " + L[0];
+        const clumps = mobile ? L[3] : L[2];
+        let html = "";
+
+        for (let c = 0; c < clumps; c++) {
+            const center = ((c + 0.5) / clumps) * 100 + rnd(-3, 3);
+            const count = 1 + Math.floor(Math.random() * 2.5);
+
+            for (let n = 0; n < count; n++) {
+                const t = pick(types)(pick(palettes));
+                const h = Math.min(t.h * L[1], 165);
+                const w = h * t.w / 200;
+                const off = rnd(-14, 14);
+                html += '<svg class="weed" viewBox="0 0 ' + t.w + ' 200" ' +
+                        'style="left:calc(' + center.toFixed(2) + '% + ' + off.toFixed(1) + 'px);' +
+                        'bottom:' + rnd(10, 16).toFixed(1) + 'px;width:' + w.toFixed(1) + 'px;height:' + h.toFixed(1) + 'px;' +
+                        '--leaf:' + t.leaf + ';--dur:' + (rnd(2.6, 4.6) * L[4]).toFixed(2) + 's;' +
+                        '--delay:' + (-Math.random() * 4).toFixed(2) + 's;">' + t.body + '</svg>';
+            }
+        }
+        layer.innerHTML = html;
+        box.appendChild(layer);
+    });
+
+    /* Bong bóng nhỏ bốc lên từ gốc rong */
+    const bubbleCount = mobile ? 4 : 9;
+    for (let i = 0; i < bubbleCount; i++) {
+        const size = rnd(4, 10);
+        const b = document.createElement("span");
+        b.className = "sb-bubble";
+        b.style.width = b.style.height = size + "px";
+        b.style.left = rnd(3, 97) + "%";
+        b.style.setProperty("--dur", rnd(3.5, 6.5) + "s");
+        b.style.setProperty("--delay", -rnd(0, 6) + "s");
+        box.appendChild(b);
+    }
+})();
+</script>
 </body>
 </html>
