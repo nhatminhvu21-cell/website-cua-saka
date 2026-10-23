@@ -749,6 +749,236 @@ body.dark .sand { background: linear-gradient(to bottom, #8a7650, #5f4f33); }
   .weed, .leaf, .blade-g, .card { animation: none; }
   .sb-bubble { display: none; }
 }
+
+/* ============ ẢNH TRONG GALLERY NHẤP NHÔ NHƯ TRÔI TRÊN NƯỚC ============ */
+/* Dùng translate/rotate riêng để không đè hiệu ứng phóng to ảnh khi rê chuột */
+.photo-card {
+  animation: photoFloat 5s ease-in-out infinite;
+}
+.photo-gallery .photo-card:nth-child(2) { animation-duration: 6s;   animation-delay: -2s; }
+.photo-gallery .photo-card:nth-child(3) { animation-duration: 5.5s; animation-delay: -3.7s; }
+.photo-gallery .photo-card:nth-child(4) { animation-duration: 6.4s; animation-delay: -1s; }
+.photo-gallery .photo-card:nth-child(5) { animation-duration: 5.2s; animation-delay: -4.4s; }
+/* Rê chuột vào thì ảnh đứng yên cho dễ bấm */
+.photo-card:hover { animation-play-state: paused; }
+@keyframes photoFloat {
+  0%, 100% { translate: 0 0;    rotate: -0.8deg; }
+  50%      { translate: 0 -9px; rotate: 0.8deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-card { animation: none; }
+}
+
+/* ============ KHUNG CHO PHẦN ĐẾM ============ */
+.counter-box {
+  max-width: 340px;
+  margin: 20px auto 0;
+  padding: 18px 22px 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid #93c5fd;
+  border-radius: 20px;
+  box-shadow: 0 6px 16px rgba(14, 116, 144, 0.15);
+  backdrop-filter: blur(4px);
+}
+.counter-box #counter {
+  margin: 0 0 14px;
+  font-weight: bold;
+}
+.counter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+body.dark .counter-box {
+  background: rgba(15, 42, 74, 0.7);
+  border-color: #3b82f6;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* ============ NÚT ĐỔ NƯỚC CHO CÁ ============ */
+.water-wrap { margin: 0 0 20px; }
+
+#colorButton {
+  position: relative;
+  overflow: hidden;
+  padding: 13px 30px;
+  border: none;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, #38bdf8 0%, #2563eb 60%, #1d4ed8 100%);
+  box-shadow:
+    0 6px 16px rgba(37, 99, 235, 0.45),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+  animation: btnFloat 3s ease-in-out infinite;
+}
+#colorButton::before {
+  content: "💧";
+  display: inline-block;
+  margin-right: 8px;
+}
+/* Vệt sáng quét qua nút */
+#colorButton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  animation: btnShine 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+#colorButton:hover {
+  opacity: 1;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.55),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+}
+#colorButton:active { transform: scale(0.96); }
+
+body.dark #colorButton {
+  color: #e0f2fe;
+  border: 1px solid #60a5fa;
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 60%, #172554 100%);
+  box-shadow:
+    0 6px 18px rgba(96, 165, 250, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+}
+
+@keyframes btnFloat {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -4px; }
+}
+@keyframes btnShine {
+  0%   { left: -60%; }
+  60%, 100% { left: 130%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #colorButton, #colorButton::after { animation: none; }
+}
+
+/* ============ TRANG TRÍ CÁC NÚT KHÁC ============ */
+.btn-ocean {
+  position: relative;
+  overflow: hidden;
+  padding: 11px 24px;
+  border: none;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+              background-color 0.25s ease, color 0.25s ease, opacity 0.3s ease;
+}
+.btn-ocean::before {
+  display: inline-block;
+  margin-right: 8px;
+}
+/* Vệt sáng quét qua khi rê chuột */
+.btn-ocean::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+.btn-ocean:hover {
+  opacity: 1;
+  transform: translateY(-3px) scale(1.04);
+}
+.btn-ocean:hover::after {
+  left: 130%;
+  transition: left 0.6s ease;
+}
+.btn-ocean:active { transform: scale(0.95); }
+
+/* JOKE: màu cá hề */
+.btn-joke {
+  color: #fff;
+  background: linear-gradient(135deg, #fdba74 0%, #f97316 60%, #ea580c 100%);
+  box-shadow: 0 5px 14px rgba(249, 115, 22, 0.4),
+              inset 0 2px 0 rgba(255, 255, 255, 0.35),
+              inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+.btn-joke::before { content: "🐠"; }
+.btn-joke:hover {
+  box-shadow: 0 9px 20px rgba(249, 115, 22, 0.5),
+              inset 0 2px 0 rgba(255, 255, 255, 0.4),
+              inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Tăng nước: xanh ngọc */
+.btn-add {
+  color: #fff;
+  background: linear-gradient(135deg, #5eead4 0%, #14b8a6 60%, #0f766e 100%);
+  box-shadow: 0 5px 14px rgba(20, 184, 166, 0.4),
+              inset 0 2px 0 rgba(255, 255, 255, 0.35),
+              inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+.btn-add::before { content: "🌊"; }
+.btn-add:hover {
+  box-shadow: 0 9px 20px rgba(20, 184, 166, 0.5),
+              inset 0 2px 0 rgba(255, 255, 255, 0.4),
+              inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Đặt lại: kiểu viền, rê chuột thì đầy màu */
+.btn-reset {
+  color: #1d4ed8;
+  background: rgba(255, 255, 255, 0.65);
+  border: 2px solid #93c5fd;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.12);
+}
+.btn-reset::before { content: "🔄"; }
+.btn-reset:hover {
+  color: #fff;
+  background: #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.4);
+}
+
+/* Dark mode */
+body.dark .btn-joke {
+  color: #ffedd5;
+  border: 1px solid #fb923c;
+  background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%);
+  box-shadow: 0 5px 14px rgba(251, 146, 60, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.15);
+}
+body.dark .btn-add {
+  color: #ccfbf1;
+  border: 1px solid #2dd4bf;
+  background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+  box-shadow: 0 5px 14px rgba(45, 212, 191, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.15);
+}
+body.dark .btn-reset {
+  color: #93c5fd;
+  background: transparent;
+  border: 2px solid #3b82f6;
+  box-shadow: none;
+}
+body.dark .btn-reset:hover {
+  color: #fff;
+  background: #1d4ed8;
+  border-color: #3b82f6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-ocean, .btn-ocean::after { transition: none; }
+}
 </style>
 </head>
 <body>
@@ -802,16 +1032,22 @@ body.dark .sand { background: linear-gradient(to bottom, #8a7650, #5f4f33); }
             </svg>
         </div>
     </div>
+    <div class="water-wrap">
+        <button id="colorButton" onclick="changeBackground()">biến sâu</button>
+    </div>
     <h1>Nơi một con cá bắt đầu!</h1>
     <p>Hồ cá miền nam.</p>
     <div class="button-group">
-    <button onclick="changeGreeting()">JOKE</button>
-    <button id="colorButton" onclick="changeBackground()">đổ nước cho cá</button>
+    <button class="btn-ocean btn-joke" onclick="changeGreeting()">JOKE</button>
 </div>
 <p id="greeting">Tại sao con cá không bao giờ thất tình?</p>
-<p id="counter">Bạn đã nhấn 0 lần.</p>
-<button onclick="increase()">Nhấn để tăng 1 lít nước</button>
-<button onclick="resetCounter()">Đặt lại số đếm</button>
+<div class="counter-box">
+    <p id="counter">Bạn đã nhấn 0 lần.</p>
+    <div class="counter-buttons">
+        <button class="btn-ocean btn-add" onclick="increase()">Nhấn để tăng 1 lít nước</button>
+        <button class="btn-ocean btn-reset" onclick="resetCounter()">Đặt lại số đếm</button>
+    </div>
+</div>
 </section>
 
 <section id="about" class="about">
@@ -895,7 +1131,7 @@ let isDark = localStorage.getItem("isDark") === "true";
 function applyTheme() {
     const button = document.getElementById("colorButton");
     document.body.classList.toggle("dark", isDark);
-    button.textContent = isDark ? "cảm ơn đã cho con cá nước" : "đổ nước cho cá";
+    button.textContent = isDark ? "biến sáng" : "biến sâu";
 }
 
 function changeBackground() {
