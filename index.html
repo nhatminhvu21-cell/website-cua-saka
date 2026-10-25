@@ -1418,13 +1418,33 @@ body.dark .hobbies .card:hover { background: #274060; }
   font-size: clamp(2.3rem, 7vw, 3.3rem);
   line-height: 1.3;
   letter-spacing: 1px;
-  background: linear-gradient(95deg, #be185d 0%, #ea580c 55%, #d97706 100%);
+  background: linear-gradient(95deg, #0c4a6e 0%, #0369a1 35%, #06b6d4 70%, #3b82f6 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
 }
 .gallery-section > p { font-family: "Itim", "Baloo 2", cursive; font-size: 1.15rem; }
 .photo-card figcaption { font-family: "Itim", "Baloo 2", cursive; font-size: 1.1rem; }
-body.dark .gallery-section h2 { background: linear-gradient(95deg, #f9a8d4 0%, #fdba74 60%, #fde68a 100%); -webkit-background-clip: text; background-clip: text; }
+body.dark .gallery-section h2 { background: linear-gradient(95deg, #7dd3fc 0%, #67e8f9 50%, #a5b4fc 100%); -webkit-background-clip: text; background-clip: text; }
+
+/* ============ CÂU CUỐI TRANG ============ */
+.fish-quote {
+  padding: 8px 20px 36px;
+  text-align: center;
+  background: #e6c887;
+}
+.fish-quote h2 {
+  max-width: 640px;
+  margin: 0 auto 8px;
+  font-family: "Itim", "Baloo 2", cursive;
+  font-weight: 400;
+  font-size: clamp(1.15rem, 3.6vw, 1.5rem);
+  line-height: 1.5;
+  color: #5b3f1a;
+}
+.fish-quote p { margin: 0; font-family: "Itim", "Baloo 2", cursive; font-size: 1.05rem; color: #7a5a2c; }
+body.dark .fish-quote { background: #5f4f33; }
+body.dark .fish-quote h2 { color: #f3e3bd; }
+body.dark .fish-quote p { color: #d9c593; }
 </style>
 </head>
 <body>
@@ -1433,7 +1453,7 @@ body.dark .gallery-section h2 { background: linear-gradient(95deg, #f9a8d4 0%, #
     <div class="menu">
         <a href="#home">Trang chủ</a>
         <a href="#guestbook">Lời nhắn</a>
-        <a href="#hobbies">Sở thích</a>
+        <a href="#hobbies">sở thích</a>
     </div>
      <h2>SAKA</h2>
 </nav>
@@ -1499,27 +1519,6 @@ body.dark .gallery-section h2 { background: linear-gradient(95deg, #f9a8d4 0%, #
 </div>
 </section>
 
-<section id="gallery" class="gallery-section">
-    <h2>một góc nhỏ của tui</h2>
-    <p>những thứ tui muốn lưu lại.</p>
-
-    <div class="photo-gallery">
-
-<figure class="photo-card">
-        <img src="images/fish.jpg" alt="Một chú cá" loading="lazy" decoding="async">
-    <figcaption>cá 🐟</figcaption>
-</figure>
-<figure class="photo-card">
-        <img src="images/drawing.jpg" alt="Tranh vẽ của tui" loading="lazy" decoding="async">
-    <figcaption>tranh vẽ</figcaption>
-</figure>
-
-<figure class="photo-card">
-        <img src="images/sky.jpg" alt="Bầu trời" loading="lazy" decoding="async">
-    <figcaption>bầu trời</figcaption>
-</figure>
-    </div>
-</section>
 <section id="guestbook" class="guestbook">
     <div class="gb-deco" aria-hidden="true">
         <span class="gb-b" style="left:6%;--s:10px;--d:7s;--dl:-1s"></span>
@@ -1551,6 +1550,27 @@ body.dark .gallery-section h2 { background: linear-gradient(95deg, #f9a8d4 0%, #
     </div>
     <p id="gbNotice" class="gb-notice" hidden></p>
 </section>
+<section id="gallery" class="gallery-section">
+    <h2>một góc nhỏ của tui</h2>
+    <p>những thứ tui muốn lưu lại.</p>
+
+    <div class="photo-gallery">
+
+<figure class="photo-card">
+        <img src="images/fish.jpg" alt="Một chú cá" loading="lazy" decoding="async">
+    <figcaption>cá 🐟</figcaption>
+</figure>
+<figure class="photo-card">
+        <img src="images/drawing.jpg" alt="Tranh vẽ của tui" loading="lazy" decoding="async">
+    <figcaption>tranh vẽ</figcaption>
+</figure>
+
+<figure class="photo-card">
+        <img src="images/sky.jpg" alt="Bầu trời" loading="lazy" decoding="async">
+    <figcaption>bầu trời</figcaption>
+</figure>
+    </div>
+</section>
 <section id="hobbies" class="hobbies">
     <h2>Đặc điểm của minh</h2>
 
@@ -1578,6 +1598,10 @@ body.dark .gallery-section h2 { background: linear-gradient(95deg, #f9a8d4 0%, #
     <div class="creatures"></div>
     <div class="sand"></div>
 </div>
+<footer class="fish-quote">
+    <h2>Một con cá không biết nói sẽ không bao giờ tiết lộ bí mật của bạn.</h2>
+    <p>hÀi vcl.</p>
+</footer>
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" alt="">
 </div>
