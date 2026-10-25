@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="favicon.png">
     <title>wedsite của saka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
    <style>
 body {
   position: relative;
@@ -739,6 +742,7 @@ body.dark .hero::before {
   height: 260px;
   margin-top: 30px;
   overflow: hidden;
+  contain: layout paint style; /* cô lập vùng vẽ, các hiệu ứng ở đây không làm cả trang vẽ lại */
   background: linear-gradient(to bottom, var(--page-bg) 0%, #bae6fd 40%, #38bdf8 100%);
 }
 .seabed.animations-paused * {
@@ -754,7 +758,7 @@ body.dark .seabed {
 }
 /* 3 lớp chiều sâu: xa mờ, giữa, gần rõ */
 .weeds .layer { position: absolute; inset: 0; }
-.weeds .layer.back  { opacity: 0.5;  filter: saturate(0.8) brightness(0.9); }
+.weeds .layer.back  { opacity: 0.5; }
 .weeds .layer.mid   { opacity: 0.8; }
 .weeds .layer.front { opacity: 1; }
 
@@ -762,9 +766,12 @@ body.dark .seabed {
   position: absolute;
   overflow: visible;
   transform-origin: 50% 100%;
+  will-change: transform;
   animation: weedSway var(--dur) ease-in-out var(--delay) infinite alternate;
 }
-body.dark .weed { filter: brightness(0.75); }
+body.dark .weeds .layer.back  { opacity: 0.38; }
+body.dark .weeds .layer.mid   { opacity: 0.6; }
+body.dark .weeds .layer.front { opacity: 0.75; }
 
 /* Gốc đứng yên, ngọn lả đi (kiểu uốn theo dòng nước) */
 @keyframes weedSway {
@@ -776,7 +783,6 @@ body.dark .weed { filter: brightness(0.75); }
 .leaf {
   transform-box: fill-box;
   transform-origin: 0% 50%;
-  animation: leafFlutter 2.2s ease-in-out infinite alternate;
 }
 .leaf .blade { fill: var(--leaf); }
 .leaf .rib   { fill: none; stroke: rgba(255, 255, 255, 0.4); stroke-width: 0.8; stroke-linecap: round; }
@@ -789,7 +795,6 @@ body.dark .weed { filter: brightness(0.75); }
 .blade-g {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  animation: bladeSway 2.6s ease-in-out infinite alternate;
 }
 @keyframes bladeSway {
   from { transform: skewX(-5deg); }
@@ -1093,7 +1098,7 @@ body.dark .btn-reset:hover {
 .seabed .creatures { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .crit { position: absolute; }
 .crit svg { display: block; width: 100%; height: auto; overflow: visible; }
-body.dark .crit { filter: brightness(0.8); }
+body.dark .crit { opacity: 0.85; }
 
 /* Cua đi ngang qua lại */
 .crab { animation: crabWalk var(--dur) ease-in-out var(--delay) infinite; }
@@ -1102,13 +1107,13 @@ body.dark .crit { filter: brightness(0.8); }
   42%, 58%  { transform: translateX(var(--range)); }
   92%, 100% { transform: translateX(0); }
 }
-.crab .leg { transform-box: fill-box; transform-origin: 100% 0%; animation: legWiggle 0.32s ease-in-out infinite alternate; }
+.crab .leg { transform-box: fill-box; transform-origin: 100% 0%; }
 @keyframes legWiggle { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
-.crab .claw { transform-box: fill-box; transform-origin: 100% 100%; animation: clawWave 1.4s ease-in-out infinite alternate; }
+.crab .claw { transform-box: fill-box; transform-origin: 100% 100%; }
 @keyframes clawWave { from { transform: rotate(-8deg); } to { transform: rotate(12deg); } }
 
 /* Nhím biển lắc nhẹ */
-.urchin svg { transform-origin: 50% 60%; animation: urchinWobble 3.2s ease-in-out infinite alternate; }
+.urchin svg { transform-origin: 50% 60%; }
 @keyframes urchinWobble { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 
 /* Ngựa vằn bập bềnh, vây lưng vẫy */
@@ -1117,19 +1122,19 @@ body.dark .crit { filter: brightness(0.8); }
   from { transform: translateY(-12px) rotate(-5deg); }
   to   { transform: translateY(10px)  rotate(5deg); }
 }
-.seahorse .sh-fin { transform-box: fill-box; transform-origin: 100% 50%; animation: shFin 0.45s ease-in-out infinite alternate; }
+.seahorse .sh-fin { transform-box: fill-box; transform-origin: 100% 50%; }
 @keyframes shFin { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
 
 /* Sứa trôi, thân co bóp, tua rua đung đưa */
 .jelly { animation: jellyDrift var(--dur) ease-in-out var(--delay) infinite alternate; }
-.jelly svg { filter: drop-shadow(0 0 6px var(--glow)); }
+.jelly svg { transform-origin: 50% 0%; animation: jPulse 2.6s ease-in-out infinite; }
 @keyframes jellyDrift {
   from { transform: translate(0, 0); }
   to   { transform: translate(var(--dx), -55px); }
 }
-.jbell { transform-box: fill-box; transform-origin: 50% 0%; animation: jPulse 2.6s ease-in-out infinite; }
+.jbell { transform-box: fill-box; transform-origin: 50% 0%; }
 @keyframes jPulse { 0%, 100% { transform: scale(1, 1); } 40% { transform: scale(1.08, 0.86); } }
-.tent { transform-box: fill-box; transform-origin: 50% 0%; animation: tentSway 2.2s ease-in-out infinite alternate; }
+.tent { transform-box: fill-box; transform-origin: 50% 0%; }
 @keyframes tentSway { from { transform: skewX(-9deg); } to { transform: skewX(9deg); } }
 
 /* Đàn cá nhỏ bơi ngang đáy biển */
@@ -1143,10 +1148,105 @@ body.dark .crit { filter: brightness(0.8); }
   100% { transform: translateX(-90px) scaleX(1); }
 }
 
+.seabed .fish-tail, .seabed .fish-fin { animation: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .crit, .crit * { animation: none !important; }
   .sb-fish { display: none; }
 }
+
+/* ============ TIÊU ĐỀ "NƠI MỘT CON CÁ BẮT ĐẦU" ============ */
+.hero h1 {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0.15em 0 0.25em;
+  padding: 0.12em 0.2em 0.2em;      /* chừa chỗ cho dấu tiếng Việt, không bị cắt */
+  font-family: "Pacifico", "Baloo 2", cursive;
+  font-weight: 400;
+  font-size: clamp(2.2rem, 7.5vw, 4.4rem);
+  line-height: 1.4;
+  letter-spacing: 1px;
+  text-wrap: balance;
+  background: linear-gradient(95deg, #0c4a6e 0%, #0369a1 28%, #06b6d4 58%, #3b82f6 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 3px 0 rgba(255, 255, 255, 0.75)) drop-shadow(0 8px 10px rgba(3, 105, 161, 0.25));
+}
+body.dark .hero h1 {
+  background: linear-gradient(95deg, #7dd3fc 0%, #67e8f9 45%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  filter: drop-shadow(0 0 14px rgba(125, 211, 252, 0.35));
+}
+
+/* ============ LỜI NHẮN / SỔ LƯU BÚT ============ */
+.guestbook { padding: 40px 20px 10px; text-align: center; }
+.guestbook h2 { margin: 0 0 6px; }
+.gb-sub { margin: 0 0 18px; color: #6b7280; }
+.gb-form {
+  max-width: 560px;
+  margin: 0 auto 22px;
+  padding: 18px;
+  text-align: left;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+.gb-form input[type="text"], .gb-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  font: inherit;
+  color: inherit;
+  background: #f9fafb;
+  border: 2px solid #d1d5db;
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.gb-form textarea { resize: vertical; min-height: 84px; }
+.gb-form input:focus, .gb-form textarea:focus { border-color: #38bdf8; }
+.gb-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.gb-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+#gbCount { font-size: 13px; color: #6b7280; }
+.btn-send { color: #fff; background: linear-gradient(135deg, #0ea5e9, #2563eb); }
+.btn-send:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.gb-status { min-height: 1.2em; margin: 10px 0 0; font-size: 14px; }
+.gb-status.err { color: #dc2626; }
+.gb-status.ok { color: #059669; }
+.gb-list {
+  max-width: 560px;
+  max-height: 440px;
+  margin: 0 auto;
+  padding: 2px 6px 6px 2px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.gb-msg {
+  padding: 12px 16px;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  border-radius: 16px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+.gb-msg b { color: #0369a1; }
+.gb-msg time { margin-left: 8px; font-size: 12px; color: #9ca3af; }
+.gb-msg p { margin: 6px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gb-empty { color: #6b7280; text-align: center; }
+.gb-notice { max-width: 560px; margin: 14px auto 0; font-size: 13px; color: #92400e; }
+body.dark .gb-sub, body.dark #gbCount, body.dark .gb-empty { color: #9ca3af; }
+body.dark .gb-form, body.dark .gb-msg { background: #1f2937; border-color: #374151; }
+body.dark .gb-form input[type="text"], body.dark .gb-form textarea { background: #111827; border-color: #374151; }
+body.dark .gb-msg b { color: #7dd3fc; }
+body.dark .gb-notice { color: #fcd34d; }
+@media (max-width: 600px) { .guestbook { padding: 30px 12px 6px; } }
 </style>
 </head>
 <body>
@@ -1156,6 +1256,7 @@ body.dark .crit { filter: brightness(0.8); }
         <a href="#home">Trang chủ</a>
         <a href="#about">Giới thiệu</a>
         <a href="#hobbies">Sở thích</a>
+        <a href="#guestbook">Lời nhắn</a>
     </div>
      <h2>SAKA</h2>
 </nav>
@@ -1254,6 +1355,22 @@ body.dark .crit { filter: brightness(0.8); }
         <div class="card">giàu</div>
         <div class="card">đẹp trai</div>
     </div>
+</section>
+<section id="guestbook" class="guestbook">
+    <h2>Chai lời nhắn 🍾</h2>
+    <p class="gb-sub">Ghé qua thì để lại vài dòng nhé, ai vào trang cũng đọc được.</p>
+    <form id="gbForm" class="gb-form" autocomplete="off">
+        <input id="gbName" type="text" maxlength="30" placeholder="Tên của bạn (bỏ trống cũng được)" aria-label="Tên của bạn">
+        <textarea id="gbText" maxlength="300" rows="3" placeholder="Nhắn gì đó cho Saka..." aria-label="Lời nhắn" required></textarea>
+        <input id="gbWebsite" class="gb-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="gb-row">
+            <span id="gbCount">0/300</span>
+            <button type="submit" id="gbSend" class="btn-ocean btn-send">Thả vào biển</button>
+        </div>
+        <p id="gbStatus" class="gb-status" role="status"></p>
+    </form>
+    <div id="gbList" class="gb-list" aria-live="polite"></div>
+    <p id="gbNotice" class="gb-notice" hidden></p>
 </section>
 <div class="seabed" aria-hidden="true">
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1553,7 +1670,9 @@ window.addEventListener("load", function () {
     const rnd = function (a, b) { return a + Math.random() * (b - a); };
     const pick = function (arr) { return arr[Math.floor(Math.random() * arr.length)]; };
     const f = function (v) { return v.toFixed(1); };
-    const mobile = window.innerWidth < 600;
+    /* máy yếu (ít nhân CPU / ít RAM) hoặc màn nhỏ -> dùng số lượng ít */
+    const lowEnd = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+    const mobile = window.innerWidth < 600 || lowEnd;
     const num = function (desktop, phone) { return mobile ? phone : desktop; };
     let uid = 0;
 
@@ -1698,9 +1817,9 @@ window.addEventListener("load", function () {
 
     /* [lớp, tỉ lệ kích thước, số cụm desktop, số cụm mobile, độ chậm, các loại có thể mọc] */
     const layers = [
-        ["back",  0.65, 10, 5, 1.5, ["kelp", "kelp", "ribbon", "tuft", "fan"]],
-        ["mid",   0.85, 10, 5, 1.2, ["kelp", "ribbon", "tuft", "branch", "fan", "dome", "anemone"]],
-        ["front", 1.00,  8, 4, 1.0, ["kelp", "ribbon", "tuft", "branch", "branch", "fan", "dome", "anemone"]]
+        ["back",  0.65, 8, 4, 1.5, ["kelp", "kelp", "ribbon", "tuft", "fan"]],
+        ["mid",   0.85, 7, 4, 1.2, ["kelp", "ribbon", "tuft", "branch", "fan", "dome", "anemone"]],
+        ["front", 1.00, 6, 3, 1.0, ["kelp", "ribbon", "tuft", "branch", "branch", "fan", "dome", "anemone"]]
     ];
 
     layers.forEach(function (L) {
@@ -1711,7 +1830,7 @@ window.addEventListener("load", function () {
 
         for (let c = 0; c < clumps; c++) {
             const center = ((c + 0.5) / clumps) * 100 + rnd(-3, 3);
-            const count = 1 + Math.floor(Math.random() * 2.5);
+            const count = 1 + Math.floor(Math.random() * 2);
 
             for (let n = 0; n < count; n++) {
                 const kind = kinds[pick(L[5])];
@@ -1732,7 +1851,7 @@ window.addEventListener("load", function () {
     });
 
     /* Bong bóng nhỏ bốc lên từ gốc rong */
-    const bubbleCount = num(14, 6);
+    const bubbleCount = num(8, 4);
     for (let i = 0; i < bubbleCount; i++) {
         const size = rnd(4, 10);
         const b = document.createElement("span");
@@ -1870,7 +1989,7 @@ window.addEventListener("load", function () {
             '<circle cx="26.5" cy="10" r="2" fill="#fff"/><circle cx="27" cy="10" r="1" fill="#1f2937"/></svg>';
     }
     const horseCols = [["#fb923c", "#c2410c"], ["#facc15", "#a16207"], ["#f9a8d4", "#be185d"]];
-    const horseN = num(3, 1);
+    const horseN = num(2, 1);
     for (let i = 0; i < horseN; i++) {
         const c = horseCols[i % 3];
         add(seahorseSvg(c[0], c[1]),
@@ -1896,7 +2015,7 @@ window.addEventListener("load", function () {
             '<path d="M16 25 Q25 21 34 25" stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/></g></svg>';
     }
     const jellyCols = ["#f9a8d4", "#c4b5fd", "#67e8f9"];
-    const jellyN = num(3, 2);
+    const jellyN = num(2, 1);
     for (let i = 0; i < jellyN; i++) {
         const c = jellyCols[i % 3];
         add(jellySvg(c),
@@ -1914,7 +2033,7 @@ window.addEventListener("load", function () {
             '<circle cx="23" cy="5.5" r="1.6" fill="#fff"/><circle cx="23.4" cy="5.5" r=".8" fill="#1f2937"/></svg>';
     }
     const schoolCols = ["#fde047", "#67e8f9", "#fda4af", "#a5f3fc", "#fdba74"];
-    const schoolN = num(5, 3);
+    const schoolN = num(3, 2);
     for (let i = 0; i < schoolN; i++) {
         const col = pick(schoolCols);
         let fishes = "";
@@ -1943,6 +2062,152 @@ window.addEventListener("load", function () {
         observer.observe(seabed);
         document.addEventListener("visibilitychange", updateAnimationState);
     }
+})();
+</script>
+<script>
+/* ============ LỜI NHẮN ============ */
+(function () {
+    /* Dán địa chỉ Firebase Realtime Database vào đây để lời nhắn hiện cho MỌI người xem.
+       Ví dụ: "https://ten-du-an-default-rtdb.asia-southeast1.firebasedatabase.app"
+       Để trống = chế độ thử, lời nhắn chỉ lưu trên trình duyệt này. */
+    const FIREBASE_URL = "https://saka-a28f9-default-rtdb.firebaseio.com";
+
+    const MAX_SHOW = 30;          // số lời nhắn mới nhất hiển thị
+    const COOLDOWN_MS = 20000;    // chống gửi liên tục
+    const base = FIREBASE_URL.replace(/\/+$/, "");
+    const useCloud = base !== "";
+
+    const form = document.getElementById("gbForm");
+    if (!form) return;
+    const nameEl = document.getElementById("gbName");
+    const textEl = document.getElementById("gbText");
+    const hpEl = document.getElementById("gbWebsite");
+    const countEl = document.getElementById("gbCount");
+    const sendBtn = document.getElementById("gbSend");
+    const statusEl = document.getElementById("gbStatus");
+    const listEl = document.getElementById("gbList");
+    const noticeEl = document.getElementById("gbNotice");
+
+    if (!useCloud) {
+        noticeEl.hidden = false;
+        noticeEl.textContent = "Đang ở chế độ thử: lời nhắn chỉ lưu trên máy này. Chủ trang cần nối Firebase để mọi người cùng thấy.";
+    }
+
+    function setStatus(msg, kind) {
+        statusEl.textContent = msg || "";
+        statusEl.className = "gb-status" + (kind ? " " + kind : "");
+    }
+
+    function readLocal() {
+        try { return JSON.parse(localStorage.getItem("gbLocal") || "[]"); } catch (e) { return []; }
+    }
+    function writeLocal(arr) {
+        try { localStorage.setItem("gbLocal", JSON.stringify(arr.slice(-100))); } catch (e) {}
+    }
+
+    async function fetchMessages() {
+        if (!useCloud) return readLocal();
+        const url = base + '/guestbook.json?orderBy="$key"&limitToLast=' + MAX_SHOW;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("load " + res.status);
+        const data = (await res.json()) || {};
+        return Object.keys(data).map(function (k) { return data[k]; });
+    }
+
+    async function postMessage(msg) {
+        if (!useCloud) {
+            const arr = readLocal();
+            arr.push({ name: msg.name, text: msg.text, ts: Date.now() });
+            writeLocal(arr);
+            return;
+        }
+        const res = await fetch(base + "/guestbook.json", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: msg.name, text: msg.text, ts: { ".sv": "timestamp" } })
+        });
+        if (!res.ok) throw new Error("send " + res.status);
+    }
+
+    function fmtTime(ts) {
+        if (typeof ts !== "number") return "";
+        return new Date(ts).toLocaleString("vi-VN", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function render(msgs) {
+        listEl.textContent = "";
+        const items = msgs
+            .filter(function (m) { return m && typeof m.text === "string"; })
+            .sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); })
+            .slice(0, MAX_SHOW);
+        if (!items.length) {
+            const p = document.createElement("p");
+            p.className = "gb-empty";
+            p.textContent = "Chưa có lời nhắn nào. Bạn mở màn đi!";
+            listEl.appendChild(p);
+            return;
+        }
+        items.forEach(function (m) {
+            const box = document.createElement("div");
+            box.className = "gb-msg";
+            const who = document.createElement("b");
+            who.textContent = String(m.name || "Khách ẩn danh").slice(0, 30);
+            const when = document.createElement("time");
+            when.textContent = fmtTime(m.ts);
+            const body = document.createElement("p");
+            body.textContent = String(m.text).slice(0, 300);
+            box.appendChild(who);
+            box.appendChild(when);
+            box.appendChild(body);
+            listEl.appendChild(box);
+        });
+    }
+
+    async function refresh() {
+        try {
+            render(await fetchMessages());
+        } catch (e) {
+            listEl.textContent = "";
+            const p = document.createElement("p");
+            p.className = "gb-empty";
+            p.textContent = "Chưa tải được lời nhắn, thử tải lại trang sau nhé.";
+            listEl.appendChild(p);
+        }
+    }
+
+    textEl.addEventListener("input", function () {
+        countEl.textContent = textEl.value.length + "/300";
+    });
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const text = textEl.value.trim();
+        const name = nameEl.value.trim().slice(0, 30) || "Khách ẩn danh";
+        if (!text) { setStatus("Bạn chưa viết gì cả.", "err"); return; }
+        if (hpEl.value) { setStatus("Đã gửi!", "ok"); form.reset(); return; }   // bot điền ô ẩn
+
+        let last = 0;
+        try { last = Number(localStorage.getItem("gbLast")) || 0; } catch (err) {}
+        const wait = COOLDOWN_MS - (Date.now() - last);
+        if (wait > 0) { setStatus("Chậm một chút nhé, đợi " + Math.ceil(wait / 1000) + " giây nữa.", "err"); return; }
+
+        sendBtn.disabled = true;
+        setStatus("Đang thả chai xuống biển...");
+        try {
+            await postMessage({ name: name, text: text.slice(0, 300) });
+            try { localStorage.setItem("gbLast", String(Date.now())); } catch (err) {}
+            form.reset();
+            countEl.textContent = "0/300";
+            setStatus("Đã gửi, cảm ơn bạn!", "ok");
+            await refresh();
+        } catch (err) {
+            setStatus("Gửi chưa được, thử lại sau nhé.", "err");
+        } finally {
+            sendBtn.disabled = false;
+        }
+    });
+
+    refresh();
 })();
 </script>
 </body>
