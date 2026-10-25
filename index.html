@@ -7,7 +7,7 @@
     <title>wedsite của saka</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Lobster&family=Dancing+Script:wght@700&family=Itim&display=swap" rel="stylesheet">
    <style>
 body {
   position: relative;
@@ -1181,72 +1181,250 @@ body.dark .hero h1 {
   filter: drop-shadow(0 0 14px rgba(125, 211, 252, 0.35));
 }
 
-/* ============ LỜI NHẮN / SỔ LƯU BÚT ============ */
-.guestbook { padding: 40px 20px 10px; text-align: center; }
-.guestbook h2 { margin: 0 0 6px; }
-.gb-sub { margin: 0 0 18px; color: #6b7280; }
+/* ============ LỜI NHẮN / CHAI LỜI NHẮN ============ */
+.guestbook {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 30px 16px 34px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--page-bg) 0%, #e0f2fe 100%);
+}
+body.dark .guestbook { background: linear-gradient(180deg, var(--page-bg) 0%, #1e3a5f 100%); }
+.guestbook > *:not(.gb-deco) { position: relative; z-index: 1; }
+.guestbook h2 {
+  margin: 0 0 6px;
+  font-family: "Pacifico", "Baloo 2", cursive;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 4.5vw, 2rem);
+  line-height: 1.4;
+  color: #0369a1;
+}
+body.dark .guestbook h2 { color: #7dd3fc; }
+.gb-bottle { display: inline-block; transform-origin: 50% 85%; animation: gbBottle 3.2s ease-in-out infinite; }
+@keyframes gbBottle {
+  0%, 100% { transform: translateY(0) rotate(-14deg); }
+  50%      { transform: translateY(-6px) rotate(12deg); }
+}
+.gb-sub { margin: 0 0 12px; font-size: 14px; color: #475569; }
+
+/* Trang trí: bong bóng + cá bơi (chỉ dùng transform nên rất nhẹ) */
+.gb-deco { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.gb-b {
+  position: absolute;
+  bottom: -24px;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.35);
+  animation: gbRise var(--d) ease-in var(--dl) infinite;
+}
+@keyframes gbRise {
+  0%   { transform: translateY(0); opacity: 0; }
+  15%  { opacity: 0.85; }
+  100% { transform: translateY(-620px); opacity: 0; }
+}
+.gb-swim { position: absolute; left: 0; font-size: 28px; opacity: 0.9; }
+.gb-swim.s1 { top: 14%; animation: gbSwimR 34s linear infinite; }
+.gb-swim.s2 { top: 62%; font-size: 22px; animation: gbSwimL 44s linear -15s infinite; }
+@keyframes gbSwimR {
+  from { transform: translateX(-80px) scaleX(-1); }
+  to   { transform: translateX(calc(100vw + 80px)) scaleX(-1); }
+}
+@keyframes gbSwimL {
+  from { transform: translateX(calc(100vw + 80px)); }
+  to   { transform: translateX(-80px); }
+}
+.guestbook.gb-paused .gb-deco *, .guestbook.gb-paused .gb-msg, .guestbook.gb-paused .gb-bottle { animation-play-state: paused; }
+
+/* Form */
 .gb-form {
-  max-width: 560px;
-  margin: 0 auto 22px;
-  padding: 18px;
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto 16px;
+  padding: 14px;
   text-align: left;
-  background: #fff;
-  border: 2px solid #d1d5db;
+  background: rgba(255, 255, 255, 0.92);
+  border: 2px solid #bae6fd;
   border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 16px rgba(3, 105, 161, 0.14);
 }
 .gb-form input[type="text"], .gb-form textarea {
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 10px;
-  padding: 10px 14px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
   font: inherit;
+  font-size: 14px;
   color: inherit;
-  background: #f9fafb;
-  border: 2px solid #d1d5db;
-  border-radius: 14px;
+  background: #f0f9ff;
+  border: 2px solid #bae6fd;
+  border-radius: 16px;
   outline: none;
-  transition: border-color 0.25s ease, background-color 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.gb-form textarea { resize: vertical; min-height: 84px; }
-.gb-form input:focus, .gb-form textarea:focus { border-color: #38bdf8; }
+.gb-form textarea { resize: vertical; min-height: 60px; }
+.gb-form input:focus, .gb-form textarea:focus { border-color: #38bdf8; box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25); }
 .gb-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .gb-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-#gbCount { font-size: 13px; color: #6b7280; }
-.btn-send { color: #fff; background: linear-gradient(135deg, #0ea5e9, #2563eb); }
+#gbCount { font-size: 13px; color: #64748b; transition: color 0.2s ease; }
+#gbCount.warn { color: #ea580c; font-weight: bold; }
+.btn-send { color: #fff; background: linear-gradient(135deg, #0ea5e9, #2563eb); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 .btn-send:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 .gb-status { min-height: 1.2em; margin: 10px 0 0; font-size: 14px; }
 .gb-status.err { color: #dc2626; }
 .gb-status.ok { color: #059669; }
+.gb-flyer { position: absolute; right: 70px; bottom: 28px; font-size: 30px; pointer-events: none; animation: gbDrop 1.1s ease-in forwards; }
+@keyframes gbDrop {
+  0%   { transform: translateY(0) rotate(0); opacity: 1; }
+  100% { transform: translateY(150px) rotate(200deg); opacity: 0; }
+}
+
+/* Danh sách lời nhắn */
 .gb-list {
-  max-width: 560px;
-  max-height: 440px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 2px 6px 6px 2px;
-  overflow-y: auto;
+  padding: 4px 4px 6px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   text-align: left;
 }
 .gb-msg {
-  padding: 12px 16px;
-  background: #fff;
-  border: 2px solid #d1d5db;
-  border-radius: 16px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: 10px;
+  padding: 9px 12px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #e2e8f0;
+  border-left: 6px solid var(--accent, #38bdf8);
+  border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(3, 105, 161, 0.1);
 }
+.gb-msg:nth-child(-n+6) { animation: gbFloat 5s ease-in-out infinite; }
+.gb-msg:nth-child(2) { animation-duration: 5.8s; animation-delay: -1.5s; }
+.gb-msg:nth-child(3) { animation-duration: 5.3s; animation-delay: -3s; }
+.gb-msg:nth-child(4) { animation-duration: 6.2s; animation-delay: -2s; }
+.gb-msg:nth-child(5) { animation-duration: 5.6s; animation-delay: -4s; }
+.gb-msg:nth-child(6) { animation-duration: 6s; animation-delay: -0.8s; }
+@keyframes gbFloat {
+  0%, 100% { translate: 0 0;    rotate: -0.4deg; }
+  50%      { translate: 4px -4px; rotate: 0.4deg; }
+}
+.gb-msg.gb-new { animation: gbPop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both, gbFloat 5s ease-in-out 0.7s infinite; }
+@keyframes gbPop {
+  0%   { transform: scale(0.6) translateY(-18px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.gb-ava {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent, #38bdf8) 22%, white);
+}
+.gb-body { min-width: 0; flex: 1; }
 .gb-msg b { color: #0369a1; }
-.gb-msg time { margin-left: 8px; font-size: 12px; color: #9ca3af; }
-.gb-msg p { margin: 6px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-.gb-empty { color: #6b7280; text-align: center; }
-.gb-notice { max-width: 560px; margin: 14px auto 0; font-size: 13px; color: #92400e; }
+.gb-msg time { margin-left: 8px; font-size: 12px; color: #94a3b8; }
+.gb-msg p { margin: 4px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gb-empty { color: #64748b; text-align: center; }
+.gb-nav { display: flex; justify-content: center; align-items: center; gap: 10px; max-width: 440px; margin: 10px auto 0; }
+.gb-nav[hidden] { display: none; }
+.gb-nav button {
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  color: #0369a1;
+  background: #fff;
+  border: 2px solid #bae6fd;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.gb-nav button:hover:not(:disabled) { background: #e0f2fe; opacity: 1; }
+.gb-nav button:disabled { opacity: 0.4; cursor: default; }
+#gbPage { min-width: 42px; font-size: 13px; color: #64748b; }
+.gb-notice { max-width: 440px; margin: 14px auto 0; font-size: 13px; color: #92400e; }
+
 body.dark .gb-sub, body.dark #gbCount, body.dark .gb-empty { color: #9ca3af; }
-body.dark .gb-form, body.dark .gb-msg { background: #1f2937; border-color: #374151; }
-body.dark .gb-form input[type="text"], body.dark .gb-form textarea { background: #111827; border-color: #374151; }
+body.dark .gb-b { border-color: rgba(147, 197, 253, 0.6); background: rgba(147, 197, 253, 0.15); }
+body.dark .gb-swim { opacity: 0.7; }
+body.dark .gb-form { background: rgba(31, 41, 55, 0.92); border-color: #334155; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35); }
+body.dark .gb-form input[type="text"], body.dark .gb-form textarea { background: #111827; border-color: #334155; }
+body.dark .gb-msg { background: rgba(31, 41, 55, 0.95); border-color: #374151; border-left-color: var(--accent, #38bdf8); }
+body.dark .gb-ava { background: color-mix(in srgb, var(--accent, #38bdf8) 30%, #1f2937); }
 body.dark .gb-msg b { color: #7dd3fc; }
+body.dark .gb-nav button { color: #7dd3fc; background: #1f2937; border-color: #334155; }
+body.dark .gb-nav button:hover:not(:disabled) { background: #273449; }
+body.dark #gbPage { color: #9ca3af; }
 body.dark .gb-notice { color: #fcd34d; }
-@media (max-width: 600px) { .guestbook { padding: 30px 12px 6px; } }
+
+@media (max-width: 600px) {
+  .guestbook { padding: 24px 12px 28px; }
+  .gb-swim.s2 { display: none; }
+  .gb-b:nth-child(n+4) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gb-bottle, .gb-b, .gb-swim, .gb-msg, .gb-msg.gb-new, .gb-flyer { animation: none; }
+  .gb-b { display: none; }
+}
+
+/* ============ TRANG TRÍ QUANH CHAI LỜI NHẮN ============ */
+.gb-side { position: absolute; font-size: 38px; animation: gbBob 5s ease-in-out infinite; }
+.gb-side.sd1 { left: 4%; top: 38%; }
+.gb-side.sd2 { right: 4%; top: 52%; font-size: 40px; animation-delay: -2s; }
+.gb-side.sd3 { right: 8%; top: 16%; font-size: 30px; animation-delay: -1s; }
+.gb-side.sd4 { left: 8%; top: 66%; font-size: 30px; animation-delay: -3s; }
+@keyframes gbBob { 50% { transform: translateY(-14px) rotate(6deg); } }
+@media (max-width: 700px) {
+  .gb-side { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gb-side { animation: none; }
+}
+
+/* ============ PHÔNG CHỮ MỚI: "ĐẶC ĐIỂM CỦA MÌNH" + "GÓC NHỎ CỦA TUI" ============ */
+.hobbies h2 {
+  margin: 0 0 22px;
+  font-family: "Lobster", "Pacifico", cursive;
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 2.9rem);
+  line-height: 1.4;
+  color: #075985;
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.8);
+}
+.hobbies h2::after {
+  content: ""; display: block; width: 120px; height: 6px; margin: 4px auto 0; border-radius: 6px;
+  background: radial-gradient(circle at 6px 3px, #38bdf8 0 3px, transparent 4px) 0 0 / 14px 6px repeat-x;
+}
+body.dark .hobbies h2 { color: #7dd3fc; text-shadow: 0 0 14px rgba(125, 211, 252, 0.35); }
+.hobbies .card {
+  flex-direction: column; gap: 6px;
+  font-family: "Itim", "Baloo 2", cursive; font-size: 1.35rem;
+  border-color: #7dd3fc; border-style: dashed;
+}
+body.dark .hobbies .card { background: #1f2937; color: #e5e7eb; border-color: #38bdf8; }
+body.dark .hobbies .card:hover { background: #274060; }
+
+.gallery-section h2 {
+  font-family: "Dancing Script", "Pacifico", cursive;
+  font-weight: 700;
+  font-size: clamp(2.3rem, 7vw, 3.3rem);
+  line-height: 1.3;
+  letter-spacing: 1px;
+  background: linear-gradient(95deg, #be185d 0%, #ea580c 55%, #d97706 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.gallery-section > p { font-family: "Itim", "Baloo 2", cursive; font-size: 1.15rem; }
+.photo-card figcaption { font-family: "Itim", "Baloo 2", cursive; font-size: 1.1rem; }
+body.dark .gallery-section h2 { background: linear-gradient(95deg, #f9a8d4 0%, #fdba74 60%, #fde68a 100%); -webkit-background-clip: text; background-clip: text; }
 </style>
 </head>
 <body>
@@ -1254,9 +1432,8 @@ body.dark .gb-notice { color: #fcd34d; }
   <nav class="navbar">
     <div class="menu">
         <a href="#home">Trang chủ</a>
-        <a href="#about">Giới thiệu</a>
-        <a href="#hobbies">Sở thích</a>
         <a href="#guestbook">Lời nhắn</a>
+        <a href="#hobbies">Sở thích</a>
     </div>
      <h2>SAKA</h2>
 </nav>
@@ -1322,10 +1499,6 @@ body.dark .gb-notice { color: #fcd34d; }
 </div>
 </section>
 
-<section id="about" class="about">
-    <h2>Một con cá không biết nói sẽ không bao giờ tiết lộ bí mật của bạn.</h2>
-    <p>hÀi vcl.</p>
-</section>
 <section id="gallery" class="gallery-section">
     <h2>một góc nhỏ của tui</h2>
     <p>những thứ tui muốn lưu lại.</p>
@@ -1347,6 +1520,37 @@ body.dark .gb-notice { color: #fcd34d; }
 </figure>
     </div>
 </section>
+<section id="guestbook" class="guestbook">
+    <div class="gb-deco" aria-hidden="true">
+        <span class="gb-b" style="left:6%;--s:10px;--d:7s;--dl:-1s"></span>
+        <span class="gb-b" style="left:19%;--s:16px;--d:9s;--dl:-5s"></span>
+        <span class="gb-b" style="left:38%;--s:8px;--d:6.5s;--dl:-3s"></span>
+        <span class="gb-b" style="left:61%;--s:14px;--d:8.5s;--dl:-7s"></span>
+        <span class="gb-b" style="left:78%;--s:9px;--d:7.5s;--dl:-2s"></span>
+        <span class="gb-b" style="left:92%;--s:18px;--d:10s;--dl:-6s"></span>
+        <span class="gb-side sd1">🐙</span><span class="gb-side sd2">🐢</span>
+        <span class="gb-side sd3">🪼</span><span class="gb-side sd4">🐡</span>
+    </div>
+    <h2><span class="gb-bottle">🍾</span> Chai lời nhắn</h2>
+    <p class="gb-sub">Ghé qua thì thả vài dòng vào chai nhé, ai vào trang cũng đọc được.</p>
+    <form id="gbForm" class="gb-form" autocomplete="off">
+        <input id="gbName" type="text" maxlength="30" placeholder="Tên của bạn (bỏ trống cũng được)" aria-label="Tên của bạn">
+        <textarea id="gbText" maxlength="300" rows="3" placeholder="Nhắn gì đó cho Saka..." aria-label="Lời nhắn" required></textarea>
+        <input id="gbWebsite" class="gb-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="gb-row">
+            <span id="gbCount">0/300</span>
+            <button type="submit" id="gbSend" class="btn-ocean btn-send">Thả vào biển 🌊</button>
+        </div>
+        <p id="gbStatus" class="gb-status" role="status"></p>
+    </form>
+    <div id="gbList" class="gb-list" aria-live="polite"></div>
+    <div id="gbNav" class="gb-nav" hidden>
+        <button type="button" id="gbPrev">▲ Mới hơn</button>
+        <span id="gbPage">1/1</span>
+        <button type="button" id="gbNext">▼ Cũ hơn</button>
+    </div>
+    <p id="gbNotice" class="gb-notice" hidden></p>
+</section>
 <section id="hobbies" class="hobbies">
     <h2>Đặc điểm của minh</h2>
 
@@ -1355,22 +1559,6 @@ body.dark .gb-notice { color: #fcd34d; }
         <div class="card">giàu</div>
         <div class="card">đẹp trai</div>
     </div>
-</section>
-<section id="guestbook" class="guestbook">
-    <h2>Chai lời nhắn 🍾</h2>
-    <p class="gb-sub">Ghé qua thì để lại vài dòng nhé, ai vào trang cũng đọc được.</p>
-    <form id="gbForm" class="gb-form" autocomplete="off">
-        <input id="gbName" type="text" maxlength="30" placeholder="Tên của bạn (bỏ trống cũng được)" aria-label="Tên của bạn">
-        <textarea id="gbText" maxlength="300" rows="3" placeholder="Nhắn gì đó cho Saka..." aria-label="Lời nhắn" required></textarea>
-        <input id="gbWebsite" class="gb-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <div class="gb-row">
-            <span id="gbCount">0/300</span>
-            <button type="submit" id="gbSend" class="btn-ocean btn-send">Thả vào biển</button>
-        </div>
-        <p id="gbStatus" class="gb-status" role="status"></p>
-    </form>
-    <div id="gbList" class="gb-list" aria-live="polite"></div>
-    <p id="gbNotice" class="gb-notice" hidden></p>
 </section>
 <div class="seabed" aria-hidden="true">
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -2067,16 +2255,16 @@ window.addEventListener("load", function () {
 <script>
 /* ============ LỜI NHẮN ============ */
 (function () {
-    /* Dán địa chỉ Firebase Realtime Database vào đây để lời nhắn hiện cho MỌI người xem.
-       Ví dụ: "https://ten-du-an-default-rtdb.asia-southeast1.firebasedatabase.app"
-       Để trống = chế độ thử, lời nhắn chỉ lưu trên trình duyệt này. */
+    /* Địa chỉ Firebase Realtime Database. Để trống = chế độ thử (chỉ lưu trên máy này). */
     const FIREBASE_URL = "https://saka-a28f9-default-rtdb.firebaseio.com";
 
     const MAX_SHOW = 30;          // số lời nhắn mới nhất hiển thị
     const COOLDOWN_MS = 20000;    // chống gửi liên tục
+    const REFRESH_MS = 30000;     // tự cập nhật lời nhắn mới
     const base = FIREBASE_URL.replace(/\/+$/, "");
     const useCloud = base !== "";
 
+    const section = document.getElementById("guestbook");
     const form = document.getElementById("gbForm");
     if (!form) return;
     const nameEl = document.getElementById("gbName");
@@ -2088,6 +2276,9 @@ window.addEventListener("load", function () {
     const listEl = document.getElementById("gbList");
     const noticeEl = document.getElementById("gbNotice");
 
+    const AVATARS = ["🐠", "🐙", "🦀", "🐢", "🐬", "🦑", "🐡", "🐚", "🦭", "🐳"];
+    const ACCENTS = ["#38bdf8", "#f472b6", "#fb923c", "#34d399", "#a78bfa", "#facc15"];
+
     if (!useCloud) {
         noticeEl.hidden = false;
         noticeEl.textContent = "Đang ở chế độ thử: lời nhắn chỉ lưu trên máy này. Chủ trang cần nối Firebase để mọi người cùng thấy.";
@@ -2096,6 +2287,12 @@ window.addEventListener("load", function () {
     function setStatus(msg, kind) {
         statusEl.textContent = msg || "";
         statusEl.className = "gb-status" + (kind ? " " + kind : "");
+    }
+
+    function hash(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+        return Math.abs(h);
     }
 
     function readLocal() {
@@ -2134,39 +2331,96 @@ window.addEventListener("load", function () {
         return new Date(ts).toLocaleString("vi-VN", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
     }
 
-    function render(msgs) {
+    const PAGE_SIZE = 3;                 // số lời nhắn mỗi trang
+    const navEl = document.getElementById("gbNav");
+    const prevBtn = document.getElementById("gbPrev");
+    const nextBtn = document.getElementById("gbNext");
+    const pageEl = document.getElementById("gbPage");
+
+    let signature = "";
+    let latestTs = 0;
+    let firstRender = true;
+    let allItems = [];
+    let page = 0;
+
+    function buildCard(m, isNew) {
+        const who = String(m.name || "Khách ẩn danh").slice(0, 30);
+        const h = hash(who);
+
+        const box = document.createElement("div");
+        box.className = "gb-msg" + (isNew ? " gb-new" : "");
+        box.style.setProperty("--accent", ACCENTS[h % ACCENTS.length]);
+
+        const ava = document.createElement("div");
+        ava.className = "gb-ava";
+        ava.setAttribute("aria-hidden", "true");
+        ava.textContent = AVATARS[h % AVATARS.length];
+
+        const body = document.createElement("div");
+        body.className = "gb-body";
+        const b = document.createElement("b");
+        b.textContent = who;
+        const t = document.createElement("time");
+        t.textContent = fmtTime(m.ts);
+        const p = document.createElement("p");
+        p.textContent = String(m.text).slice(0, 300);
+        body.appendChild(b);
+        body.appendChild(t);
+        body.appendChild(p);
+
+        box.appendChild(ava);
+        box.appendChild(body);
+        return box;
+    }
+
+    function showPage(newAfter) {
         listEl.textContent = "";
+        if (!allItems.length) {
+            const p = document.createElement("p");
+            p.className = "gb-empty";
+            p.textContent = "Chai còn trống. Bạn thả lời nhắn đầu tiên đi!";
+            listEl.appendChild(p);
+            navEl.hidden = true;
+            return;
+        }
+        const pages = Math.ceil(allItems.length / PAGE_SIZE);
+        page = Math.min(Math.max(page, 0), pages - 1);
+        allItems.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).forEach(function (m) {
+            listEl.appendChild(buildCard(m, newAfter !== null && (m.ts || 0) > newAfter));
+        });
+        navEl.hidden = pages <= 1;
+        pageEl.textContent = (page + 1) + "/" + pages;
+        prevBtn.disabled = page === 0;
+        nextBtn.disabled = page >= pages - 1;
+    }
+
+    prevBtn.addEventListener("click", function () { page--; showPage(null); });
+    nextBtn.addEventListener("click", function () { page++; showPage(null); });
+
+    function render(msgs) {
         const items = msgs
             .filter(function (m) { return m && typeof m.text === "string"; })
             .sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); })
             .slice(0, MAX_SHOW);
-        if (!items.length) {
-            const p = document.createElement("p");
-            p.className = "gb-empty";
-            p.textContent = "Chưa có lời nhắn nào. Bạn mở màn đi!";
-            listEl.appendChild(p);
-            return;
-        }
-        items.forEach(function (m) {
-            const box = document.createElement("div");
-            box.className = "gb-msg";
-            const who = document.createElement("b");
-            who.textContent = String(m.name || "Khách ẩn danh").slice(0, 30);
-            const when = document.createElement("time");
-            when.textContent = fmtTime(m.ts);
-            const body = document.createElement("p");
-            body.textContent = String(m.text).slice(0, 300);
-            box.appendChild(who);
-            box.appendChild(when);
-            box.appendChild(body);
-            listEl.appendChild(box);
-        });
+
+        const sig = items.length + ":" + (items[0] ? items[0].ts : 0);
+        if (sig === signature) return;          // không có gì mới thì khỏi vẽ lại
+        signature = sig;
+
+        const prevLatest = latestTs;
+        const animate = !firstRender;
+        allItems = items;
+        page = 0;                                // có tin mới thì quay về trang đầu
+        showPage(animate ? prevLatest : null);
+        if (items.length) latestTs = Math.max(latestTs, items[0].ts || 0);
+        firstRender = false;
     }
 
-    async function refresh() {
+    async function refresh(quiet) {
         try {
             render(await fetchMessages());
         } catch (e) {
+            if (quiet) return;
             listEl.textContent = "";
             const p = document.createElement("p");
             p.className = "gb-empty";
@@ -2175,8 +2429,20 @@ window.addEventListener("load", function () {
         }
     }
 
+    /* chai bay xuống biển khi gửi xong */
+    function dropBottle() {
+        const el = document.createElement("span");
+        el.className = "gb-flyer";
+        el.setAttribute("aria-hidden", "true");
+        el.textContent = "🍾";
+        form.appendChild(el);
+        setTimeout(function () { el.remove(); }, 1200);
+    }
+
     textEl.addEventListener("input", function () {
-        countEl.textContent = textEl.value.length + "/300";
+        const n = textEl.value.length;
+        countEl.textContent = n + "/300";
+        countEl.classList.toggle("warn", n >= 270);
     });
 
     form.addEventListener("submit", async function (e) {
@@ -2198,7 +2464,9 @@ window.addEventListener("load", function () {
             try { localStorage.setItem("gbLast", String(Date.now())); } catch (err) {}
             form.reset();
             countEl.textContent = "0/300";
-            setStatus("Đã gửi, cảm ơn bạn!", "ok");
+            countEl.classList.remove("warn");
+            setStatus("Chai đã trôi đi, cảm ơn bạn!", "ok");
+            dropBottle();
             await refresh();
         } catch (err) {
             setStatus("Gửi chưa được, thử lại sau nhé.", "err");
@@ -2206,6 +2474,21 @@ window.addEventListener("load", function () {
             sendBtn.disabled = false;
         }
     });
+
+    /* dừng hiệu ứng khi mục này không nằm trong màn hình */
+    if ("IntersectionObserver" in window && section) {
+        let visible = false;
+        const update = function () { section.classList.toggle("gb-paused", !visible || document.hidden); };
+        new IntersectionObserver(function (entries) {
+            visible = entries[0].isIntersecting;
+            update();
+        }, { rootMargin: "100px" }).observe(section);
+        document.addEventListener("visibilitychange", update);
+    }
+
+    /* tự cập nhật lời nhắn mới của người khác */
+    setInterval(function () { if (!document.hidden) refresh(true); }, REFRESH_MS);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(true); });
 
     refresh();
 })();
