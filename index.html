@@ -17,12 +17,20 @@ body {
     color: #222222;
 }
 
+html {
+    scroll-padding-top: 90px; /* để bấm menu không bị thanh điều hướng che mất tiêu đề */
+}
+
 .navbar {
+    position: sticky;   /* dính ở đầu màn hình khi cuộn */
+    top: 0;
+    z-index: 1000;      /* nằm trên hero, sóng, cá... */
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #1f2937;
-    padding: 15px 30px;
+    padding: 4px 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .navbar h2 {
@@ -49,6 +57,89 @@ body {
 .hobbies {
     padding: 30px;
     text-align: center;
+}
+
+.hobbies {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 42px 30px 50px;
+    background:
+        radial-gradient(circle at 12% 30%, rgba(255, 255, 255, 0.8) 0 3px, transparent 4px),
+        radial-gradient(circle at 88% 65%, rgba(255, 255, 255, 0.65) 0 5px, transparent 6px),
+        linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
+}
+
+.hobbies h2,
+.hobbies .cards {
+    position: relative;
+    z-index: 1;
+}
+
+.hobbies::before,
+.hobbies::after {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hobbies::before {
+    content: "🐠";
+    top: 22%;
+    left: 8%;
+    font-size: 42px;
+    animation: hobbyFishFloat 4s ease-in-out infinite;
+}
+
+.hobbies::after {
+    content: "";
+    right: 9%;
+    bottom: 16%;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #fff 0 3px, rgba(255, 255, 255, 0.28) 4px, rgba(125, 211, 252, 0.12) 70%);
+    box-shadow:
+        -24px 18px 0 -10px rgba(255, 255, 255, 0.55),
+        22px 25px 0 -12px rgba(255, 255, 255, 0.45);
+    animation: hobbyBubbleFloat 3s ease-in-out infinite;
+}
+
+@keyframes hobbyFishFloat {
+    50% { transform: translate(12px, -8px) rotate(-8deg); }
+}
+
+@keyframes hobbyBubbleFloat {
+    50% { transform: translateY(-12px); }
+}
+
+body.dark .hobbies {
+    background:
+        radial-gradient(circle at 12% 30%, rgba(147, 197, 253, 0.2) 0 3px, transparent 4px),
+        radial-gradient(circle at 88% 65%, rgba(147, 197, 253, 0.16) 0 5px, transparent 6px),
+        linear-gradient(180deg, #1e3a5f 0%, #0f2a4a 100%);
+}
+
+@media (max-width: 600px) {
+    .hobbies::before {
+        top: 12%;
+        left: 3%;
+        font-size: 28px;
+    }
+
+    .hobbies::after {
+        right: 3%;
+        bottom: 8%;
+        font-size: 28px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hobbies::before,
+    .hobbies::after {
+        animation: none;
+    }
 }
 
 .cards {
@@ -645,10 +736,13 @@ body.dark .hero::before {
 /* ============ RONG BIỂN Ở ĐÁY TRANG ============ */
 .seabed {
   position: relative;
-  height: 190px;
+  height: 260px;
   margin-top: 30px;
   overflow: hidden;
   background: linear-gradient(to bottom, var(--page-bg) 0%, #bae6fd 40%, #38bdf8 100%);
+}
+.seabed.animations-paused * {
+  animation-play-state: paused !important;
 }
 body.dark .seabed {
   background: linear-gradient(to bottom, var(--page-bg) 0%, #0f2a4a 45%, #0a1d36 100%);
@@ -742,7 +836,7 @@ body.dark .sand { background: linear-gradient(to bottom, #8a7650, #5f4f33); }
 }
 
 @media (max-width: 600px) {
-  .seabed { height: 150px; }
+  .seabed { height: 190px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero > .hero-fish { display: none; }
@@ -979,14 +1073,83 @@ body.dark .btn-reset:hover {
 @media (prefers-reduced-motion: reduce) {
   .btn-ocean, .btn-ocean::after { transition: none; }
 }
+
+/* Cá to bơi qua lại ở phía sau (giống cá nhỏ nhưng lớn hơn) */
+.hf.big { animation-name: heroSwimBig; }
+.hf.big svg { animation-duration: 2.6s; }
+.hf.big .fish-tail { animation-duration: 0.8s; }
+@keyframes heroSwimBig {
+  0%   { transform: translateX(calc(var(--w) * -1.2)) scaleX(1); }
+  49%  { transform: translateX(calc(100vw + var(--w) * 1.2)) scaleX(1); }
+  50%  { transform: translateX(calc(100vw + var(--w) * 1.2)) scaleX(-1); }
+  99%  { transform: translateX(calc(var(--w) * -1.2)) scaleX(-1); }
+  100% { transform: translateX(calc(var(--w) * -1.2)) scaleX(1); }
+}
+@media (max-width: 600px) {
+  .hf.big svg { width: calc(var(--w) * 0.6); }
+}
+
+/* ============ SINH VẬT Ở ĐÁY BIỂN ============ */
+.seabed .creatures { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.crit { position: absolute; }
+.crit svg { display: block; width: 100%; height: auto; overflow: visible; }
+body.dark .crit { filter: brightness(0.8); }
+
+/* Cua đi ngang qua lại */
+.crab { animation: crabWalk var(--dur) ease-in-out var(--delay) infinite; }
+@keyframes crabWalk {
+  0%, 8%    { transform: translateX(0); }
+  42%, 58%  { transform: translateX(var(--range)); }
+  92%, 100% { transform: translateX(0); }
+}
+.crab .leg { transform-box: fill-box; transform-origin: 100% 0%; animation: legWiggle 0.32s ease-in-out infinite alternate; }
+@keyframes legWiggle { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
+.crab .claw { transform-box: fill-box; transform-origin: 100% 100%; animation: clawWave 1.4s ease-in-out infinite alternate; }
+@keyframes clawWave { from { transform: rotate(-8deg); } to { transform: rotate(12deg); } }
+
+/* Nhím biển lắc nhẹ */
+.urchin svg { transform-origin: 50% 60%; animation: urchinWobble 3.2s ease-in-out infinite alternate; }
+@keyframes urchinWobble { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+
+/* Ngựa vằn bập bềnh, vây lưng vẫy */
+.seahorse { animation: seaBob var(--dur) ease-in-out var(--delay) infinite alternate; }
+@keyframes seaBob {
+  from { transform: translateY(-12px) rotate(-5deg); }
+  to   { transform: translateY(10px)  rotate(5deg); }
+}
+.seahorse .sh-fin { transform-box: fill-box; transform-origin: 100% 50%; animation: shFin 0.45s ease-in-out infinite alternate; }
+@keyframes shFin { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+
+/* Sứa trôi, thân co bóp, tua rua đung đưa */
+.jelly { animation: jellyDrift var(--dur) ease-in-out var(--delay) infinite alternate; }
+.jelly svg { filter: drop-shadow(0 0 6px var(--glow)); }
+@keyframes jellyDrift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(var(--dx), -55px); }
+}
+.jbell { transform-box: fill-box; transform-origin: 50% 0%; animation: jPulse 2.6s ease-in-out infinite; }
+@keyframes jPulse { 0%, 100% { transform: scale(1, 1); } 40% { transform: scale(1.08, 0.86); } }
+.tent { transform-box: fill-box; transform-origin: 50% 0%; animation: tentSway 2.2s ease-in-out infinite alternate; }
+@keyframes tentSway { from { transform: skewX(-9deg); } to { transform: skewX(9deg); } }
+
+/* Đàn cá nhỏ bơi ngang đáy biển */
+.sb-fish { left: 0; width: 70px; height: 30px; animation: sbSwim var(--dur) linear var(--delay) infinite; }
+.sb-fish svg { position: absolute; width: 26px; }
+@keyframes sbSwim {
+  0%   { transform: translateX(-90px) scaleX(1); }
+  49%  { transform: translateX(calc(100vw + 90px)) scaleX(1); }
+  50%  { transform: translateX(calc(100vw + 90px)) scaleX(-1); }
+  99%  { transform: translateX(-90px) scaleX(-1); }
+  100% { transform: translateX(-90px) scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crit, .crit * { animation: none !important; }
+  .sb-fish { display: none; }
+}
 </style>
 </head>
 <body>
-</div>
-    <div class="title-fish" aria-hidden="true">
-  <span class="tiny-fish fish-one">𓆝</span>
-  <span class="tiny-fish fish-two">𓆟</span>
-  <span class="tiny-fish fish-three">𓆝</span>
 </div>
   <nav class="navbar">
     <div class="menu">
@@ -1004,37 +1167,45 @@ body.dark .btn-reset:hover {
         <svg class="wave wave-front" viewBox="0 0 2400 120" preserveAspectRatio="none"><path d="M0 60 Q150 20 300 60 T600 60 T900 60 T1200 60 T1500 60 T1800 60 T2100 60 T2400 60 V120 H0 Z"/></svg>
     </div>
     <div class="hero-fish" aria-hidden="true">
-        <div class="hf" style="top:12%; --dur:22s; --delay:-4s; --w:52px; color:#f97316;">
-            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-                <path class="fish-tail" d="M16 15 L2 4 C5 11 5 19 2 26 Z" fill="currentColor"/>
-                <path d="M14 15 C22 3 40 3 52 15 C40 27 22 27 14 15 Z" fill="currentColor"/>
-                <path d="M20 17 C28 22 38 22 46 17" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <circle cx="44" cy="12.5" r="2.6" fill="#fff"/>
-                <circle cx="44.8" cy="12.5" r="1.3" fill="#1f2937"/>
-            </svg>
+        <div class="hf big" style="top:4%; --dur:38s; --delay:-10s; --w:120px;">
+            <svg viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient><clipPath id="c1"><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z"/></clipPath></defs><path class="fish-tail" d="M18 25 C12 20 8 18 4 17 C6 23 6 27 4 33 C8 32 12 30 18 25 Z" fill="#94a3b8" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 14 C34 7 28 2 18 0 C21 5 22 11 25 15 Z" fill="#94a3b8" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 36 C34 43 28 48 18 50 C21 45 22 39 25 35 Z" fill="#94a3b8" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z" fill="url(#g1)"/><g clip-path="url(#c1)"><path d="M26 8 Q22 25 26 42 L30 42 Q26 25 30 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M36 8 Q33 25 36 42 L39.5 42 Q36.5 25 39.5 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M22 17 C28 12 38 12 44 18" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round"/></g><path d="M36 33 C37 40 41 44 45 46 C43 41 42 37 41 32 Z" fill="#94a3b8" fill-opacity=".8"/><circle cx="43" cy="22" r="3" fill="#fff"/><circle cx="44" cy="22" r="1.7" fill="#1f2937"/></svg>
         </div>
-        <div class="hf" style="top:38%; --dur:17s; --delay:-11s; --w:38px; color:#facc15;">
-            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-                <path class="fish-tail" d="M16 15 L2 4 C5 11 5 19 2 26 Z" fill="currentColor"/>
-                <path d="M14 15 C22 3 40 3 52 15 C40 27 22 27 14 15 Z" fill="currentColor"/>
-                <path d="M20 17 C28 22 38 22 46 17" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <circle cx="44" cy="12.5" r="2.6" fill="#fff"/>
-                <circle cx="44.8" cy="12.5" r="1.3" fill="#1f2937"/>
-            </svg>
+        <div class="hf big" style="top:26%; --dur:48s; --delay:-30s; --w:240px;">
+            <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#7e22ce"/></linearGradient><clipPath id="c2"><path d="M30 20 C36 12 52 12 66 18 C70 20 70 20 66 22 C52 28 36 28 30 20 Z"/></clipPath></defs><g class="fish-tail"><path d="M32 20 C24 8 12 2 2 3 C8 11 6 16 9 20 C6 24 8 29 2 37 C12 38 24 32 32 20 Z" fill="#c026d3" fill-opacity=".85"/><path d="M31 20 C21 14 12 8 4 5" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/><path d="M31 20 C20 20 13 20 8 20" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/><path d="M31 20 C21 26 12 32 4 35" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/></g><path class="fish-fin" d="M42 13.5 C44 6 52 1 61 1 C57 6 57 10 56 14 Z" fill="#c026d3" fill-opacity=".85"/><path class="fish-fin" d="M44 25.5 C40 32 34 37 24 38 C30 33 31 29 36 26 Z" fill="#c026d3" fill-opacity=".85"/><path d="M30 20 C36 12 52 12 66 18 C70 20 70 20 66 22 C52 28 36 28 30 20 Z" fill="url(#g2)"/><g clip-path="url(#c2)"><path d="M34 15 C44 12 56 13 66 17" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M38 20 C46 19 56 19 64 20" stroke="#fff" stroke-opacity=".18" stroke-width="1.2" fill="none"/></g><path d="M58 14.5 Q55.5 20 58 25" stroke="#3b0764" stroke-opacity=".35" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="62" cy="18.2" r="2.3" fill="#fff"/><circle cx="62.7" cy="18.2" r="1.3" fill="#1f2937"/></svg>
         </div>
-        <div class="hf" style="top:60%; --dur:26s; --delay:-18s; --w:46px; color:#fb7185;">
-            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-                <path class="fish-tail" d="M16 15 L2 4 C5 11 5 19 2 26 Z" fill="currentColor"/>
-                <path d="M14 15 C22 3 40 3 52 15 C40 27 22 27 14 15 Z" fill="currentColor"/>
-                <path d="M20 17 C28 22 38 22 46 17" stroke="#fff" stroke-opacity=".45" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <circle cx="44" cy="12.5" r="2.6" fill="#fff"/>
-                <circle cx="44.8" cy="12.5" r="1.3" fill="#1f2937"/>
-            </svg>
+        <div class="hf big" style="top:52%; --dur:42s; --delay:-24s; --w:210px;">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient><clipPath id="c3"><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z"/></clipPath></defs><path class="fish-tail" d="M13 15 C8 11 4 7 1 6 C3 12 3 18 1 24 C4 23 8 19 13 15 Z" fill="#facc15" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M20 6.5 C26 0 38 0 42 6 C34 7 27 8 20 6.5 Z" fill="#1e40af"/><path class="fish-fin" d="M24 23.5 C28 29.5 36 29.5 40 23.5 C34 24.5 29 24.5 24 23.5 Z" fill="#1e40af"/><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z" fill="url(#g3)"/><g clip-path="url(#c3)"><path d="M15 16 C21 8 33 8 41 13 C35 14 30 16 27 22 C22 22 17 20 15 16 Z" fill="#0f172a"/><path d="M14 9 C24 3 38 4 48 11" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M35 18 C33 24 37 25.5 41 23 C39 21 37 19 35 18 Z" fill="#facc15"/><path d="M43 9.5 Q40 15 43 20.5" stroke="#0f172a" stroke-opacity=".3" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="46" cy="12.2" r="2.4" fill="#fff"/><circle cx="46.7" cy="12.2" r="1.3" fill="#0f172a"/></svg>
+        </div>
+        <div class="hf big" style="top:68%; --dur:40s; --delay:-6s; --w:130px;">
+            <svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde047"/><stop offset="1" stop-color="#f59e0b"/></linearGradient><clipPath id="c4"><path d="M8 20 C8 9 18 4 28 4 C40 4 46 12 46 21 C46 31 38 36 27 36 C16 36 8 31 8 20 Z"/></clipPath></defs><path class="fish-tail" d="M10 20 C6 17 3 14 1 14 C2 18 2 22 1 26 C3 26 6 23 10 20 Z" fill="#f59e0b" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M22 5 C24 -1 31 -1 33 5 C29 5.5 25 5.5 22 5 Z" fill="#f59e0b" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M8 20 C8 9 18 4 28 4 C40 4 46 12 46 21 C46 31 38 36 27 36 C16 36 8 31 8 20 Z" fill="url(#g4)"/><g clip-path="url(#c4)"><ellipse cx="28" cy="35" rx="21" ry="10" fill="#fff" fill-opacity=".65"/><circle cx="16" cy="14" r="1.1" fill="#92400e" fill-opacity=".4"/><circle cx="22" cy="10" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="30" cy="9" r="1.1" fill="#92400e" fill-opacity=".4"/><circle cx="36" cy="11" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="19" cy="20" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="26" cy="16" r="1.1" fill="#92400e" fill-opacity=".4"/><circle cx="32" cy="18" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="14" cy="24" r="0.9" fill="#92400e" fill-opacity=".4"/><path d="M14 11 C22 5 34 5 42 11" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M27 24 C23 21 20 27 24 30 C27 29 29 27 27 24 Z" fill="#f59e0b" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M46 22 Q44 24.5 41.5 23.5" stroke="#92400e" stroke-width="1" fill="none" stroke-linecap="round"/><circle cx="38" cy="15" r="4" fill="#fff"/><circle cx="39.2" cy="15" r="2.4" fill="#1f2937"/><circle cx="40" cy="14" r=".8" fill="#fff"/></svg>
+        </div>
+        <div class="hf" style="top:14%; --dur:22s; --delay:-4s; --w:58px;">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fb923c"/><stop offset="1" stop-color="#ea580c"/></linearGradient><clipPath id="c5"><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z"/></clipPath></defs><path class="fish-tail" d="M15 15 C9 10 5 6 2 7 C4 12 4 18 2 23 C5 24 9 20 15 15 Z" fill="#f97316" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M23 6.5 C27 0 41 0 45 7 C38 7.5 30 7.5 23 6.5 Z" fill="#f97316" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z" fill="url(#g5)"/><g clip-path="url(#c5)"><path d="M26 0 Q22 15 26 30 L31 30 Q27 15 31 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M37 0 Q34 15 37 30 L41 30 Q38 15 41 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M49 0 Q47 15 49 30 L53 30 Q51 15 53 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 9 C26 3 40 3 50 11" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M33 19 C31 25 36 26 40 23 C38 22 35 20 33 19 Z" fill="#f97316" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M53 15 Q51 16.5 48.5 16" stroke="#7c2d12" stroke-width=".8" fill="none" stroke-linecap="round"/><circle cx="45.5" cy="12.3" r="2.6" fill="#fff"/><circle cx="46.3" cy="12.3" r="1.4" fill="#1f2937"/></svg>
+        </div>
+        <div class="hf" style="top:40%; --dur:17s; --delay:-11s; --w:42px;">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fda4af"/><stop offset="1" stop-color="#e11d48"/></linearGradient><clipPath id="c6"><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z"/></clipPath></defs><path class="fish-tail" d="M15 15 C9 10 5 6 2 7 C4 12 4 18 2 23 C5 24 9 20 15 15 Z" fill="#fb7185" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M23 6.5 C27 0 41 0 45 7 C38 7.5 30 7.5 23 6.5 Z" fill="#fb7185" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z" fill="url(#g6)"/><g clip-path="url(#c6)"><path d="M26 0 Q22 15 26 30 L31 30 Q27 15 31 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M37 0 Q34 15 37 30 L41 30 Q38 15 41 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M49 0 Q47 15 49 30 L53 30 Q51 15 53 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 9 C26 3 40 3 50 11" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M33 19 C31 25 36 26 40 23 C38 22 35 20 33 19 Z" fill="#fb7185" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M53 15 Q51 16.5 48.5 16" stroke="#7c2d12" stroke-width=".8" fill="none" stroke-linecap="round"/><circle cx="45.5" cy="12.3" r="2.6" fill="#fff"/><circle cx="46.3" cy="12.3" r="1.4" fill="#1f2937"/></svg>
+        </div>
+        <div class="hf" style="top:60%; --dur:26s; --delay:-18s; --w:50px;">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient><clipPath id="c7"><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z"/></clipPath></defs><path class="fish-tail" d="M13 15 C8 11 4 7 1 6 C3 12 3 18 1 24 C4 23 8 19 13 15 Z" fill="#facc15" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M20 6.5 C26 0 38 0 42 6 C34 7 27 8 20 6.5 Z" fill="#1e40af"/><path class="fish-fin" d="M24 23.5 C28 29.5 36 29.5 40 23.5 C34 24.5 29 24.5 24 23.5 Z" fill="#1e40af"/><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z" fill="url(#g7)"/><g clip-path="url(#c7)"><path d="M15 16 C21 8 33 8 41 13 C35 14 30 16 27 22 C22 22 17 20 15 16 Z" fill="#0f172a"/><path d="M14 9 C24 3 38 4 48 11" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M35 18 C33 24 37 25.5 41 23 C39 21 37 19 35 18 Z" fill="#facc15"/><path d="M43 9.5 Q40 15 43 20.5" stroke="#0f172a" stroke-opacity=".3" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="46" cy="12.2" r="2.4" fill="#fff"/><circle cx="46.7" cy="12.2" r="1.3" fill="#0f172a"/></svg>
+        </div>
+        <div class="hf" style="top:22%; --dur:30s; --delay:-21s; --w:32px;">
+            <svg viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef9c3"/><stop offset="1" stop-color="#fbbf24"/></linearGradient><clipPath id="c8"><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z"/></clipPath></defs><path class="fish-tail" d="M18 25 C12 20 8 18 4 17 C6 23 6 27 4 33 C8 32 12 30 18 25 Z" fill="#f59e0b" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 14 C34 7 28 2 18 0 C21 5 22 11 25 15 Z" fill="#f59e0b" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 36 C34 43 28 48 18 50 C21 45 22 39 25 35 Z" fill="#f59e0b" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z" fill="url(#g8)"/><g clip-path="url(#c8)"><path d="M26 8 Q22 25 26 42 L30 42 Q26 25 30 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M36 8 Q33 25 36 42 L39.5 42 Q36.5 25 39.5 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M22 17 C28 12 38 12 44 18" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round"/></g><path d="M36 33 C37 40 41 44 45 46 C43 41 42 37 41 32 Z" fill="#f59e0b" fill-opacity=".8"/><circle cx="43" cy="22" r="3" fill="#fff"/><circle cx="44" cy="22" r="1.7" fill="#1f2937"/></svg>
+        </div>
+        <div class="hf big" style="top:12%; --dur:28s; --delay:-9s; --w:250px;">
+            <svg viewBox="0 -8 120 58" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g9" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94a3b8"/><stop offset="1" stop-color="#475569"/></linearGradient><clipPath id="c9"><path d="M28 26 C42 12 78 10 108 24 C113 26 116 27 117 28 C112 31 108 34 100 37 C76 44 44 42 28 30 Z"/></clipPath></defs><path class="fish-tail" d="M32 28 C24 24 16 14 6 2 C8 14 10 20 14 27 C10 33 8 40 8 50 C18 44 26 34 32 28 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path class="fish-fin" d="M56 15 C62 4 68 -4 78 -6 C74 2 74 9 77 13 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M28 26 C42 12 78 10 108 24 C113 26 116 27 117 28 C112 31 108 34 100 37 C76 44 44 42 28 30 Z" fill="url(#g9)"/><g clip-path="url(#c9)"><path d="M24 32 C50 36 86 36 118 29 L118 50 L24 50 Z" fill="#f1f5f9" fill-opacity=".92"/><path d="M40 17 C60 10 86 12 106 22" stroke="#fff" stroke-opacity=".3" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M80 33 C74 42 66 47 56 49 C64 44 66 40 70 35 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path class="fish-fin" d="M42 35 C38 39 33 41 28 42 C32 38 34 36 36 33 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M92 24 Q89 28 92 32 M88 24 Q85 28 88 32 M84 24 Q81 28 84 32" stroke="#0f172a" stroke-opacity=".35" stroke-width="1.1" fill="none" stroke-linecap="round"/><path d="M116 28.5 Q108 33 98 31" stroke="#0f172a" stroke-opacity=".6" stroke-width="1" fill="none" stroke-linecap="round"/><circle cx="104" cy="24" r="2.2" fill="#0f172a"/><circle cx="104.7" cy="23.3" r=".7" fill="#fff"/></svg>
+        </div>
+        <div class="hf big" style="top:40%; --dur:64s; --delay:-22s; --w:340px;">
+            <svg viewBox="0 0 140 70" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c9cc4"/><stop offset="1" stop-color="#34507a"/></linearGradient><clipPath id="c10"><path d="M30 34 C46 14 100 6 122 24 C130 30 134 34 133 38 C130 44 124 48 114 52 C90 62 50 56 30 38 Z"/></clipPath></defs><path class="fish-tail" d="M34 36 C26 32 20 24 14 12 C12 18 8 20 2 20 C6 26 10 30 16 34 C10 38 6 44 4 52 C12 50 20 44 34 38 Z" fill="#3f5f8f" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M30 34 C46 14 100 6 122 24 C130 30 134 34 133 38 C130 44 124 48 114 52 C90 62 50 56 30 38 Z" fill="url(#g10)"/><g clip-path="url(#c10)"><path d="M30 41 C60 51 100 51 134 41 L134 70 L30 70 Z" fill="#e2e8f0" fill-opacity=".9"/><path d="M86 46 Q88 52 84 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M91 46 Q93 52 89 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M96 46 Q98 52 94 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M101 46 Q103 52 99 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M106 46 Q108 52 104 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M111 46 Q113 52 109 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M116 46 Q118 52 114 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M121 46 Q123 52 119 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M126 46 Q128 52 124 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M50 20 C70 12 100 12 118 22" stroke="#fff" stroke-opacity=".28" stroke-width="2.4" fill="none" stroke-linecap="round"/></g><path d="M60 17 C64 10 70 10 74 15 Z" fill="#34507a" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path class="fish-fin" d="M96 46 C92 58 84 64 72 66 C80 60 82 54 84 48 Z" fill="#3f5f8f" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M133 38 C126 42 116 43 108 41" stroke="#0f172a" stroke-opacity=".5" stroke-width="1" fill="none" stroke-linecap="round"/><circle cx="116" cy="36" r="2.3" fill="#0f172a"/><circle cx="116.8" cy="35.2" r=".8" fill="#fff"/></svg>
         </div>
     </div>
     <div class="water-wrap">
         <button id="colorButton" onclick="changeBackground()">biến sâu</button>
     </div>
+    <div class="title-fish" aria-hidden="true">
+  <span class="tiny-fish fish-one">𓆝</span>
+  <span class="tiny-fish fish-two">𓆟</span>
+  <span class="tiny-fish fish-three">𓆝</span>
+</div>
     <h1>Nơi một con cá bắt đầu!</h1>
     <p>Hồ cá miền nam.</p>
     <div class="button-group">
@@ -1061,16 +1232,16 @@ body.dark .btn-reset:hover {
     <div class="photo-gallery">
 
 <figure class="photo-card">
-        <img src="images/fish.jpg" alt="Một chú cá">
+        <img src="images/fish.jpg" alt="Một chú cá" loading="lazy" decoding="async">
     <figcaption>cá 🐟</figcaption>
 </figure>
 <figure class="photo-card">
-        <img src="images/drawing.jpg" alt="Tranh vẽ của tui">
+        <img src="images/drawing.jpg" alt="Tranh vẽ của tui" loading="lazy" decoding="async">
     <figcaption>tranh vẽ</figcaption>
 </figure>
 
 <figure class="photo-card">
-        <img src="images/sky.jpg" alt="Bầu trời">
+        <img src="images/sky.jpg" alt="Bầu trời" loading="lazy" decoding="async">
     <figcaption>bầu trời</figcaption>
 </figure>
     </div>
@@ -1091,9 +1262,15 @@ body.dark .btn-reset:hover {
             <linearGradient id="wg2" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#1a3d12"/><stop offset="0.55" stop-color="#4d9a1c"/><stop offset="1" stop-color="#bef264"/></linearGradient>
             <linearGradient id="wg3" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#0b3b3a"/><stop offset="0.55" stop-color="#0d9488"/><stop offset="1" stop-color="#99f6e4"/></linearGradient>
             <linearGradient id="wg4" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#14401f"/><stop offset="0.55" stop-color="#22a653"/><stop offset="1" stop-color="#86efac"/></linearGradient>
+            <linearGradient id="wg5" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#831843"/><stop offset="0.55" stop-color="#ec4899"/><stop offset="1" stop-color="#fbcfe8"/></linearGradient>
+            <linearGradient id="wg6" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#7c2d12"/><stop offset="0.55" stop-color="#f97316"/><stop offset="1" stop-color="#fed7aa"/></linearGradient>
+            <linearGradient id="wg7" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#3b0764"/><stop offset="0.55" stop-color="#8b5cf6"/><stop offset="1" stop-color="#ddd6fe"/></linearGradient>
+            <linearGradient id="wg8" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#7f1d1d"/><stop offset="0.55" stop-color="#ef4444"/><stop offset="1" stop-color="#fecaca"/></linearGradient>
+            <linearGradient id="wg9" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="0"><stop offset="0" stop-color="#713f12"/><stop offset="0.55" stop-color="#eab308"/><stop offset="1" stop-color="#fef08a"/></linearGradient>
         </defs>
     </svg>
     <div class="weeds"></div>
+    <div class="creatures"></div>
     <div class="sand"></div>
 </div>
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
@@ -1166,6 +1343,7 @@ window.addEventListener("load", function () {
 
     const speed = 1.2;
     let direction = 1;
+    let animationFrameId = null;
     let held = false;      // true khi đang giữ cá
     let grabDX = 0;        // khoảng lệch giữa chuột và góc cá
     let grabDY = 0;
@@ -1193,6 +1371,9 @@ window.addEventListener("load", function () {
     }
 
     function swim() {
+        animationFrameId = null;
+        if (document.hidden) return;
+
         if (!held) {
             const dx = targetX - x;
             const dy = targetY - y;
@@ -1207,12 +1388,34 @@ window.addEventListener("load", function () {
             }
             render();
         }
-        requestAnimationFrame(swim);
+        animationFrameId = requestAnimationFrame(swim);
     }
+
+    function startSwimming() {
+        if (!reduceMotion && !document.hidden && animationFrameId === null) {
+            animationFrameId = requestAnimationFrame(swim);
+        }
+    }
+
+    function stopSwimming() {
+        if (animationFrameId !== null) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+    }
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            stopSwimming();
+        } else {
+            startSwimming();
+        }
+    });
 
     // Bấm vào cá: giữ lại
     fish.addEventListener("pointerdown", function (e) {
         held = true;
+        stopSwimming();
         fish.classList.add("held");
         fish.setPointerCapture(e.pointerId);
 
@@ -1240,11 +1443,12 @@ window.addEventListener("load", function () {
         held = false;
         fish.classList.remove("held");
         pickTarget();
+        startSwimming();
     }
     fish.addEventListener("pointerup", release);
     fish.addEventListener("pointercancel", release);
 
-    if (!reduceMotion) swim();
+    startSwimming();
     render();
 });
 </script>
@@ -1301,7 +1505,7 @@ window.addEventListener("load", function () {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const layer = document.querySelector(".bubbles");
-    const total = window.innerWidth < 600 ? 12 : 22;
+    const total = window.innerWidth < 600 ? 6 : 12;
 
     for (let i = 0; i < total; i++) {
         const b = document.createElement("span");
@@ -1340,20 +1544,32 @@ window.addEventListener("load", function () {
 </script>
 
 <script>
-/* Rong biển ở đáy trang: 3 loại, 3 lớp chiều sâu, mọc thành cụm */
+/* Đáy biển: rong biển, san hô, hải quỳ + sinh vật (cua, sao biển, nhím biển, ngựa vằn, sứa, đàn cá) */
 (function () {
     const box = document.querySelector(".seabed .weeds");
     if (!box) return;
+    const crit = document.querySelector(".seabed .creatures");
 
     const rnd = function (a, b) { return a + Math.random() * (b - a); };
     const pick = function (arr) { return arr[Math.floor(Math.random() * arr.length)]; };
+    const f = function (v) { return v.toFixed(1); };
     const mobile = window.innerWidth < 600;
+    const num = function (desktop, phone) { return mobile ? phone : desktop; };
+    let uid = 0;
 
-    const palettes = [
+    /* Màu rong (xanh) và màu san hô (hồng, cam, tím, đỏ, vàng) */
+    const greens = [
         { g: "wg1", leaf: "#10b981" },
         { g: "wg2", leaf: "#65a30d" },
         { g: "wg3", leaf: "#14b8a6" },
         { g: "wg4", leaf: "#22c55e" }
+    ];
+    const corals = [
+        { g: "wg5", leaf: "#ec4899" },
+        { g: "wg6", leaf: "#f97316" },
+        { g: "wg7", leaf: "#8b5cf6" },
+        { g: "wg8", leaf: "#ef4444" },
+        { g: "wg9", leaf: "#eab308" }
     ];
 
     /* Rong kelp: thân cong + lá hai bên */
@@ -1370,7 +1586,7 @@ window.addEventListener("load", function () {
                    '<path class="blade" d="M0 0 C8 -9 24 -10 34 -2 C24 7 8 6 0 0 Z"/>' +
                    '<path class="rib" d="M2 0 C12 -2 24 -3 31 -2"/></g></g>';
         });
-        return { w: 60, body: out, h: rnd(95, 150) };
+        return { w: 60, body: out, h: rnd(110, 190) };
     }
 
     /* Rong dải: một dải dài uốn lượn, thon dần về ngọn */
@@ -1378,7 +1594,7 @@ window.addEventListener("load", function () {
         const out =
             '<path d="M20 200 C6 160 34 124 20 84 C10 54 26 28 20 2 C30 28 34 58 28 88 C22 128 42 164 28 200 Z" fill="url(#' + pal.g + ')"/>' +
             '<path d="M24 196 C14 160 34 126 24 88 C18 60 28 34 22 8" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.2" stroke-linecap="round"/>';
-        return { w: 40, body: out, h: rnd(85, 145) };
+        return { w: 40, body: out, h: rnd(100, 170) };
     }
 
     /* Cụm lá cỏ biển: nhiều lá mảnh xòe quạt từ một gốc */
@@ -1397,16 +1613,94 @@ window.addEventListener("load", function () {
                    '<path d="' + d + '" fill="none" stroke="url(#' + pal.g + ')" stroke-width="' +
                    (4.2 + (k % 2) * 0.8) + '" stroke-linecap="round"/></g>';
         });
-        return { w: 80, body: out, h: rnd(55, 95) };
+        return { w: 80, body: out, h: rnd(60, 100) };
     }
 
-    const types = [kelp, kelp, ribbon, ribbon, tuft];
+    /* San hô cành: chia nhánh nhiều tầng, đầu cành tròn sáng */
+    function branchCoral(pal) {
+        let out = "", tips = "";
+        function grow(x, y, a, len, wd, d) {
+            const x2 = x + Math.sin(a) * len, y2 = y - Math.cos(a) * len;
+            out += '<path d="M' + f(x) + ' ' + f(y) + ' L' + f(x2) + ' ' + f(y2) + '" fill="none" stroke="url(#' + pal.g +
+                   ')" stroke-width="' + f(wd) + '" stroke-linecap="round"/>';
+            if (d > 0) {
+                grow(x2, y2, a - rnd(0.35, 0.65), len * rnd(0.68, 0.82), wd * 0.72, d - 1);
+                grow(x2, y2, a + rnd(0.35, 0.65), len * rnd(0.68, 0.82), wd * 0.72, d - 1);
+                if (Math.random() < 0.35) grow(x2, y2, a + rnd(-0.2, 0.2), len * 0.7, wd * 0.68, d - 1);
+            } else {
+                tips += '<circle cx="' + f(x2) + '" cy="' + f(y2) + '" r="' + f(wd * 0.7) + '" fill="#fff" fill-opacity=".55"/>';
+            }
+        }
+        grow(50, 200, rnd(-0.12, 0.12), rnd(40, 50), 9, 3);
+        return { w: 100, body: out + tips, h: rnd(95, 150) };
+    }
 
-    /* [lớp, tỉ lệ kích thước, số cụm desktop, số cụm mobile, độ chậm] */
+    /* San hô quạt: nhiều nan xòe từ một gốc, nối bằng các vòng cung */
+    function fanCoral(pal) {
+        const cx = 70, by = 168, R = rnd(80, 100), N = 13;
+        let out = '<path d="M70 200 C69 188 70 178 70 ' + by + '" fill="none" stroke="url(#' + pal.g + ')" stroke-width="6" stroke-linecap="round"/>';
+        for (let i = 0; i < N; i++) {
+            const a = (i - (N - 1) / 2) * 0.12;
+            const mx = cx + Math.sin(a) * R * 0.55 + Math.cos(a) * rnd(-5, 5);
+            const my = by - Math.cos(a) * R * 0.55 + Math.sin(a) * rnd(-5, 5);
+            const ex = cx + Math.sin(a) * R, ey = by - Math.cos(a) * R;
+            out += '<path d="M' + cx + ' ' + by + ' Q' + f(mx) + ' ' + f(my) + ' ' + f(ex) + ' ' + f(ey) +
+                   '" fill="none" stroke="url(#' + pal.g + ')" stroke-width="1.8" stroke-linecap="round"/>';
+        }
+        [0.38, 0.62, 0.84].forEach(function (r) {
+            let d = "";
+            for (let i = 0; i < N; i++) {
+                const a = (i - (N - 1) / 2) * 0.12;
+                d += (i ? "L" : "M") + f(cx + Math.sin(a) * R * r) + " " + f(by - Math.cos(a) * R * r) + " ";
+            }
+            out += '<path d="' + d + '" fill="none" stroke="url(#' + pal.g + ')" stroke-width="1" stroke-opacity=".8"/>';
+        });
+        return { w: 140, body: out, h: rnd(80, 125) };
+    }
+
+    /* Hải quỳ: gốc tròn + nhiều xúc tu đung đưa, đầu xúc tu sáng */
+    function anemone(pal) {
+        let out = '<path d="M36 200 C36 188 40 182 50 182 C60 182 64 188 64 200 Z" fill="url(#' + pal.g + ')"/>';
+        const n = 15;
+        for (let i = 0; i < n; i++) {
+            const t = i / (n - 1) - 0.5;
+            const x0 = 50 + t * 24, x1 = 50 + t * 110 + rnd(-6, 6), x2 = 50 + t * 150 + rnd(-10, 10);
+            const y2 = rnd(85, 125);
+            out += '<g class="blade-g" style="animation-delay:' + (-Math.random() * 2.6).toFixed(2) +
+                   's;animation-duration:' + rnd(2, 3.2).toFixed(2) + 's">' +
+                   '<path d="M' + f(x0) + ' 184 Q' + f(x1) + ' 150 ' + f(x2) + ' ' + f(y2) +
+                   '" fill="none" stroke="url(#' + pal.g + ')" stroke-width="4.2" stroke-linecap="round"/>' +
+                   '<circle cx="' + f(x2) + '" cy="' + f(y2) + '" r="3.6" fill="#fff" fill-opacity=".6"/></g>';
+        }
+        return { w: 100, body: out, h: rnd(70, 110) };
+    }
+
+    /* San hô não: mô tròn có đốm */
+    function dome(pal) {
+        let out = '<path d="M0 200 C-2 120 40 96 60 96 C80 96 122 120 120 200 Z" fill="url(#' + pal.g + ')"/>';
+        for (let i = 0; i < 14; i++) {
+            const a = rnd(Math.PI, Math.PI * 2.1), r = Math.sqrt(Math.random()) * 0.8;
+            const x = 60 + Math.cos(a) * 52 * r, y = 172 + Math.sin(a) * 70 * r;
+            out += '<circle cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(rnd(2.5, 4.5)) + '" fill="#fff" fill-opacity="' + f(rnd(0.15, 0.35)) + '"/>';
+        }
+        return { w: 120, body: out, h: rnd(50, 80) };
+    }
+
+    const kinds = {
+        kelp:    [kelp, greens],
+        ribbon:  [ribbon, greens],
+        tuft:    [tuft, greens],
+        branch:  [branchCoral, corals],
+        fan:     [fanCoral, corals],
+        dome:    [dome, corals],
+        anemone: [anemone, corals]
+    };
+
+    /* [lớp, tỉ lệ kích thước, số cụm desktop, số cụm mobile, độ chậm, các loại có thể mọc] */
     const layers = [
-        ["back",  0.65, 8, 4, 1.5],
-        ["mid",   0.85, 8, 4, 1.2],
-        ["front", 1.00, 6, 3, 1.0]
+        ["back",  0.65, 10, 5, 1.5, ["kelp", "kelp", "ribbon", "tuft", "fan"]],
+        ["mid",   0.85, 10, 5, 1.2, ["kelp", "ribbon", "tuft", "branch", "fan", "dome", "anemone"]],
+        ["front", 1.00,  8, 4, 1.0, ["kelp", "ribbon", "tuft", "branch", "branch", "fan", "dome", "anemone"]]
     ];
 
     layers.forEach(function (L) {
@@ -1420,14 +1714,16 @@ window.addEventListener("load", function () {
             const count = 1 + Math.floor(Math.random() * 2.5);
 
             for (let n = 0; n < count; n++) {
-                const t = pick(types)(pick(palettes));
-                const h = Math.min(t.h * L[1], 165);
+                const kind = kinds[pick(L[5])];
+                const pal = pick(kind[1]);
+                const t = kind[0](pal);
+                const h = Math.min(t.h * L[1], 215);
                 const w = h * t.w / 200;
                 const off = rnd(-14, 14);
                 html += '<svg class="weed" viewBox="0 0 ' + t.w + ' 200" ' +
                         'style="left:calc(' + center.toFixed(2) + '% + ' + off.toFixed(1) + 'px);' +
                         'bottom:' + rnd(10, 16).toFixed(1) + 'px;width:' + w.toFixed(1) + 'px;height:' + h.toFixed(1) + 'px;' +
-                        '--leaf:' + t.leaf + ';--dur:' + (rnd(2.6, 4.6) * L[4]).toFixed(2) + 's;' +
+                        '--leaf:' + pal.leaf + ';--dur:' + (rnd(2.6, 4.6) * L[4]).toFixed(2) + 's;' +
                         '--delay:' + (-Math.random() * 4).toFixed(2) + 's;">' + t.body + '</svg>';
             }
         }
@@ -1436,7 +1732,7 @@ window.addEventListener("load", function () {
     });
 
     /* Bong bóng nhỏ bốc lên từ gốc rong */
-    const bubbleCount = mobile ? 4 : 9;
+    const bubbleCount = num(14, 6);
     for (let i = 0; i < bubbleCount; i++) {
         const size = rnd(4, 10);
         const b = document.createElement("span");
@@ -1446,6 +1742,206 @@ window.addEventListener("load", function () {
         b.style.setProperty("--dur", rnd(3.5, 6.5) + "s");
         b.style.setProperty("--delay", -rnd(0, 6) + "s");
         box.appendChild(b);
+    }
+
+    if (!crit) return;
+
+    /* ======== SINH VẬT ======== */
+    function add(html, style, cls) {
+        const d = document.createElement("div");
+        d.className = "crit " + cls;
+        d.style.cssText = style;
+        d.innerHTML = html;
+        crit.appendChild(d);
+    }
+    /* rải đều theo chiều ngang, mỗi con lệch ngẫu nhiên một chút */
+    function spread(i, count) { return f(((i + rnd(0.2, 0.8)) / count) * 100) + "%"; }
+
+    /* Cua đi ngang */
+    function crabSvg(c1, c2) {
+        const id = "cg" + (uid++);
+        const legs = [["M21 26 L11 28 L8 34", "-.05s"], ["M20 28 L10 33 L7 39", "-.15s"], ["M22 30 L14 36 L12 40", "-.25s"]]
+            .map(function (l) { return '<path class="leg" style="animation-delay:' + l[1] + '" d="' + l[0] + '"/>'; }).join("");
+        const legG = '<g stroke="' + c2 + '" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">' + legs + '</g>';
+        const claw = '<g class="claw"><path d="M18 22 C12 21 9 17 9 13" fill="none" stroke="' + c2 + '" stroke-width="3" stroke-linecap="round"/>' +
+            '<path d="M9 13 C3 12 2 4 7 2 C7 6 10 7 11 5 C14 8 13 12 9 13 Z" fill="' + c1 + '" stroke="' + c2 + '" stroke-width=".8" stroke-linejoin="round"/></g>';
+        const both = function (inner) { return inner + '<g transform="translate(60 0) scale(-1 1)">' + inner + '</g>'; };
+        return '<svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs>' +
+            both(legG) +
+            '<ellipse cx="30" cy="25" rx="15" ry="10" fill="url(#' + id + ')"/>' +
+            '<ellipse cx="28" cy="21" rx="8" ry="3" fill="#fff" fill-opacity=".25"/>' +
+            '<path d="M24 17 L23 11 M36 17 L37 11" stroke="' + c2 + '" stroke-width="1.6" stroke-linecap="round"/>' +
+            '<circle cx="23" cy="10" r="2.6" fill="#fff"/><circle cx="23.4" cy="10" r="1.3" fill="#1f2937"/>' +
+            '<circle cx="37" cy="10" r="2.6" fill="#fff"/><circle cx="36.6" cy="10" r="1.3" fill="#1f2937"/>' +
+            '<path d="M27 29 Q30 31 33 29" stroke="#7f1d1d" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+            both(claw) + '</svg>';
+    }
+    const crabCols = [["#f87171", "#b91c1c"], ["#fb923c", "#c2410c"]];
+    const crabN = num(2, 1);
+    for (let i = 0; i < crabN; i++) {
+        const c = crabCols[i % 2];
+        add(crabSvg(c[0], c[1]),
+            "left:" + spread(i, crabN) + ";bottom:" + rnd(4, 10).toFixed(0) + "px;width:" + rnd(46, 58).toFixed(0) +
+            "px;--range:" + rnd(10, 20).toFixed(0) + "vw;--dur:" + rnd(18, 28).toFixed(0) + "s;--delay:-" + rnd(0, 18).toFixed(0) + "s",
+            "crab");
+    }
+
+    /* Sao biển */
+    function starSvg(c1, c2) {
+        const pts = [];
+        for (let i = 0; i < 10; i++) {
+            const r = i % 2 ? 7 : 17, a = -Math.PI / 2 + i * Math.PI / 5;
+            pts.push(f(22 + Math.cos(a) * r) + "," + f(22 + Math.sin(a) * r));
+        }
+        let dots = "";
+        for (let i = 0; i < 5; i++) {
+            const a = -Math.PI / 2 + i * 2 * Math.PI / 5;
+            [6, 11, 15].forEach(function (r) {
+                dots += '<circle cx="' + f(22 + Math.cos(a) * r) + '" cy="' + f(22 + Math.sin(a) * r) + '" r=".9" fill="#fff" fill-opacity=".65"/>';
+            });
+        }
+        return '<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">' +
+            '<polygon points="' + pts.join(" ") + '" fill="' + c1 + '" stroke="' + c1 + '" stroke-width="5" stroke-linejoin="round"/>' +
+            dots + '<circle cx="22" cy="22" r="2.4" fill="' + c2 + '"/></svg>';
+    }
+    const starCols = [["#fb923c", "#c2410c"], ["#f472b6", "#be185d"], ["#a78bfa", "#6d28d9"], ["#f87171", "#b91c1c"]];
+    const starN = num(4, 2);
+    for (let i = 0; i < starN; i++) {
+        const c = pick(starCols);
+        add(starSvg(c[0], c[1]),
+            "left:" + spread(i, starN) + ";bottom:" + rnd(2, 10).toFixed(0) + "px;width:" + rnd(24, 36).toFixed(0) +
+            "px;transform:rotate(" + rnd(-35, 35).toFixed(0) + "deg)",
+            "star");
+    }
+
+    /* Nhím biển */
+    function urchinSvg(c1, c2) {
+        let sp = "";
+        for (let i = 0; i < 24; i++) {
+            const a = (i / 24) * Math.PI * 2, r1 = 8, r2 = rnd(17, 22);
+            sp += '<line x1="' + f(24 + Math.cos(a) * r1) + '" y1="' + f(24 + Math.sin(a) * r1) +
+                  '" x2="' + f(24 + Math.cos(a) * r2) + '" y2="' + f(24 + Math.sin(a) * r2) + '"/>';
+        }
+        return '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">' +
+            '<g stroke="' + c2 + '" stroke-width="1.4" stroke-linecap="round">' + sp + '</g>' +
+            '<circle cx="24" cy="24" r="9.5" fill="' + c1 + '"/>' +
+            '<ellipse cx="21" cy="20.5" rx="4" ry="2.4" fill="#fff" fill-opacity=".3"/></svg>';
+    }
+    const urchinCols = [["#4c1d95", "#8b5cf6"], ["#9f1239", "#fb7185"], ["#1e1b4b", "#6366f1"]];
+    const urchinN = num(3, 1);
+    for (let i = 0; i < urchinN; i++) {
+        const c = pick(urchinCols);
+        add(urchinSvg(c[0], c[1]),
+            "left:" + spread(i, urchinN) + ";bottom:" + rnd(4, 12).toFixed(0) + "px;width:" + rnd(28, 38).toFixed(0) + "px",
+            "urchin");
+    }
+
+    /* Vỏ sò */
+    function shellSvg(c1, c2) {
+        const ridges = [[4, 14], [8, 6], [15, 3], [22, 6], [26, 14]].map(function (p) {
+            return '<line x1="15" y1="24" x2="' + p[0] + '" y2="' + p[1] + '"/>';
+        }).join("");
+        return '<svg viewBox="0 0 30 26" xmlns="http://www.w3.org/2000/svg">' +
+            '<path d="M15 24 L3 15 C0 7 8 1 15 3 C22 1 30 7 27 15 Z" fill="' + c1 + '" stroke="' + c2 + '" stroke-width=".8" stroke-linejoin="round"/>' +
+            '<g stroke="' + c2 + '" stroke-width=".8" stroke-opacity=".6">' + ridges + '</g>' +
+            '<rect x="11" y="23" width="8" height="3" rx="1" fill="' + c2 + '"/></svg>';
+    }
+    const shellCols = [["#fde4cf", "#e8a87c"], ["#fbcfe8", "#db7093"], ["#fef3c7", "#d4a24c"]];
+    const shellN = num(4, 2);
+    for (let i = 0; i < shellN; i++) {
+        const c = pick(shellCols);
+        add(shellSvg(c[0], c[1]),
+            "left:" + spread(i, shellN) + ";bottom:" + rnd(3, 10).toFixed(0) + "px;width:" + rnd(20, 28).toFixed(0) +
+            "px;transform:rotate(" + rnd(-25, 25).toFixed(0) + "deg)",
+            "shell");
+    }
+
+    /* Ngựa vằn */
+    function seahorseSvg(c1, c2) {
+        return '<svg viewBox="0 0 40 70" xmlns="http://www.w3.org/2000/svg">' +
+            '<path class="sh-fin" d="M14 24 C6 26 5 36 13 39 Z" fill="' + c2 + '" fill-opacity=".7"/>' +
+            '<path d="M22 44 C22 54 13 57 13 63 C13 68 21 68 21 63 C21 60 17 60 18 62" fill="none" stroke="' + c1 + '" stroke-width="5" stroke-linecap="round"/>' +
+            '<ellipse cx="23" cy="31" rx="8" ry="12" fill="' + c1 + '"/>' +
+            '<circle cx="24" cy="11" r="7.5" fill="' + c1 + '"/>' +
+            '<path d="M29 8 L38 10.5 Q40 12 38 13.5 L29 15.5 Z" fill="' + c1 + '"/>' +
+            '<path d="M18 6 L16 1 L21 4 L23 0 L25 4 Z" fill="' + c2 + '"/>' +
+            '<path d="M16 26 Q23 29 30 26 M15 32 Q23 35 31 32 M17 38 Q24 41 30 38" stroke="' + c2 + '" stroke-opacity=".45" stroke-width="1.2" fill="none"/>' +
+            '<circle cx="26.5" cy="10" r="2" fill="#fff"/><circle cx="27" cy="10" r="1" fill="#1f2937"/></svg>';
+    }
+    const horseCols = [["#fb923c", "#c2410c"], ["#facc15", "#a16207"], ["#f9a8d4", "#be185d"]];
+    const horseN = num(3, 1);
+    for (let i = 0; i < horseN; i++) {
+        const c = horseCols[i % 3];
+        add(seahorseSvg(c[0], c[1]),
+            "left:" + spread(i, horseN) + ";bottom:" + rnd(50, 110).toFixed(0) + "px;width:" + rnd(26, 34).toFixed(0) +
+            "px;--dur:" + rnd(4, 6.5).toFixed(1) + "s;--delay:-" + rnd(0, 5).toFixed(1) + "s",
+            "seahorse");
+    }
+
+    /* Sứa */
+    function jellySvg(c) {
+        let tents = "";
+        for (let k = 0; k < 5; k++) {
+            const x = 12 + k * 6.5;
+            tents += '<g class="tent" style="animation-delay:' + (-rnd(0, 2)).toFixed(2) + 's">' +
+                '<path d="M' + f(x) + ' 27 C' + f(x - 4) + ' 38 ' + f(x + 4) + ' 50 ' + f(x) + ' ' + f(rnd(60, 76)) +
+                '" fill="none" stroke="' + c + '" stroke-opacity=".75" stroke-width="1.6" stroke-linecap="round"/></g>';
+        }
+        const arms = '<g class="tent"><path d="M21 27 C18 36 24 44 21 52 M29 27 C32 36 26 44 29 52" fill="none" stroke="' + c +
+            '" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/></g>';
+        return '<svg viewBox="0 0 50 80" xmlns="http://www.w3.org/2000/svg">' + tents + arms +
+            '<g class="jbell"><path d="M5 28 C5 4 45 4 45 28 C38 23 12 23 5 28 Z" fill="' + c + '" fill-opacity=".55" stroke="#fff" stroke-opacity=".7" stroke-width="1"/>' +
+            '<ellipse cx="20" cy="13" rx="9" ry="3.6" fill="#fff" fill-opacity=".4"/>' +
+            '<path d="M16 25 Q25 21 34 25" stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/></g></svg>';
+    }
+    const jellyCols = ["#f9a8d4", "#c4b5fd", "#67e8f9"];
+    const jellyN = num(3, 2);
+    for (let i = 0; i < jellyN; i++) {
+        const c = jellyCols[i % 3];
+        add(jellySvg(c),
+            "left:" + spread(i, jellyN) + ";bottom:" + (mobile ? rnd(30, 60) : rnd(50, 100)).toFixed(0) + "px;width:" + rnd(38, 54).toFixed(0) +
+            "px;--glow:" + c + ";--dx:" + rnd(-30, 30).toFixed(0) + "px;--dur:" + rnd(8, 14).toFixed(1) + "s;--delay:-" + rnd(0, 8).toFixed(1) + "s",
+            "jelly");
+    }
+
+    /* Đàn cá nhỏ */
+    function tinyFish(color) {
+        return '<svg viewBox="0 0 30 14" xmlns="http://www.w3.org/2000/svg">' +
+            '<path class="fish-tail" d="M9 7 L1 1 C3 5 3 9 1 13 Z" fill="' + color + '"/>' +
+            '<path d="M7 7 C11 0 22 0 28 7 C22 14 11 14 7 7 Z" fill="' + color + '"/>' +
+            '<path d="M10 9 C14 12 21 12 25 9" stroke="#fff" stroke-opacity=".45" stroke-width="1.2" fill="none" stroke-linecap="round"/>' +
+            '<circle cx="23" cy="5.5" r="1.6" fill="#fff"/><circle cx="23.4" cy="5.5" r=".8" fill="#1f2937"/></svg>';
+    }
+    const schoolCols = ["#fde047", "#67e8f9", "#fda4af", "#a5f3fc", "#fdba74"];
+    const schoolN = num(5, 3);
+    for (let i = 0; i < schoolN; i++) {
+        const col = pick(schoolCols);
+        let fishes = "";
+        for (let k = 0; k < 3; k++) {
+            fishes += tinyFish(col).replace("<svg ", '<svg style="left:' + (k * 17) + 'px;top:' + (k % 2 ? 12 : 0) + 'px" ');
+        }
+        add(fishes,
+            "top:" + rnd(25, mobile ? 120 : 170).toFixed(0) + "px;--dur:" + rnd(16, 30).toFixed(0) + "s;--delay:-" + rnd(0, 25).toFixed(0) + "s",
+            "sb-fish");
+    }
+
+    const seabed = document.querySelector(".seabed");
+    if ("IntersectionObserver" in window && seabed) {
+        let inView = false;
+        function updateAnimationState() {
+            seabed.classList.toggle(
+                "animations-paused",
+                !inView || document.hidden
+            );
+        }
+
+        const observer = new IntersectionObserver(function (entries) {
+            inView = entries[0].isIntersecting;
+            updateAnimationState();
+        }, { rootMargin: "100px" });
+        observer.observe(seabed);
+        document.addEventListener("visibilitychange", updateAnimationState);
     }
 })();
 </script>
