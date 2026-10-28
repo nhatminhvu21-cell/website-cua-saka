@@ -1445,6 +1445,100 @@ body.dark .gallery-section h2 { background: linear-gradient(95deg, #7dd3fc 0%, #
 body.dark .fish-quote { background: #5f4f33; }
 body.dark .fish-quote h2 { color: #f3e3bd; }
 body.dark .fish-quote p { color: #d9c593; }
+
+/* ============ CHO CÁ ĂN (ĐÁY BIỂN) ============ */
+.feed-layer { position: absolute; inset: 0; z-index: 4; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.feed-hint {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  max-width: 94%; padding: 5px 14px; border-radius: 999px;
+  font-family: "Itim", "Baloo 2", cursive; font-size: 14px; white-space: nowrap;
+  color: #0c4a6e; background: rgba(255, 255, 255, 0.7);
+  pointer-events: none; user-select: none;
+}
+body.dark .feed-hint { color: #bae6fd; background: rgba(15, 23, 42, 0.6); }
+.ff { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
+.ff svg { display: block; width: 100%; height: auto; overflow: visible; }
+.food {
+  position: absolute; left: 0; top: 0; width: 7px; height: 7px; margin: -3px 0 0 -3px;
+  border-radius: 50%; pointer-events: none; will-change: transform;
+  background: radial-gradient(circle at 35% 30%, #fde68a, #d97706);
+  box-shadow: 0 0 0 1px rgba(120, 53, 15, 0.35);
+}
+@media (max-width: 600px) { .feed-hint { font-size: 12px; top: 6px; } }
+
+/* ============ HÔM NAY BẠN LÀ CON CÁ NÀO ============ */
+.fishtype {
+  padding: 38px 16px 46px; text-align: center;
+  background: linear-gradient(180deg, var(--page-bg) 0%, #e0f2fe 100%);
+}
+body.dark .fishtype { background: linear-gradient(180deg, var(--page-bg) 0%, #1e3a5f 100%); }
+.fishtype h2 {
+  margin: 0 0 6px; font-family: "Pacifico", "Baloo 2", cursive; font-weight: 400;
+  font-size: clamp(1.4rem, 4.5vw, 2rem); line-height: 1.4; color: #0369a1;
+}
+body.dark .fishtype h2 { color: #7dd3fc; }
+.ft-sub { margin: 0 0 16px; font-size: 14px; color: #475569; }
+body.dark .ft-sub { color: #9ca3af; }
+.ft-form { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
+.ft-form input {
+  width: min(240px, 100%); box-sizing: border-box; padding: 11px 18px;
+  border: 2px solid #bae6fd; border-radius: 999px; outline: none;
+  font-family: "Itim", "Baloo 2", cursive; font-size: 16px; background: #fff; color: #222;
+}
+.ft-form input:focus { border-color: #38bdf8; }
+body.dark .ft-form input { background: #111827; border-color: #334155; color: #e5e7eb; }
+.btn-ft {
+  color: #fff;
+  background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 60%, #be185d 100%);
+  box-shadow: 0 5px 14px rgba(236, 72, 153, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+.btn-ft::before { content: "🎲"; }
+body.dark .btn-ft { color: #fce7f3; border: 1px solid #f472b6; background: linear-gradient(135deg, #9d174d 0%, #831843 100%); }
+.ft-result {
+  --ft-accent: #0284c7;
+  max-width: 420px; margin: 22px auto 0; padding: 22px 20px 18px; box-sizing: border-box;
+  background: #fff; border: 2px solid var(--ft-accent); border-radius: 22px;
+  box-shadow: 0 8px 22px rgba(3, 105, 161, 0.15);
+}
+.ft-result[hidden] { display: none; }
+.ft-result.ft-pop { animation: ftPop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1); }
+@keyframes ftPop { from { opacity: 0; transform: scale(0.85) translateY(10px); } to { opacity: 1; transform: none; } }
+body.dark .ft-result { background: #1f2937; color: #e5e7eb; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35); }
+.ft-emoji { display: inline-block; font-size: 64px; line-height: 1.1; animation: ftBob 2.4s ease-in-out infinite; }
+@keyframes ftBob { 50% { transform: translateY(-8px) rotate(6deg); } }
+.ft-who { margin: 4px 0 0; font-size: 14px; color: #64748b; }
+body.dark .ft-who { color: #9ca3af; }
+.ft-name { margin: 2px 0 8px; font-family: "Itim", "Baloo 2", cursive; font-size: 1.8rem; color: var(--ft-accent); }
+body.dark .ft-name { filter: brightness(1.5); }
+.ft-desc { margin: 0; font-family: "Itim", "Baloo 2", cursive; font-size: 1.1rem; line-height: 1.5; color: #374151; }
+body.dark .ft-desc { color: #d1d5db; }
+.ft-stats { display: grid; gap: 8px; margin: 14px 0 4px; text-align: left; }
+.ft-stat { display: grid; grid-template-columns: 70px 1fr 42px; align-items: center; gap: 8px; font-size: 14px; }
+.ft-bar { height: 10px; border-radius: 999px; background: rgba(100, 116, 139, 0.22); overflow: hidden; }
+.ft-bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--ft-accent); transition: width 0.9s ease-out; }
+.ft-stat b { text-align: right; font-variant-numeric: tabular-nums; }
+.ft-note { margin: 10px 0 0; font-size: 12px; color: #64748b; }
+body.dark .ft-note { color: #9ca3af; }
+@media (prefers-reduced-motion: reduce) {
+  .ft-emoji, .ft-result.ft-pop { animation: none; }
+  .ft-bar i { transition: none; }
+}
+
+/* ============ NÚT BẬT/TẮT TIẾNG SÓNG ============ */
+.wave-toggle {
+  position: fixed; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 1100;
+  display: flex; align-items: center; gap: 6px; padding: 9px 16px;
+  border: none; border-radius: 999px; cursor: pointer;
+  font-family: "Itim", "Baloo 2", cursive; font-size: 15px; color: #fff;
+  background: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
+  box-shadow: 0 6px 16px rgba(3, 105, 161, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+.wave-toggle[aria-pressed="true"] { background: linear-gradient(135deg, #34d399 0%, #0f766e 100%); box-shadow: 0 6px 16px rgba(15, 118, 110, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.3); }
+.wave-toggle[aria-pressed="true"] .wave-ico { animation: waveIco 2.4s ease-in-out infinite; }
+@keyframes waveIco { 50% { transform: scale(1.18); } }
+body.dark .wave-toggle { color: #e0f2fe; border: 1px solid #38bdf8; background: linear-gradient(135deg, #0c4a6e 0%, #0f2a4a 100%); }
+body.dark .wave-toggle[aria-pressed="true"] { border-color: #34d399; background: linear-gradient(135deg, #115e59 0%, #064e3b 100%); }
+@media (prefers-reduced-motion: reduce) { .wave-toggle[aria-pressed="true"] .wave-ico { animation: none; } }
 </style>
 </head>
 <body>
@@ -1453,6 +1547,7 @@ body.dark .fish-quote p { color: #d9c593; }
     <div class="menu">
         <a href="#home">Trang chủ</a>
         <a href="#guestbook">Lời nhắn</a>
+        <a href="#fishtype">Bạn là cá nào?</a>
         <a href="#hobbies">sở thích</a>
     </div>
      <h2>SAKA</h2>
@@ -1505,11 +1600,11 @@ body.dark .fish-quote p { color: #d9c593; }
   <span class="tiny-fish fish-three">𓆝</span>
 </div>
     <h1>Nơi một con cá bắt đầu!</h1>
-    <p>Hồ cá miền nam.</p>
+    <p>tui ko biết mình đang làm gì nx.</p>
     <div class="button-group">
-    <button class="btn-ocean btn-joke" onclick="changeGreeting()">JOKE</button>
+    <button class="btn-ocean btn-joke" onclick="changeGreeting()">Xem đáp án</button>
 </div>
-<p id="greeting">Tại sao con cá không bao giờ thất tình?</p>
+<p id="greeting" aria-live="polite">Tại sao con cá không bao giờ thất tình?</p>
 <div class="counter-box">
     <p id="counter">Bạn đã nhấn 0 lần.</p>
     <div class="counter-buttons">
@@ -1571,6 +1666,15 @@ body.dark .fish-quote p { color: #d9c593; }
 </figure>
     </div>
 </section>
+<section id="fishtype" class="fishtype">
+    <h2>Hôm nay bạn là con cá nào?</h2>
+    <p class="ft-sub">Nhập tên (hoặc để trống) rồi bấm. Cùng một tên thì cả ngày ra cùng một con.</p>
+    <form id="ftForm" class="ft-form" autocomplete="off">
+        <input id="ftName" type="text" maxlength="30" placeholder="Tên của bạn" aria-label="Tên của bạn">
+        <button type="submit" class="btn-ocean btn-ft">Xem ngay</button>
+    </form>
+    <div id="ftResult" class="ft-result" hidden aria-live="polite"></div>
+</section>
 <section id="hobbies" class="hobbies">
     <h2>Đặc điểm của minh</h2>
 
@@ -1605,6 +1709,7 @@ body.dark .fish-quote p { color: #d9c593; }
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" alt="">
 </div>
+<button type="button" id="waveToggle" class="wave-toggle" aria-pressed="false" title="Bật/tắt tiếng sóng biển"><span class="wave-ico" aria-hidden="true">🔇</span><span>Tiếng sóng</span></button>
 <script>
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
@@ -1627,9 +1732,57 @@ document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeLightbox();
 });
 
+/* Kho câu đùa: bấm lần 1 xem đáp án, bấm lần 2 sang câu khác (câu đầu luôn là câu cũ) */
+const JOKES = [
+    ["Tại sao con cá không bao giờ thất tình?", "Vì nó biết có rất nhiều cá ngoài biển"],
+    ["Cá nào không biết bơi?", "Cá khô."],
+    ["Tại sao cá sợ lên mạng?", "Vì sợ dính lưới."],
+    ["Tại sao cá hồi đi xa rồi cũng quay về?", "Vì tên nó là cá \"hồi\" mà."],
+    ["Tại sao cua hay bị chê là ngang?", "Vì nó đi ngang thật."],
+    ["Tại sao cá không chơi game online?", "Vì sợ lag đáy biển."],
+    ["Tại sao cá hay đi trễ?", "Vì bị người ta câu giờ."],
+    ["Tại sao cá luôn đi học theo đàn?", "Vì sợ bị gọi là cá biệt."],
+    ["Tại sao sao biển không đi làm?", "Vì nó là ngôi sao, chỉ đi diễn thôi."],
+    ["Cá nào giàu nhất biển?", "Cá vàng."],
+    ["Tại sao cá nóc hay bị bạn bè né?", "Vì cứ nói không hợp là phồng lên."],
+    ["Con gì sống dưới nước mà hay \"tám\" chuyện nhất?", "Bạch tuộc, vì có tám cái tay."],
+    ["Tại sao cá không bao giờ khóc?", "Vì khóc dưới nước thì ai mà biết."],
+    ["Tại sao sứa không đi học?", "Vì nó chẳng có não để nhớ bài."]
+];
+let jokeOrder = [0];
+let jokePos = 0;
+let jokeShowingAnswer = false;
+
+function nextJokeOrder(keepFirst) {
+    const rest = [];
+    for (let i = keepFirst ? 1 : 0; i < JOKES.length; i++) rest.push(i);
+    for (let i = rest.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = rest[i]; rest[i] = rest[j]; rest[j] = t;
+    }
+    return keepFirst ? [0].concat(rest) : rest;
+}
+jokeOrder = nextJokeOrder(true);
+
 function changeGreeting() {
-    document.getElementById("greeting").textContent =
-        "Vì nó biết có rất nhiều cá ngoài biển";
+    const el = document.getElementById("greeting");
+    const btn = document.querySelector(".btn-joke");
+    if (!jokeShowingAnswer) {
+        el.textContent = JOKES[jokeOrder[jokePos]][1];
+        btn.textContent = "Câu khác";
+        jokeShowingAnswer = true;
+    } else {
+        jokePos++;
+        if (jokePos >= jokeOrder.length) {
+            const lastIdx = jokeOrder[jokeOrder.length - 1];
+            jokeOrder = nextJokeOrder(false);
+            if (jokeOrder[0] === lastIdx) jokeOrder.push(jokeOrder.shift());   // tránh lặp ngay câu vừa xem
+            jokePos = 0;
+        }
+        el.textContent = JOKES[jokeOrder[jokePos]][0];
+        btn.textContent = "Xem đáp án";
+        jokeShowingAnswer = false;
+    }
 }
 
 let isDark = localStorage.getItem("isDark") === "true";
@@ -2515,6 +2668,381 @@ window.addEventListener("load", function () {
     document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(true); });
 
     refresh();
+})();
+</script>
+<script>
+/* ============ CHO CÁ ĂN: bấm vào đáy biển để thả thức ăn ============ */
+(function () {
+    const seabed = document.querySelector(".seabed");
+    if (!seabed) return;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const lowEnd = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+    const fishCount = (window.innerWidth < 600 || lowEnd) ? 3 : 5;
+    const rnd = function (a, b) { return a + Math.random() * (b - a); };
+
+    const layer = document.createElement("div");
+    layer.className = "feed-layer";
+    const hint = document.createElement("div");
+    hint.className = "feed-hint";
+    layer.appendChild(hint);
+    seabed.appendChild(layer);
+
+    /* nhớ số viên cá đã ăn sau khi tải lại trang (F5) */
+    const EAT_KEY = "sakaFishEaten";
+    let eaten = 0;
+    try {
+        const saved = parseInt(localStorage.getItem(EAT_KEY), 10);
+        if (saved > 0) eaten = saved;
+    } catch (err) {}
+    function saveEaten() {
+        try { localStorage.setItem(EAT_KEY, String(eaten)); } catch (err) {}
+    }
+    function updateHint() {
+        hint.textContent = "🍤 Bấm vào biển để cho cá ăn" + (eaten ? " · cá đã ăn " + eaten + " viên" : "");
+    }
+    updateHint();
+
+    let W = 0, H = 0, floorY = 0;
+    function measure() {
+        const r = layer.getBoundingClientRect();
+        W = r.width; H = r.height; floorY = H - 32;
+    }
+    measure();
+
+    const COLORS = ["#fb923c", "#38bdf8", "#f472b6", "#facc15", "#2dd4bf", "#a78bfa"];
+    function fishSvg(c) {
+        return '<svg viewBox="0 0 30 14" xmlns="http://www.w3.org/2000/svg">' +
+            '<path d="M9 7 L1 1 C3 5 3 9 1 13 Z" fill="' + c + '"/>' +
+            '<path d="M7 7 C11 0 22 0 28 7 C22 14 11 14 7 7 Z" fill="' + c + '"/>' +
+            '<path d="M10 9 C14 12 21 12 25 9" stroke="#fff" stroke-opacity=".45" stroke-width="1.2" fill="none" stroke-linecap="round"/>' +
+            '<circle cx="23" cy="5.5" r="1.6" fill="#fff"/><circle cx="23.4" cy="5.5" r=".8" fill="#1f2937"/></svg>';
+    }
+
+    const fishes = [];
+    for (let i = 0; i < fishCount; i++) {
+        const size = rnd(30, 42);
+        const el = document.createElement("div");
+        el.className = "ff";
+        el.style.width = size.toFixed(0) + "px";
+        el.innerHTML = fishSvg(COLORS[i % COLORS.length]);
+        layer.appendChild(el);
+        fishes.push({
+            el: el, svg: el.firstChild, size: size, h: size * 14 / 30,
+            x: rnd(0, Math.max(1, W - size)), y: rnd(24, Math.max(25, H - 80)),
+            vx: 0, vy: 0, tx: 0, ty: 0, speed: 35, dir: 1, nextWander: 0,
+            phase: rnd(0, 6.28), chase: rnd(150, 210)
+        });
+    }
+    fishes.forEach(function (f) { f.tx = f.x; f.ty = f.y; });
+
+    const foods = [];
+    const MAX_FOOD = 14;
+    layer.addEventListener("click", function (e) {
+        measure();
+        const r = layer.getBoundingClientRect();
+        const cx = e.clientX - r.left, cy = e.clientY - r.top;
+        for (let k = 0; k < 3; k++) {
+            const el = document.createElement("div");
+            el.className = "food";
+            layer.appendChild(el);
+            foods.push({
+                el: el, x: Math.min(W - 4, Math.max(4, cx + rnd(-12, 12))),
+                y: Math.min(floorY, Math.max(18, cy + rnd(-6, 6))),
+                baseX: 0, speed: rnd(34, 48), phase: rnd(0, 6.28), rest: 0
+            });
+            foods[foods.length - 1].baseX = foods[foods.length - 1].x;
+        }
+        while (foods.length > MAX_FOOD) foods.shift().el.remove();
+    });
+
+    function stepFood(dt, now) {
+        for (let i = foods.length - 1; i >= 0; i--) {
+            const p = foods[i];
+            if (p.y < floorY) {
+                p.y = Math.min(floorY, p.y + p.speed * dt);
+                p.x = p.baseX + Math.sin(now / 500 + p.phase) * 5;
+                if (p.y >= floorY) p.rest = now;
+            } else if (now - p.rest > 7000) {
+                p.el.remove();
+                foods.splice(i, 1);
+                continue;
+            }
+            p.el.style.transform = "translate(" + p.x.toFixed(1) + "px," + p.y.toFixed(1) + "px)";
+        }
+    }
+
+    function stepFish(dt, now) {
+        fishes.forEach(function (f) {
+            const cx = f.x + f.size / 2, cy = f.y + f.h / 2;
+            let target = null, best = 1e9;
+            for (let i = 0; i < foods.length; i++) {
+                const d = Math.hypot(foods[i].x - cx, foods[i].y - cy);
+                if (d < best) { best = d; target = foods[i]; }
+            }
+            let tx, ty, spd;
+            if (target) {
+                tx = target.x - f.size / 2; ty = target.y - f.h / 2; spd = f.chase;
+            } else {
+                if (now > f.nextWander) {
+                    if (reduce) { f.tx = f.x; f.ty = f.y; }
+                    else { f.tx = rnd(0, Math.max(1, W - f.size)); f.ty = rnd(24, Math.max(25, H - 80)); }
+                    f.speed = rnd(25, 50);
+                    f.nextWander = now + rnd(2500, 6000);
+                }
+                tx = f.tx; ty = f.ty; spd = f.speed;
+            }
+            const dx = tx - f.x, dy = ty - f.y, dist = Math.hypot(dx, dy);
+            const k = dist > 0.5 ? Math.min(1, dist / 40) * spd / dist : 0;
+            f.vx += (dx * k - f.vx) * Math.min(1, dt * 3);
+            f.vy += (dy * k - f.vy) * Math.min(1, dt * 3);
+            f.x = Math.min(Math.max(f.x + f.vx * dt, -4), Math.max(0, W - f.size + 4));
+            f.y = Math.min(Math.max(f.y + f.vy * dt, 14), Math.max(15, H - 60));
+            if (Math.abs(f.vx) > 8) {
+                const nd = f.vx > 0 ? 1 : -1;
+                if (nd !== f.dir) { f.dir = nd; f.svg.style.transform = nd > 0 ? "" : "scaleX(-1)"; }
+            }
+            const ang = f.dir * Math.max(-20, Math.min(20, f.vy * 0.12));
+            const bob = target ? 0 : Math.sin(now / 400 + f.phase) * 2;
+            f.el.style.transform = "translate(" + f.x.toFixed(1) + "px," + (f.y + bob).toFixed(1) + "px) rotate(" + ang.toFixed(1) + "deg)";
+
+            /* đớp mồi */
+            const mx = f.x + f.size / 2 + f.dir * f.size * 0.38, my = f.y + f.h / 2;
+            for (let i = foods.length - 1; i >= 0; i--) {
+                if (Math.hypot(foods[i].x - mx, foods[i].y - my) < 11) {
+                    foods[i].el.remove();
+                    foods.splice(i, 1);
+                    eaten++;
+                    saveEaten();
+                    updateHint();
+                    if (f.svg.animate) f.svg.animate([{ scale: "1" }, { scale: "1.3 0.8" }, { scale: "1" }], { duration: 260 });
+                    break;
+                }
+            }
+        });
+    }
+
+    let running = false, inView = false, rafId = 0, last = 0;
+    function frame(now) {
+        rafId = 0;
+        if (!running) return;
+        const dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        stepFood(dt, now);
+        stepFish(dt, now);
+        rafId = requestAnimationFrame(frame);
+    }
+    function updateRun() {
+        const should = inView && !document.hidden;
+        if (should && !running) {
+            running = true; measure(); last = performance.now();
+            rafId = requestAnimationFrame(frame);
+        } else if (!should) {
+            running = false;
+            if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+        }
+    }
+    if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+            inView = entries[0].isIntersecting;
+            updateRun();
+        }, { rootMargin: "100px" }).observe(seabed);
+    } else {
+        inView = true; updateRun();
+    }
+    document.addEventListener("visibilitychange", updateRun);
+    window.addEventListener("resize", measure);
+})();
+</script>
+<script>
+/* ============ HÔM NAY BẠN LÀ CON CÁ NÀO ============ */
+(function () {
+    const form = document.getElementById("ftForm");
+    if (!form) return;
+    const nameEl = document.getElementById("ftName");
+    const out = document.getElementById("ftResult");
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const FISH = [
+        { e: "🐠", n: "Cá hề", c: "#ea580c", d: "Nhỏ xíu nhưng cả rạn san hô đều biết tên bạn. Hay ở lì trong nhà và nói nhiều hơn mức cần thiết." },
+        { e: "🦈", n: "Cá mập", c: "#475569", d: "Nhìn thì dữ vậy thôi, thật ra chỉ đang đói. Bạn đi tới đâu thiên hạ tự dạt ra tới đó." },
+        { e: "🐬", n: "Cá heo", c: "#0284c7", d: "Thông minh, vui tính, thích nhảy lên khoe. Cả đàn quý bạn, kể cả mấy người mới gặp." },
+        { e: "🐡", n: "Cá nóc", c: "#b45309", d: "Ngày thường hiền khô, bị chọc là phồng lên liền. Đừng ai hỏi bạn về deadline hôm nay." },
+        { e: "🐳", n: "Cá voi", c: "#1d4ed8", d: "To con, hiền lành, thích hát một mình lúc nửa đêm. Tâm hồn rộng cỡ đại dương." },
+        { e: "🪼", n: "Sứa", c: "#a21caf", d: "Hôm nay bạn cứ trôi theo dòng đời, không cần nghĩ nhiều. Mong manh, nhưng đừng ai dại chọc vào." },
+        { e: "🐙", n: "Bạch tuộc", c: "#be123c", d: "Tám cái tay làm tám việc cùng lúc, và việc nào cũng xong sát giờ." },
+        { e: "🦀", n: "Cua", c: "#dc2626", d: "Đi ngang, nghĩ ngang, sống ngang. Vỏ ngoài cứng nhưng bên trong rất mềm." },
+        { e: "🐟", n: "Cá chép", c: "#c2410c", d: "Đang trên đường hóa rồng, nhưng hôm nay chỉ muốn nằm im dưới đáy ao." },
+        { e: "🐢", n: "Rùa biển", c: "#15803d", d: "Chậm mà chắc, sống thọ nhờ không vội việc gì. Hôm nay cứ thong thả." },
+        { e: "🦭", n: "Hải cẩu", c: "#6d28d9", d: "Nằm ườn phơi nắng, vỗ tay khi có đồ ăn. Cuộc sống lý tưởng là đây chứ đâu." },
+        { e: "🦐", n: "Tôm", c: "#e11d48", d: "Lúc nào cũng cong lưng làm việc, đến khi chín mới chịu nghỉ. Nhớ uống nước và thẳng lưng lên nhé." },
+        { e: "🐟", n: "Cá khô", c: "#92400e", d: "Mặn, cứng đầu, nhưng là món đưa cơm nhất bữa. Có bạn là bữa nào cũng hết nồi cơm." },
+        { e: "🐟", n: "Cá lòng tong", c: "#0e7490", d: "Bé tí, đi theo đàn, cái gì cũng sợ mà vẫn vui vẻ bơi tới bơi lui." }
+    ];
+    const STATS = ["Độ lầy", "Độ ngầu", "Độ đói"];
+
+    function hashStr(s) {
+        let h = 2166136261 >>> 0;
+        for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+        return h;
+    }
+    function mix(h) {
+        h = (h ^ (h >>> 15)) >>> 0; h = Math.imul(h, 2246822507) >>> 0;
+        h = (h ^ (h >>> 13)) >>> 0; h = Math.imul(h, 3266489909) >>> 0;
+        return (h ^ (h >>> 16)) >>> 0;
+    }
+    function dayKey() {
+        const d = new Date();
+        return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+    }
+    function el(tag, cls, text) {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text !== undefined) e.textContent = text;
+        return e;
+    }
+
+    function show(name) {
+        const named = name !== "";
+        const seed = named ? hashStr(name.toLowerCase() + "|" + dayKey()) : (Math.random() * 4294967296) >>> 0;
+        const f = FISH[mix(seed) % FISH.length];
+
+        out.textContent = "";
+        out.style.setProperty("--ft-accent", f.c);
+        out.appendChild(el("div", "ft-emoji", f.e));
+        out.appendChild(el("p", "ft-who", named ? "Hôm nay " + name + " là..." : "Hôm nay bạn là..."));
+        out.appendChild(el("h3", "ft-name", f.n));
+        out.appendChild(el("p", "ft-desc", f.d));
+
+        const stats = el("div", "ft-stats");
+        const fills = [];
+        STATS.forEach(function (label, i) {
+            const v = 35 + (mix(seed + (i + 1) * 7919) % 66);
+            const row = el("div", "ft-stat");
+            const bar = el("div", "ft-bar");
+            const fill = document.createElement("i");
+            bar.appendChild(fill);
+            row.appendChild(el("span", "", label));
+            row.appendChild(bar);
+            row.appendChild(el("b", "", v + "%"));
+            stats.appendChild(row);
+            fills.push([fill, v]);
+        });
+        out.appendChild(stats);
+
+        const note = el("p", "ft-note", named ? "Mai bạn sẽ ra con khác. Quay lại thử nhé!" : "Bấm lần nữa để thử vận may khác.");
+        out.appendChild(note);
+
+        out.hidden = false;
+        out.classList.remove("ft-pop");
+        void out.offsetWidth;
+        out.classList.add("ft-pop");
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () { fills.forEach(function (p) { p[0].style.width = p[1] + "%"; }); });
+        });
+        out.scrollIntoView({ block: "nearest", behavior: reduce ? "auto" : "smooth" });
+    }
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        show(nameEl.value.trim().slice(0, 30));
+    });
+})();
+</script>
+<script>
+/* ============ TIẾNG SÓNG BIỂN (tạo bằng Web Audio, không cần file âm thanh) ============ */
+(function () {
+    const btn = document.getElementById("waveToggle");
+    if (!btn) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) { btn.hidden = true; return; }
+    const ico = btn.querySelector(".wave-ico");
+    let ctx = null, master = null, on = false, stopTimer = 0;
+
+    function noiseBuffer(seconds, brown) {
+        const sr = ctx.sampleRate, len = Math.floor(sr * seconds);
+        const buf = ctx.createBuffer(1, len, sr);
+        const d = buf.getChannelData(0);
+        if (!brown) {
+            for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+            return buf;
+        }
+        /* nhiễu nâu (trầm như tiếng biển), nối đầu-đuôi mượt để lặp không bị tiếng "bụp" */
+        const ov = Math.floor(sr * 0.5), raw = new Float32Array(len + ov);
+        let last = 0;
+        for (let i = 0; i < raw.length; i++) {
+            last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+            raw[i] = last * 3.5;
+        }
+        for (let i = 0; i < len; i++) {
+            d[i] = i < ov ? raw[i] * (i / ov) + raw[len + i] * (1 - i / ov) : raw[i];
+        }
+        return buf;
+    }
+
+    function build() {
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0;
+        master.connect(ctx.destination);
+
+        const lfo = ctx.createOscillator();      /* nhịp sóng lên xuống */
+        lfo.frequency.value = 0.11;
+
+        /* tầng trầm: tiếng ì ầm của sóng */
+        const rumble = ctx.createBufferSource();
+        rumble.buffer = noiseBuffer(6, true);
+        rumble.loop = true;
+        const lp = ctx.createBiquadFilter();
+        lp.type = "lowpass"; lp.frequency.value = 800; lp.Q.value = 0.7;
+        const swell = ctx.createGain();
+        swell.gain.value = 0.55;
+        rumble.connect(lp); lp.connect(swell); swell.connect(master);
+        const lfoSwell = ctx.createGain(); lfoSwell.gain.value = 0.35;
+        const lfoCut = ctx.createGain(); lfoCut.gain.value = 500;
+        lfo.connect(lfoSwell); lfoSwell.connect(swell.gain);
+        lfo.connect(lfoCut); lfoCut.connect(lp.frequency);
+
+        /* tầng bọt: tiếng rì rào khi sóng vỡ */
+        const foam = ctx.createBufferSource();
+        foam.buffer = noiseBuffer(2, false);
+        foam.loop = true;
+        const bp = ctx.createBiquadFilter();
+        bp.type = "bandpass"; bp.frequency.value = 1800; bp.Q.value = 0.5;
+        const foamGain = ctx.createGain();
+        foamGain.gain.value = 0.02;
+        foam.connect(bp); bp.connect(foamGain); foamGain.connect(master);
+        const lfoFoam = ctx.createGain(); lfoFoam.gain.value = 0.016;
+        lfo.connect(lfoFoam); lfoFoam.connect(foamGain.gain);
+
+        rumble.start(); foam.start(); lfo.start();
+    }
+
+    function setUi() {
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        ico.textContent = on ? "🔊" : "🔇";
+    }
+
+    btn.addEventListener("click", function () {
+        on = !on;
+        setUi();
+        if (on) {
+            if (!ctx) build();
+            clearTimeout(stopTimer);
+            ctx.resume();
+            master.gain.cancelScheduledValues(ctx.currentTime);
+            master.gain.setTargetAtTime(0.6, ctx.currentTime, 0.5);
+        } else if (ctx) {
+            master.gain.cancelScheduledValues(ctx.currentTime);
+            master.gain.setTargetAtTime(0, ctx.currentTime, 0.25);
+            stopTimer = setTimeout(function () { if (!on) ctx.suspend(); }, 1500);
+        }
+    });
+
+    /* chuyển tab thì tạm im, quay lại thì tiếp tục */
+    document.addEventListener("visibilitychange", function () {
+        if (!ctx || !on) return;
+        if (document.hidden) ctx.suspend(); else ctx.resume();
+    });
 })();
 </script>
 </body>
