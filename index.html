@@ -1539,6 +1539,22 @@ body.dark .ft-note { color: #9ca3af; }
 body.dark .wave-toggle { color: #e0f2fe; border: 1px solid #38bdf8; background: linear-gradient(135deg, #0c4a6e 0%, #0f2a4a 100%); }
 body.dark .wave-toggle[aria-pressed="true"] { border-color: #34d399; background: linear-gradient(135deg, #115e59 0%, #064e3b 100%); }
 @media (prefers-reduced-motion: reduce) { .wave-toggle[aria-pressed="true"] .wave-ico { animation: none; } }
+
+/* ============ NÚT TRANG BIO (nổi góc trái dưới) ============ */
+.bio-fab {
+  position: fixed; left: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 1100;
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px;
+  font-family: "Pacifico", "Itim", cursive; font-size: 17px; color: #fff; text-decoration: none;
+  background: linear-gradient(110deg, #0ea5e9, #8b5cf6, #ec4899, #0ea5e9);
+  background-size: 300% 100%; animation: bioShine 5s linear infinite, bioBob 3s ease-in-out infinite;
+  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.45), inset 0 0 0 1.5px rgba(255, 255, 255, 0.55);
+  transition: transform 0.2s;
+}
+.bio-fab:hover { transform: scale(1.08) rotate(-2deg); }
+@keyframes bioShine { to { background-position: 300% 0; } }
+@keyframes bioBob { 50% { margin-bottom: 6px; } }
+@media (max-width: 600px) { .bio-fab { font-size: 15px; padding: 8px 14px; } }
+@media (prefers-reduced-motion: reduce) { .bio-fab { animation: none; } }
 </style>
 </head>
 <body>
@@ -1549,7 +1565,6 @@ body.dark .wave-toggle[aria-pressed="true"] { border-color: #34d399; background:
         <a href="#guestbook">Lời nhắn</a>
         <a href="#fishtype">Bạn là cá nào?</a>
         <a href="#hobbies">sở thích</a>
-        <a href="bio.html">Trang bio</a>
     </div>
      <h2>SAKA</h2>
 </nav>
@@ -1710,6 +1725,7 @@ body.dark .wave-toggle[aria-pressed="true"] { border-color: #34d399; background:
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" alt="">
 </div>
+<a href="bio.html" class="bio-fab" title="Xem trang bio của saka">✨ Trang bio</a>
 <button type="button" id="waveToggle" class="wave-toggle" aria-pressed="false" title="Bật/tắt tiếng sóng biển"><span class="wave-ico" aria-hidden="true">🔇</span><span>Tiếng sóng</span></button>
 <script>
 const lightbox = document.getElementById("lightbox");
