@@ -2796,7 +2796,7 @@ window.addEventListener("load", function () {
             f.vx += (dx * k - f.vx) * Math.min(1, dt * 3);
             f.vy += (dy * k - f.vy) * Math.min(1, dt * 3);
             f.x = Math.min(Math.max(f.x + f.vx * dt, -4), Math.max(0, W - f.size + 4));
-            f.y = Math.min(Math.max(f.y + f.vy * dt, 14), Math.max(15, H - 60));
+            f.y = Math.min(Math.max(f.y + f.vy * dt, 14), Math.max(15, floorY - f.h / 2));
             if (Math.abs(f.vx) > 8) {
                 const nd = f.vx > 0 ? 1 : -1;
                 if (nd !== f.dir) { f.dir = nd; f.svg.style.transform = nd > 0 ? "" : "scaleX(-1)"; }
