@@ -110,6 +110,7 @@ h1 { font-family: "Pacifico", cursive; font-weight: 400; font-size: 32px; }
 #rain { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .bubbles, .rays, .swimmers, .seafloor { will-change: transform; transform: scale(1.1); }
 .seafloor { transform-origin: 50% 100%; }
+#musicBtn { right: 64px; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
@@ -132,8 +133,7 @@ h1 { font-family: "Pacifico", cursive; font-weight: 400; font-size: 32px; }
   <div class="avatar">🐠</div>
   <h1>saka</h1>
   <p class="bio" id="bio"></p>
-  <span class="tag">🌊 Đang ở Việt Nam
-  </span>
+  <span class="tag">🌊 miền nam</span>
 
   <nav class="links">
     <!-- ĐỔI các link "#" bên dưới thành link thật của bạn -->
@@ -145,6 +145,8 @@ h1 { font-family: "Pacifico", cursive; font-weight: 400; font-size: 32px; }
   <p class="foot">🐟 hồ cá của saka</p>
 </main>
 
+<audio id="music" src="nhac.mp3" loop preload="auto"></audio>
+<button class="sound" id="musicBtn" aria-label="Bật tắt nhạc" aria-pressed="false" title="Nhạc">🎵</button>
 <button class="sound" id="sound" aria-label="Bật tắt tiếng sóng" aria-pressed="false">🔇</button>
 
 <script>
@@ -167,6 +169,7 @@ h1 { font-family: "Pacifico", cursive; font-weight: 400; font-size: 32px; }
   function enter() {
     if (started) return; started = true;
     gate.classList.add("hide"); card.classList.add("show");
+    if (window.startMusic) window.startMusic();
     let i = 0;
     (function type() { bio.textContent = TEXT.slice(0, ++i); if (i < TEXT.length) setTimeout(type, 55); })();
   }
@@ -294,6 +297,19 @@ h1 { font-family: "Pacifico", cursive; font-weight: 400; font-size: 32px; }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+})();
+</script>
+<script>
+/* nhạc nền: đặt file nhac.mp3 cùng thư mục với bio.html */
+(function () {
+  const au = document.getElementById("music"), btn = document.getElementById("musicBtn");
+  let broken = false;
+  au.volume = .5;
+  au.addEventListener("error", function () { broken = true; btn.hidden = true; });
+  function ui() { btn.style.opacity = au.paused ? ".55" : "1"; btn.setAttribute("aria-pressed", au.paused ? "false" : "true"); }
+  window.startMusic = function () { if (broken) return; au.play().then(ui).catch(ui); };   /* trình duyệt chỉ cho phát sau khi người xem bấm */
+  btn.addEventListener("click", function () { if (au.paused) au.play().then(ui).catch(ui); else { au.pause(); ui(); } });
+  ui();
 })();
 </script>
 </body>
