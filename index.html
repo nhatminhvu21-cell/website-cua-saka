@@ -1555,6 +1555,24 @@ body.dark .wave-toggle[aria-pressed="true"] { border-color: #34d399; background:
 @keyframes bioBob { 50% { margin-bottom: 6px; } }
 @media (max-width: 600px) { .bio-fab { font-size: 15px; padding: 8px 14px; } }
 @media (prefers-reduced-motion: reduce) { .bio-fab { animation: none; } }
+
+/* ============ ĐÀN CÁ NỀN SIÊU CHI TIẾT (tạo bằng JS) ============ */
+.sw { position: absolute; left: 0; animation: heroSwimBig var(--dur) linear var(--delay) infinite; will-change: transform; }
+.sw .wy { animation: hfWander var(--wd, 9s) ease-in-out var(--wl, 0s) infinite alternate; }
+.sw svg { display: block; width: var(--w); height: auto; overflow: visible; animation: hfBob 2.6s ease-in-out infinite alternate; }
+.sw .fish-tail { animation-duration: 0.7s; }
+.sw.whale .fish-tail { animation-duration: 2.6s; }
+.sw.whale svg { animation-duration: 6s; }
+.sw.far { opacity: 0.42; }
+.sw.mid { opacity: 0.85; }
+.sw .school { position: relative; width: 150px; height: 70px; }
+.sw .sm { position: absolute; }
+.sw .sm svg { width: var(--sw); animation-duration: var(--bd); animation-delay: var(--bl); }
+@keyframes hfWander { from { transform: translateY(-14px); } to { transform: translateY(16px); } }
+.hero-fish.paused * { animation-play-state: paused !important; }
+body.dark .hero-fish { opacity: 0.85; }
+@media (max-width: 600px) { .sw svg { width: calc(var(--w) * 0.6); } }
+@media (prefers-reduced-motion: reduce) { .sw .fish-tail, .sw .fish-fin { animation: none; } }
 </style>
 </head>
 <body>
@@ -1575,38 +1593,7 @@ body.dark .wave-toggle[aria-pressed="true"] { border-color: #34d399; background:
         <svg class="wave wave-mid" viewBox="0 0 2400 120" preserveAspectRatio="none"><path d="M0 60 Q150 20 300 60 T600 60 T900 60 T1200 60 T1500 60 T1800 60 T2100 60 T2400 60 V120 H0 Z"/></svg>
         <svg class="wave wave-front" viewBox="0 0 2400 120" preserveAspectRatio="none"><path d="M0 60 Q150 20 300 60 T600 60 T900 60 T1200 60 T1500 60 T1800 60 T2100 60 T2400 60 V120 H0 Z"/></svg>
     </div>
-    <div class="hero-fish" aria-hidden="true">
-        <div class="hf big" style="top:4%; --dur:38s; --delay:-10s; --w:120px;">
-            <svg viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient><clipPath id="c1"><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z"/></clipPath></defs><path class="fish-tail" d="M18 25 C12 20 8 18 4 17 C6 23 6 27 4 33 C8 32 12 30 18 25 Z" fill="#94a3b8" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 14 C34 7 28 2 18 0 C21 5 22 11 25 15 Z" fill="#94a3b8" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 36 C34 43 28 48 18 50 C21 45 22 39 25 35 Z" fill="#94a3b8" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z" fill="url(#g1)"/><g clip-path="url(#c1)"><path d="M26 8 Q22 25 26 42 L30 42 Q26 25 30 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M36 8 Q33 25 36 42 L39.5 42 Q36.5 25 39.5 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M22 17 C28 12 38 12 44 18" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round"/></g><path d="M36 33 C37 40 41 44 45 46 C43 41 42 37 41 32 Z" fill="#94a3b8" fill-opacity=".8"/><circle cx="43" cy="22" r="3" fill="#fff"/><circle cx="44" cy="22" r="1.7" fill="#1f2937"/></svg>
-        </div>
-        <div class="hf big" style="top:26%; --dur:48s; --delay:-30s; --w:240px;">
-            <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#7e22ce"/></linearGradient><clipPath id="c2"><path d="M30 20 C36 12 52 12 66 18 C70 20 70 20 66 22 C52 28 36 28 30 20 Z"/></clipPath></defs><g class="fish-tail"><path d="M32 20 C24 8 12 2 2 3 C8 11 6 16 9 20 C6 24 8 29 2 37 C12 38 24 32 32 20 Z" fill="#c026d3" fill-opacity=".85"/><path d="M31 20 C21 14 12 8 4 5" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/><path d="M31 20 C20 20 13 20 8 20" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/><path d="M31 20 C21 26 12 32 4 35" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/></g><path class="fish-fin" d="M42 13.5 C44 6 52 1 61 1 C57 6 57 10 56 14 Z" fill="#c026d3" fill-opacity=".85"/><path class="fish-fin" d="M44 25.5 C40 32 34 37 24 38 C30 33 31 29 36 26 Z" fill="#c026d3" fill-opacity=".85"/><path d="M30 20 C36 12 52 12 66 18 C70 20 70 20 66 22 C52 28 36 28 30 20 Z" fill="url(#g2)"/><g clip-path="url(#c2)"><path d="M34 15 C44 12 56 13 66 17" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M38 20 C46 19 56 19 64 20" stroke="#fff" stroke-opacity=".18" stroke-width="1.2" fill="none"/></g><path d="M58 14.5 Q55.5 20 58 25" stroke="#3b0764" stroke-opacity=".35" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="62" cy="18.2" r="2.3" fill="#fff"/><circle cx="62.7" cy="18.2" r="1.3" fill="#1f2937"/></svg>
-        </div>
-        <div class="hf big" style="top:52%; --dur:42s; --delay:-24s; --w:210px;">
-            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient><clipPath id="c3"><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z"/></clipPath></defs><path class="fish-tail" d="M13 15 C8 11 4 7 1 6 C3 12 3 18 1 24 C4 23 8 19 13 15 Z" fill="#facc15" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M20 6.5 C26 0 38 0 42 6 C34 7 27 8 20 6.5 Z" fill="#1e40af"/><path class="fish-fin" d="M24 23.5 C28 29.5 36 29.5 40 23.5 C34 24.5 29 24.5 24 23.5 Z" fill="#1e40af"/><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z" fill="url(#g3)"/><g clip-path="url(#c3)"><path d="M15 16 C21 8 33 8 41 13 C35 14 30 16 27 22 C22 22 17 20 15 16 Z" fill="#0f172a"/><path d="M14 9 C24 3 38 4 48 11" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M35 18 C33 24 37 25.5 41 23 C39 21 37 19 35 18 Z" fill="#facc15"/><path d="M43 9.5 Q40 15 43 20.5" stroke="#0f172a" stroke-opacity=".3" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="46" cy="12.2" r="2.4" fill="#fff"/><circle cx="46.7" cy="12.2" r="1.3" fill="#0f172a"/></svg>
-        </div>
-        <div class="hf big" style="top:68%; --dur:40s; --delay:-6s; --w:130px;">
-            <svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde047"/><stop offset="1" stop-color="#f59e0b"/></linearGradient><clipPath id="c4"><path d="M8 20 C8 9 18 4 28 4 C40 4 46 12 46 21 C46 31 38 36 27 36 C16 36 8 31 8 20 Z"/></clipPath></defs><path class="fish-tail" d="M10 20 C6 17 3 14 1 14 C2 18 2 22 1 26 C3 26 6 23 10 20 Z" fill="#f59e0b" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M22 5 C24 -1 31 -1 33 5 C29 5.5 25 5.5 22 5 Z" fill="#f59e0b" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M8 20 C8 9 18 4 28 4 C40 4 46 12 46 21 C46 31 38 36 27 36 C16 36 8 31 8 20 Z" fill="url(#g4)"/><g clip-path="url(#c4)"><ellipse cx="28" cy="35" rx="21" ry="10" fill="#fff" fill-opacity=".65"/><circle cx="16" cy="14" r="1.1" fill="#92400e" fill-opacity=".4"/><circle cx="22" cy="10" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="30" cy="9" r="1.1" fill="#92400e" fill-opacity=".4"/><circle cx="36" cy="11" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="19" cy="20" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="26" cy="16" r="1.1" fill="#92400e" fill-opacity=".4"/><circle cx="32" cy="18" r="1" fill="#92400e" fill-opacity=".4"/><circle cx="14" cy="24" r="0.9" fill="#92400e" fill-opacity=".4"/><path d="M14 11 C22 5 34 5 42 11" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M27 24 C23 21 20 27 24 30 C27 29 29 27 27 24 Z" fill="#f59e0b" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M46 22 Q44 24.5 41.5 23.5" stroke="#92400e" stroke-width="1" fill="none" stroke-linecap="round"/><circle cx="38" cy="15" r="4" fill="#fff"/><circle cx="39.2" cy="15" r="2.4" fill="#1f2937"/><circle cx="40" cy="14" r=".8" fill="#fff"/></svg>
-        </div>
-        <div class="hf" style="top:14%; --dur:22s; --delay:-4s; --w:58px;">
-            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fb923c"/><stop offset="1" stop-color="#ea580c"/></linearGradient><clipPath id="c5"><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z"/></clipPath></defs><path class="fish-tail" d="M15 15 C9 10 5 6 2 7 C4 12 4 18 2 23 C5 24 9 20 15 15 Z" fill="#f97316" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M23 6.5 C27 0 41 0 45 7 C38 7.5 30 7.5 23 6.5 Z" fill="#f97316" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z" fill="url(#g5)"/><g clip-path="url(#c5)"><path d="M26 0 Q22 15 26 30 L31 30 Q27 15 31 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M37 0 Q34 15 37 30 L41 30 Q38 15 41 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M49 0 Q47 15 49 30 L53 30 Q51 15 53 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 9 C26 3 40 3 50 11" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M33 19 C31 25 36 26 40 23 C38 22 35 20 33 19 Z" fill="#f97316" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M53 15 Q51 16.5 48.5 16" stroke="#7c2d12" stroke-width=".8" fill="none" stroke-linecap="round"/><circle cx="45.5" cy="12.3" r="2.6" fill="#fff"/><circle cx="46.3" cy="12.3" r="1.4" fill="#1f2937"/></svg>
-        </div>
-        <div class="hf" style="top:40%; --dur:17s; --delay:-11s; --w:42px;">
-            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fda4af"/><stop offset="1" stop-color="#e11d48"/></linearGradient><clipPath id="c6"><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z"/></clipPath></defs><path class="fish-tail" d="M15 15 C9 10 5 6 2 7 C4 12 4 18 2 23 C5 24 9 20 15 15 Z" fill="#fb7185" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M23 6.5 C27 0 41 0 45 7 C38 7.5 30 7.5 23 6.5 Z" fill="#fb7185" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M12 15 C20 2 40 2 54 15 C40 28 20 28 12 15 Z" fill="url(#g6)"/><g clip-path="url(#c6)"><path d="M26 0 Q22 15 26 30 L31 30 Q27 15 31 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M37 0 Q34 15 37 30 L41 30 Q38 15 41 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M49 0 Q47 15 49 30 L53 30 Q51 15 53 0 Z" fill="#fff" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 9 C26 3 40 3 50 11" stroke="#fff" stroke-opacity=".4" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M33 19 C31 25 36 26 40 23 C38 22 35 20 33 19 Z" fill="#fb7185" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M53 15 Q51 16.5 48.5 16" stroke="#7c2d12" stroke-width=".8" fill="none" stroke-linecap="round"/><circle cx="45.5" cy="12.3" r="2.6" fill="#fff"/><circle cx="46.3" cy="12.3" r="1.4" fill="#1f2937"/></svg>
-        </div>
-        <div class="hf" style="top:60%; --dur:26s; --delay:-18s; --w:50px;">
-            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient><clipPath id="c7"><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z"/></clipPath></defs><path class="fish-tail" d="M13 15 C8 11 4 7 1 6 C3 12 3 18 1 24 C4 23 8 19 13 15 Z" fill="#facc15" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M20 6.5 C26 0 38 0 42 6 C34 7 27 8 20 6.5 Z" fill="#1e40af"/><path class="fish-fin" d="M24 23.5 C28 29.5 36 29.5 40 23.5 C34 24.5 29 24.5 24 23.5 Z" fill="#1e40af"/><path d="M11 15 C18 3 38 3 50 12 C54 15 54 15 50 18 C38 27 18 27 11 15 Z" fill="url(#g7)"/><g clip-path="url(#c7)"><path d="M15 16 C21 8 33 8 41 13 C35 14 30 16 27 22 C22 22 17 20 15 16 Z" fill="#0f172a"/><path d="M14 9 C24 3 38 4 48 11" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M35 18 C33 24 37 25.5 41 23 C39 21 37 19 35 18 Z" fill="#facc15"/><path d="M43 9.5 Q40 15 43 20.5" stroke="#0f172a" stroke-opacity=".3" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="46" cy="12.2" r="2.4" fill="#fff"/><circle cx="46.7" cy="12.2" r="1.3" fill="#0f172a"/></svg>
-        </div>
-        <div class="hf" style="top:22%; --dur:30s; --delay:-21s; --w:32px;">
-            <svg viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef9c3"/><stop offset="1" stop-color="#fbbf24"/></linearGradient><clipPath id="c8"><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z"/></clipPath></defs><path class="fish-tail" d="M18 25 C12 20 8 18 4 17 C6 23 6 27 4 33 C8 32 12 30 18 25 Z" fill="#f59e0b" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 14 C34 7 28 2 18 0 C21 5 22 11 25 15 Z" fill="#f59e0b" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path class="fish-fin" d="M34 36 C34 43 28 48 18 50 C21 45 22 39 25 35 Z" fill="#f59e0b" fill-opacity=".85" stroke="#1f2937" stroke-opacity=".55" stroke-width=".7" stroke-linejoin="round"/><path d="M16 25 C18 12 40 12 48 24 C49 25 49 25 48 26 C40 38 18 38 16 25 Z" fill="url(#g8)"/><g clip-path="url(#c8)"><path d="M26 8 Q22 25 26 42 L30 42 Q26 25 30 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M36 8 Q33 25 36 42 L39.5 42 Q36.5 25 39.5 8 Z" fill="#1f2937" fill-opacity=".8"/><path d="M22 17 C28 12 38 12 44 18" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round"/></g><path d="M36 33 C37 40 41 44 45 46 C43 41 42 37 41 32 Z" fill="#f59e0b" fill-opacity=".8"/><circle cx="43" cy="22" r="3" fill="#fff"/><circle cx="44" cy="22" r="1.7" fill="#1f2937"/></svg>
-        </div>
-        <div class="hf big" style="top:12%; --dur:28s; --delay:-9s; --w:250px;">
-            <svg viewBox="0 -8 120 58" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g9" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94a3b8"/><stop offset="1" stop-color="#475569"/></linearGradient><clipPath id="c9"><path d="M28 26 C42 12 78 10 108 24 C113 26 116 27 117 28 C112 31 108 34 100 37 C76 44 44 42 28 30 Z"/></clipPath></defs><path class="fish-tail" d="M32 28 C24 24 16 14 6 2 C8 14 10 20 14 27 C10 33 8 40 8 50 C18 44 26 34 32 28 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path class="fish-fin" d="M56 15 C62 4 68 -4 78 -6 C74 2 74 9 77 13 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M28 26 C42 12 78 10 108 24 C113 26 116 27 117 28 C112 31 108 34 100 37 C76 44 44 42 28 30 Z" fill="url(#g9)"/><g clip-path="url(#c9)"><path d="M24 32 C50 36 86 36 118 29 L118 50 L24 50 Z" fill="#f1f5f9" fill-opacity=".92"/><path d="M40 17 C60 10 86 12 106 22" stroke="#fff" stroke-opacity=".3" stroke-width="2" fill="none" stroke-linecap="round"/></g><path class="fish-fin" d="M80 33 C74 42 66 47 56 49 C64 44 66 40 70 35 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path class="fish-fin" d="M42 35 C38 39 33 41 28 42 C32 38 34 36 36 33 Z" fill="#64748b" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M92 24 Q89 28 92 32 M88 24 Q85 28 88 32 M84 24 Q81 28 84 32" stroke="#0f172a" stroke-opacity=".35" stroke-width="1.1" fill="none" stroke-linecap="round"/><path d="M116 28.5 Q108 33 98 31" stroke="#0f172a" stroke-opacity=".6" stroke-width="1" fill="none" stroke-linecap="round"/><circle cx="104" cy="24" r="2.2" fill="#0f172a"/><circle cx="104.7" cy="23.3" r=".7" fill="#fff"/></svg>
-        </div>
-        <div class="hf big" style="top:40%; --dur:64s; --delay:-22s; --w:340px;">
-            <svg viewBox="0 0 140 70" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c9cc4"/><stop offset="1" stop-color="#34507a"/></linearGradient><clipPath id="c10"><path d="M30 34 C46 14 100 6 122 24 C130 30 134 34 133 38 C130 44 124 48 114 52 C90 62 50 56 30 38 Z"/></clipPath></defs><path class="fish-tail" d="M34 36 C26 32 20 24 14 12 C12 18 8 20 2 20 C6 26 10 30 16 34 C10 38 6 44 4 52 C12 50 20 44 34 38 Z" fill="#3f5f8f" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M30 34 C46 14 100 6 122 24 C130 30 134 34 133 38 C130 44 124 48 114 52 C90 62 50 56 30 38 Z" fill="url(#g10)"/><g clip-path="url(#c10)"><path d="M30 41 C60 51 100 51 134 41 L134 70 L30 70 Z" fill="#e2e8f0" fill-opacity=".9"/><path d="M86 46 Q88 52 84 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M91 46 Q93 52 89 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M96 46 Q98 52 94 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M101 46 Q103 52 99 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M106 46 Q108 52 104 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M111 46 Q113 52 109 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M116 46 Q118 52 114 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M121 46 Q123 52 119 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M126 46 Q128 52 124 58" stroke="#64748b" stroke-opacity=".45" stroke-width=".7" fill="none"/><path d="M50 20 C70 12 100 12 118 22" stroke="#fff" stroke-opacity=".28" stroke-width="2.4" fill="none" stroke-linecap="round"/></g><path d="M60 17 C64 10 70 10 74 15 Z" fill="#34507a" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path class="fish-fin" d="M96 46 C92 58 84 64 72 66 C80 60 82 54 84 48 Z" fill="#3f5f8f" stroke="#0f172a" stroke-opacity=".5" stroke-width=".8" stroke-linejoin="round"/><path d="M133 38 C126 42 116 43 108 41" stroke="#0f172a" stroke-opacity=".5" stroke-width="1" fill="none" stroke-linecap="round"/><circle cx="116" cy="36" r="2.3" fill="#0f172a"/><circle cx="116.8" cy="35.2" r=".8" fill="#fff"/></svg>
-        </div>
-    </div>
+    <div class="hero-fish" aria-hidden="true"></div>
     <div class="water-wrap">
         <button id="colorButton" onclick="changeBackground()">biến sâu</button>
     </div>
@@ -3060,6 +3047,147 @@ window.addEventListener("load", function () {
         if (!ctx || !on) return;
         if (document.hidden) ctx.suspend(); else ctx.resume();
     });
+})();
+</script>
+<script>
+/* ===== ĐÀN CÁ NỀN Ở HERO (siêu chi tiết): vảy, vây có tia, mang, đường bên, mắt, nhiều loài + đàn cá nhỏ ===== */
+(function () {
+  var hf = document.querySelector(".hero-fish");
+  if (!hf) return;
+  var R = function (a, b) { return a + Math.random() * (b - a); };
+  var f = function (n) { return n.toFixed(1); };
+  var mob = innerWidth <= 600, uid = 0;
+  var sm = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
+  var svg = function (i) { return '<svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">' + i + "</svg>"; };
+
+  hf.insertAdjacentHTML("beforebegin", '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="hfDefs">' +
+    '<pattern id="hfScale" width="7" height="5" patternUnits="userSpaceOnUse"><path d="M0 5A3.5 3.5 0 0 1 7 5M-3.5 2.5A3.5 3.5 0 0 1 3.5 2.5M3.5 2.5A3.5 3.5 0 0 1 10.5 2.5" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width=".5"/></pattern>' +
+    '<linearGradient id="hfBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".42"/><stop offset=".5" stop-color="#000" stop-opacity="0"/></linearGradient>' +
+    '<linearGradient id="hfBelly" x1="0" y1="0" x2="0" y2="1"><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".55"/></linearGradient>' +
+    '<radialGradient id="hfEye"><stop offset="0" stop-color="#0b0b0b"/><stop offset=".45" stop-color="#0b0b0b"/><stop offset=".5" stop-color="#f59e0b"/><stop offset="1" stop-color="#78350f"/></radialGradient>' +
+    "</defs></svg>");
+  var defs = document.getElementById("hfDefs");
+
+  var band = function (x, w, c, st) {
+    return '<path d="M' + f(x - w) + " 0Q" + f(x - w - 6) + " 50 " + f(x - w) + " 100L" + f(x + w) + " 100Q" + f(x + w - 6) + " 50 " + f(x + w) + ' 0Z" fill="' + c + '" ' + (st || "") + "/>";
+  };
+  var P = function (d, a) { return '<path d="' + d + '" ' + a + "/>"; };
+
+  var S = {
+    tuna: { N: 176, T: 50, H: 44, h: 8, bf: .9, c: ["#1e3a8a", "#3b82f6", "#e2e8f0"], tail: "fork", tl: 38, tw: 64, fc: "#2f5fb8",
+      d: { a: .5, b: .22, h: 20, l: 6 }, a: { a: .42, b: .2, h: 14 },
+      extra: function (g) { var o = ""; for (var k = 0; k < 6; k++) { var x = g.T + 7 + k * 8; o += P("M" + f(x) + " " + f(g.bk(x) + 1.5) + "L" + f(x - 3) + " " + f(g.bk(x) - 5) + "L" + f(x - 7) + " " + f(g.bk(x) + 1.5) + "Z", 'fill="#facc15"') + P("M" + f(x) + " " + f(g.bl(x) - 1.5) + "L" + f(x - 3) + " " + f(g.bl(x) + 5) + "L" + f(x - 7) + " " + f(g.bl(x) - 1.5) + "Z", 'fill="#facc15"'); } return o; },
+      deco: function (g) { var o = P("M" + f(g.T + 4) + " " + f(g.cy + 3) + "C" + f(g.T + g.L * .35) + " " + f(g.cy - 3) + " " + f(g.T + g.L * .7) + " " + f(g.cy - 5) + " " + f(g.N - 10) + " " + f(g.cy - 1), 'stroke="#facc15" stroke-opacity=".75" stroke-width="2.6" fill="none"'); for (var k = 0; k < 8; k++) { var x = g.T + 14 + k * 10; o += P("M" + f(x) + " " + f(g.cy - g.H * .5) + "L" + f(x - 3) + " " + f(g.cy + g.H * .08), 'stroke="#0b1b4d" stroke-opacity=".35" stroke-width="1.2"'); } return o; } },
+    angel: { N: 150, T: 62, H: 84, h: 14, bf: 1, c: ["#fde68a", "#e5e7eb", "#f8fafc"], tail: "round", tl: 26, tw: 44, fc: "#facc15",
+      d: { a: .62, b: .06, h: 62, l: 22, pf: function (t) { return .3 + .7 * Math.sin(Math.PI * (.05 + .45 * t)); } },
+      a: { a: .5, b: .04, h: 54, l: 20, pf: function (t) { return .3 + .7 * Math.sin(Math.PI * (.05 + .45 * t)); } },
+      deco: function (g) { return band(g.N - g.L * .62, 6, "#111827", 'fill-opacity=".8"') + band(g.N - g.L * .36, 7, "#111827", 'fill-opacity=".8"') + band(g.T + g.L * .1, 9, "#111827", 'fill-opacity=".7"') + band(g.N - g.L * .1, 5, "#f59e0b", 'fill-opacity=".55"'); } },
+    clown: { N: 166, T: 56, H: 56, h: 16, bf: 1, c: ["#fb923c", "#f97316", "#ea580c"], tail: "round", tl: 26, tw: 44, fst: 'stroke="#1f1306" stroke-width=".9" stroke-opacity=".8"',
+      d: { a: .5, b: .12, h: 15 }, a: { a: .4, b: .15, h: 12 },
+      deco: function (g) { var st = 'stroke="#111" stroke-width="1.6" stroke-opacity=".85"'; return band(g.N - g.L * .3, 5, "#fff", st) + band(g.N - g.L * .6, 6, "#fff", st) + band(g.T + g.L * .06, 4, "#fff", st); } },
+    tang: { N: 164, T: 58, H: 78, h: 14, bf: 1, c: ["#2563eb", "#1d4ed8", "#1e3a8a"], tail: "lunate", tl: 30, tw: 50, tcol: "#facc15", fc: "#1d4ed8",
+      d: { a: .72, b: .08, h: 30 }, a: { a: .56, b: .08, h: 24 },
+      deco: function (g) { var N = g.N, T = g.T, L = g.L, cy = g.cy, H = g.H; return P("M" + f(N - L * .3) + " " + f(cy - H * .3) + "C" + f(N - L * .5) + " " + f(cy - H * .42) + " " + f(T + L * .2) + " " + f(cy - H * .22) + " " + f(T + L * .02) + " " + f(cy) + "C" + f(T + L * .2) + " " + f(cy + H * .1) + " " + f(N - L * .45) + " " + f(cy + H * .22) + " " + f(N - L * .5) + " " + f(cy + H * .04) + "C" + f(N - L * .42) + " " + f(cy) + " " + f(N - L * .36) + " " + f(cy - H * .1) + " " + f(N - L * .3) + " " + f(cy - H * .3) + "Z", 'fill="#0a1230" fill-opacity=".9"') + P("M" + f(T + 4) + " " + f(cy - 2) + "h6", 'stroke="#facc15" stroke-width="2.4"'); } },
+    ytang: { N: 164, T: 58, H: 74, h: 14, bf: 1, c: ["#fde047", "#facc15", "#eab308"], tail: "lunate", tl: 26, tw: 46, fc: "#facc15",
+      d: { a: .72, b: .08, h: 28 }, a: { a: .56, b: .08, h: 22 },
+      deco: function (g) { return P("M" + f(g.T + 3) + " " + f(g.cy - 3) + "h9", 'stroke="#fff" stroke-width="2.6"') + P("M" + f(g.N - g.L * .3) + " " + f(g.cy - g.H * .3) + "Q" + f(g.T + g.L * .4) + " " + f(g.cy - g.H * .1) + " " + f(g.T + 14) + " " + f(g.cy), 'stroke="#a16207" stroke-opacity=".35" stroke-width="1.6" fill="none"'); } },
+    snapper: { N: 178, T: 50, H: 54, h: 12, bf: .9, c: ["#fb7185", "#f43f5e", "#fecdd3"], tail: "fork", tl: 32, tw: 56, fc: "#fde047",
+      d: { a: .55, b: .15, h: 22 }, a: { a: .4, b: .18, h: 14 },
+      deco: function (g) { var o = ""; for (var k = -1; k < 3; k++) o += P("M" + f(g.T + 6) + " " + f(g.cy + k * 8) + "Q" + f(g.T + g.L * .5) + " " + f(g.cy + k * 8 - 4) + " " + f(g.N - 14) + " " + f(g.cy + k * 7), 'stroke="#fde047" stroke-opacity=".5" stroke-width="1.4" fill="none"'); return o; } },
+    sardine: { N: 176, T: 56, H: 30, h: 7, bf: 1, c: ["#1e3a8a", "#cbd5e1", "#f8fafc"], tail: "fork", tl: 30, tw: 36, still: 1, noscale: 1,
+      d: { a: .4, b: .2, h: 9 },
+      deco: function (g) { return P("M" + f(g.T + 2) + " " + f(g.cy - 3) + "C" + f(g.T + g.L * .4) + " " + f(g.cy - 8) + " " + f(g.N - g.L * .3) + " " + f(g.cy - 9) + " " + f(g.N - 10) + " " + f(g.cy - 5), 'stroke="#0f2a5a" stroke-opacity=".75" stroke-width="6" fill="none"') + P("M" + f(g.T + 4) + " " + f(g.cy + 1) + "L" + f(g.N - 14) + " " + f(g.cy + 1), 'stroke="#fff" stroke-opacity=".6" stroke-width="1.6"'); } }
+  };
+
+  function fish(s, col) {
+    var id = "hq" + (++uid), N = s.N, T = s.T, cy = 50, L = N - T, H = s.H, h = s.h, bf = s.bf || 1, Pk = N - L * .36, B = N - L * .42;
+    var bk = function (x) { return cy - h / 2 - (H / 2 - h / 2) * sm((x - T) / (Pk - T)); };
+    var bl = function (x) { return cy + h / 2 + (H / 2 * bf - h / 2) * sm((x - T) / (B - T)); };
+    var g = { N: N, T: T, L: L, H: H, h: h, cy: cy, bk: bk, bl: bl };
+    var c = col || s.c, fc = s.fc || c[1], fcl = "", tcl = s.still ? "" : 'class="fish-tail"', fst = s.fst || "";
+    var bd = "M" + N + " " + (cy + 2) + "C" + f(N - L * .04) + " " + f(cy - H * .42) + " " + f(Pk + L * .18) + " " + f(cy - H / 2) + " " + f(Pk) + " " + f(cy - H / 2) +
+      "C" + f(Pk - L * .22) + " " + f(cy - H / 2) + " " + f(T + L * .18) + " " + f(cy - h / 2) + " " + T + " " + f(cy - h / 2) + "L" + T + " " + f(cy + h / 2) +
+      "C" + f(T + L * .18) + " " + f(cy + h / 2) + " " + f(B - L * .2) + " " + f(cy + H / 2 * bf) + " " + f(B) + " " + f(cy + H / 2 * bf) +
+      "C" + f(B + L * .2) + " " + f(cy + H / 2 * bf) + " " + f(N - L * .03) + " " + f(cy + H * .36) + " " + N + " " + (cy + 2) + "Z";
+    var fin = function (n, colr, bp, end, cls, st) {
+      var q = [], r = "", i, d;
+      for (i = 0; i <= n; i++) { var b = bp(i / n); q.push([b, end(i / n, b[0], b[1])]); }
+      d = "M" + f(q[0][0][0]) + " " + f(q[0][0][1]) + "L" + f(q[0][1][0]) + " " + f(q[0][1][1]);
+      for (i = 1; i <= n; i++) {
+        var a = q[i - 1], z = q[i], mx = (a[1][0] + z[1][0]) / 2, my = (a[1][1] + z[1][1]) / 2, bx = (a[0][0] + z[0][0]) / 2, by = (a[0][1] + z[0][1]) / 2;
+        d += "Q" + f(mx + (bx - mx) * .14) + " " + f(my + (by - my) * .14) + " " + f(z[1][0]) + " " + f(z[1][1]);
+      }
+      for (i = 0; i <= n; i++) r += "M" + f(q[i][0][0]) + " " + f(q[i][0][1]) + "L" + f(q[i][1][0]) + " " + f(q[i][1][1]);
+      d += "L" + f(q[n][0][0]) + " " + f(q[n][0][1]) + "Z";
+      return "<g " + cls + '><path d="' + d + '" fill="' + colr + '" fill-opacity=".8" ' + (st || "") + '/><path d="' + r + '" stroke="#000" stroke-opacity=".3" stroke-width=".45" fill="none"/></g>';
+    };
+    var pf0 = function (t) { return .25 + .75 * Math.sin(Math.PI * (.15 + .7 * t)); };
+    var tail = fin(11, s.tcol || fc, function (t) { return [T + 7, cy - h / 2 + t * h]; }, function (t) {
+      var u = 2 * t - 1, ex = s.tail === "fork" ? T - s.tl * (.5 + .5 * Math.abs(u)) : s.tail === "lunate" ? T - s.tl * (.7 + .3 * Math.abs(u)) : T - s.tl * (1 - .35 * u * u);
+      return [ex, cy + u * s.tw / 2];
+    }, tcl, fst);
+    var dd = s.d, x1 = N - L * dd.a, x2 = N - L * dd.b;
+    var dors = fin(12, fc, function (t) { var x = x1 + (x2 - x1) * t; return [x, bk(x) + H * .1]; }, function (t, bx, by) { return [bx - (dd.l == null ? L * .06 : dd.l) * (.3 + t), by - dd.h * (dd.pf || pf0)(t)]; }, fcl, fst);
+    var aa = s.a, y1 = N - L * aa.a, y2 = N - L * aa.b;
+    var anal = fin(9, fc, function (t) { var x = y1 + (y2 - y1) * t; return [x, bl(x) - H * .1]; }, function (t, bx, by) { return [bx - (aa.l == null ? L * .05 : aa.l) * (.3 + t), by + aa.h * (aa.pf || pf0)(t)]; }, fcl, fst);
+    var pelv = s.still ? "" : fin(5, fc, function (t) { return [N - L * .4 + t * 5, bl(N - L * .4) - H * .08]; }, function (t, bx, by) { return [bx - L * .1, by + H * .22 * (1 - .3 * t)]; }, fcl, fst);
+    var gx = N - L * .24, ex = N - L * .14, ey = cy - H * .1, r = Math.max(2.2, H * .1);
+    var pect = fin(7, fc, function (t) { return [gx - 1 - t * 3, cy + H * .08 + t * H * .14]; }, function (t, bx, by) { return [bx - L * .17 * (.6 + .4 * Math.sin(t * 3)), by + H * .05 + t * H * .04]; }, fcl, fst);
+    defs.insertAdjacentHTML("beforeend",
+      '<linearGradient id="' + id + 'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + c[0] + '"/><stop offset=".5" stop-color="' + c[1] + '"/><stop offset="1" stop-color="' + c[2] + '"/></linearGradient>' +
+      '<clipPath id="' + id + 'c"><path d="' + bd + '"/></clipPath>');
+    return tail + dors + anal + pelv + (s.extra ? s.extra(g) : "") +
+      P(bd, 'fill="url(#' + id + 'g)"') + (s.noscale ? "" : P(bd, 'fill="url(#hfScale)"')) + P(bd, 'fill="url(#hfBack)"') + P(bd, 'fill="url(#hfBelly)"') +
+      '<g clip-path="url(#' + id + 'c)">' + s.deco(g) +
+      P("M" + f(N - L * .2) + " " + f(cy - H * .36) + "C" + f(N - L * .45) + " " + f(cy - H * .46) + " " + f(T + L * .35) + " " + f(cy - H * .42) + " " + f(T + L * .2) + " " + f(cy - h * .3), 'stroke="#fff" stroke-opacity=".38" stroke-width="' + f(H * .05) + '" stroke-linecap="round" fill="none"') +
+      P("M" + f(N - L * .27) + " " + f(cy - H * .04) + "C" + f(N - L * .5) + " " + f(cy - H * .1) + " " + f(T + L * .3) + " " + f(cy - H * .04) + " " + (T + 2) + " " + cy, 'stroke="#000" stroke-opacity=".28" stroke-width=".6" stroke-dasharray="1.4 1.2" fill="none"') + "</g>" +
+      P("M" + f(gx) + " " + f(cy - H * .36) + "Q" + f(gx - L * .08) + " " + cy + " " + f(gx) + " " + f(cy + H * .3), 'fill="#fff" fill-opacity=".1" stroke="#000" stroke-opacity=".4" stroke-width=".9"') +
+      P("M" + f(gx + 1.6) + " " + f(cy - H * .33) + "Q" + f(gx - L * .06) + " " + cy + " " + f(gx + 1.6) + " " + f(cy + H * .27), 'fill="none" stroke="#fff" stroke-opacity=".25" stroke-width=".6"') +
+      pect + P("M" + (N - .5) + " " + f(cy + H * .06) + "q" + f(-L * .04) + " " + f(H * .05) + " " + f(-L * .07) + " " + f(H * .03), 'stroke="#000" stroke-opacity=".5" stroke-width=".8" fill="none" stroke-linecap="round"') +
+      '<circle cx="' + f(ex) + '" cy="' + f(ey) + '" r="' + f(r * 1.3) + '" fill="#fff" fill-opacity=".9" stroke="#000" stroke-opacity=".55" stroke-width=".7"/>' +
+      '<circle cx="' + f(ex) + '" cy="' + f(ey) + '" r="' + f(r) + '" fill="url(#hfEye)"/>' +
+      '<circle cx="' + f(ex + r * .32) + '" cy="' + f(ey - r * .34) + '" r="' + f(r * .3) + '" fill="#fff"/>';
+  }
+
+  function whale() {
+    var sp = "", i, x, y;
+    for (i = 0; i < 90; i++) { x = R(50, 370); y = R(36, 104); if (Math.pow((x - 210) / 170, 2) + Math.pow((y - 70) / 32, 2) < .9) sp += '<circle cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(R(.9, 2.2)) + '"/>'; }
+    var sl = ""; for (i = 0; i < 5; i++) sl += P("M" + (300 + i * 8) + " 48Q" + (296 + i * 8) + " 66 " + (300 + i * 8) + " 84", 'stroke="#0f172a" stroke-opacity=".5" stroke-width="1.4" fill="none"');
+    var b = "M30 66C90 50 150 36 230 34C300 33 350 42 382 62C390 68 390 74 382 80C350 96 300 104 230 106C150 108 90 90 30 74Z";
+    return '<svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hqW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b4a63"/><stop offset=".6" stop-color="#6b7f9c"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient><clipPath id="hqWc"><path d="' + b + '"/></clipPath></defs>' +
+      '<g class="fish-tail"><path d="M30 66C16 50 8 30 4 8C22 18 34 36 52 56Z M30 74C20 84 14 96 12 110C28 104 40 90 56 78Z" fill="#4a5a75"/></g>' +
+      P("M180 36C190 14 206 8 218 10C212 20 214 30 224 35Z", 'fill="#4a5a75"') + P("M290 90C280 112 262 124 244 126C256 114 262 104 266 96Z", 'fill="#4a5a75"') +
+      P(b, 'fill="url(#hqW)"') + '<g clip-path="url(#hqWc)" fill="#fff" fill-opacity=".8">' + sp + "</g>" + sl +
+      '<circle cx="366" cy="62" r="3" fill="#0f172a"/><circle cx="367" cy="61" r="1" fill="#fff"/></svg>';
+  }
+
+  function add(inner, top, dur, w, cls) {
+    hf.insertAdjacentHTML("beforeend", '<div class="sw ' + cls + '" style="top:' + top + "%;--dur:" + dur + "s;--delay:-" + f(R(0, dur)) + "s;--w:" + w + 'px"><div class="wy" style="--wd:' + f(R(7, 13)) + "s;--wl:-" + f(R(0, 8)) + 's">' + inner + "</div></div>");
+  }
+
+  var list = [
+    ["whale", 30, 110, 520, "far whale"], ["tuna", 8, 70, 200, "far"], ["snapper", 58, 55, 110, "far"],
+    ["angel", 18, 36, 140, "mid"], ["tang", 42, 40, 130, "mid"], ["ytang", 76, 34, 118, "mid"], ["snapper", 50, 44, 150, "mid"],
+    ["tuna", 24, 46, 340, "near big"], ["angel", 58, 52, 220, "near big"], ["tang", 4, 58, 200, "near big"]
+  ].filter(function (_, i) { return !mob || i % 2 === 0; });
+  list.forEach(function (o) { add(o[0] === "whale" ? whale() : svg(fish(S[o[0]])), o[1], o[2], o[3], o[4]); });
+
+  /* Đàn cá nhỏ bơi sát nhau như một khối */
+  var scols = [["#1e3a8a", "#cbd5e1", "#f8fafc"], ["#92400e", "#fcd34d", "#fffbeb"], ["#0e7490", "#a5f3fc", "#ecfeff"]];
+  scols.forEach(function (c, k) {
+    defs.insertAdjacentHTML("beforeend", '<symbol id="hqS' + k + '" viewBox="0 0 200 100" overflow="visible">' + fish(S.sardine, c) + "</symbol>");
+    var m = "", n = mob ? 9 : 18, i;
+    for (i = 0; i < n; i++) {
+      var a = R(0, 6.28), r = Math.sqrt(Math.random()), bd = R(1.4, 2.4);
+      m += '<span class="sm" style="left:' + f(75 + Math.cos(a) * r * 75) + "px;top:" + f(35 + Math.sin(a) * r * 28) + "px;--sw:" + f(R(24, 34)) + "px;--bd:" + f(bd) + "s;--bl:-" + f(R(0, 2)) + "s;transform:rotate(" + f(R(-8, 8)) + 'deg)"><svg viewBox="0 0 200 100"><use href="#hqS' + k + '"/></svg></span>';
+    }
+    add('<div class="school">' + m + "</div>", [22, 48, 72][k], [22, 27, 31][k], 150, "sch mid");
+  });
+
+  /* Tạm dừng khi hero khuất khỏi màn hình cho đỡ lag */
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e) { hf.classList.toggle("paused", !e[0].isIntersecting); }, { rootMargin: "100px" }).observe(document.querySelector(".hero"));
+  }
 })();
 </script>
 </body>
