@@ -1573,6 +1573,54 @@ body.dark .wave-toggle[aria-pressed="true"] { border-color: #34d399; background:
 body.dark .hero-fish { opacity: 0.85; }
 @media (max-width: 600px) { .sw svg { width: calc(var(--w) * 0.6); } }
 @media (prefers-reduced-motion: reduce) { .sw .fish-tail, .sw .fish-fin { animation: none; } }
+
+/* ============ TRANG TRÍ THANH MENU TRÊN TIÊU ĐỀ ============ */
+.navbar { background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); padding: 8px 26px; box-shadow: none; }
+body.dark .navbar { background: linear-gradient(180deg, #123a5f 0%, #0f2a4a 100%); }
+.navbar > * { position: relative; z-index: 1; }
+/* bong bóng nhỏ trôi lên trong thanh menu */
+.navbar::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.8;
+  background:
+    radial-gradient(circle, rgba(255,255,255,.55) 0 2px, transparent 3px) 0 0 / 90px 46px,
+    radial-gradient(circle, rgba(255,255,255,.35) 0 3px, transparent 4px) 40px 18px / 130px 54px,
+    radial-gradient(circle, rgba(255,255,255,.4) 0 1.5px, transparent 2.5px) 70px 6px / 70px 38px;
+  animation: navBub 14s linear infinite;
+}
+@keyframes navBub { to { background-position: 0 -46px, 40px -36px, 70px -32px; } }
+/* mép sóng lượn dưới thanh menu */
+.navbar::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 9px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 9'%3E%3Cpath d='M0 0H40V3Q30 9 20 3T0 3Z' fill='%230369a1'/%3E%3C/svg%3E") repeat-x 0 0 / 40px 9px;
+  animation: navWave 5s linear infinite;
+}
+body.dark .navbar::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 9'%3E%3Cpath d='M0 0H40V3Q30 9 20 3T0 3Z' fill='%230f2a4a'/%3E%3C/svg%3E");
+}
+@keyframes navWave { to { background-position: 40px 0; } }
+
+.menu { gap: 10px; flex-wrap: wrap; }
+.menu a {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px;
+  font-family: "Itim", "Baloo 2", cursive; font-size: 16px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
+  transition: transform .2s, background .2s, box-shadow .2s;
+}
+.menu a::before { font-size: 16px; transition: transform .3s; }
+.menu a[href="#home"]::before { content: "🏠"; }
+.menu a[href="#guestbook"]::before { content: "💌"; }
+.menu a[href="#fishtype"]::before { content: "🐠"; }
+.menu a[href="#hobbies"]::before { content: "🐚"; }
+.menu a:hover { color: #fff; background: rgba(255,255,255,.28); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(2,6,23,.25); }
+.menu a:hover::before { transform: rotate(-12deg) scale(1.25); }
+.menu a.on { background: linear-gradient(135deg, #fde68a, #fbbf24); color: #7c2d12; border-color: #fbbf24; }
+.navbar h2 { margin: 0; font-family: "Baloo 2", "Itim", cursive; letter-spacing: 3px; color: #fff; text-shadow: 0 0 12px rgba(186,230,253,.8); }
+.navbar h2::before { content: "🐟 "; display: inline-block; letter-spacing: 0; animation: navFish 2.4s ease-in-out infinite alternate; }
+@keyframes navFish { from { transform: translateX(-3px) rotate(-6deg); } to { transform: translateX(3px) rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .navbar::before, .navbar::after, .navbar h2::before { animation: none; }
+  .menu a, .menu a::before { transition: none; }
+}
 </style>
 </head>
 <body>
@@ -3188,6 +3236,22 @@ window.addEventListener("load", function () {
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (e) { hf.classList.toggle("paused", !e[0].isIntersecting); }, { rootMargin: "100px" }).observe(document.querySelector(".hero"));
   }
+})();
+</script>
+<script>
+/* Menu: tô sáng mục đang xem */
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  var links = [].slice.call(document.querySelectorAll(".menu a[href^='#']")), map = {};
+  links.forEach(function (a) { var s = document.querySelector(a.getAttribute("href")); if (s) map[s.id] = a; });
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      links.forEach(function (a) { a.classList.remove("on"); });
+      map[e.target.id].classList.add("on");
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  Object.keys(map).forEach(function (k) { io.observe(document.getElementById(k)); });
 })();
 </script>
 </body>
