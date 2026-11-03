@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>saka</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐠</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root { --glass: rgba(255,255,255,.12); --line: rgba(255,255,255,.28); }
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body {
+  font-family: "Itim", Arial, sans-serif; color: #fff; overflow: hidden;
+  display: grid; place-items: center; padding: 16px;
+  background: linear-gradient(160deg, #0ea5e9, #1d4ed8 45%, #0f2a4a 100%);
+  background-size: 200% 200%; animation: sea 14s ease-in-out infinite alternate;
+}
+@keyframes sea { to { background-position: 100% 100%; } }
+
+/* bong bóng */
+.bubbles { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.bubbles i {
+  position: absolute; bottom: -40px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.55);
+  background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.7) 0 2px, rgba(255,255,255,.12) 40%);
+  animation: rise linear infinite;
+}
+@keyframes rise { to { transform: translateY(-115vh) translateX(20px); opacity: .2; } }
+
+/* màn hình "bấm để vào" */
+#gate {
+  position: fixed; inset: 0; z-index: 10; display: grid; place-items: center;
+  background: #0f2a4a; font-size: 22px; cursor: pointer; transition: opacity .6s;
+}
+#gate.hide { opacity: 0; pointer-events: none; }
+#gate span { animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .4; } }
+
+/* thẻ chính */
+.card {
+  position: relative; z-index: 1; width: 100%; max-width: 380px; padding: 30px 22px 22px;
+  text-align: center; border-radius: 26px; border: 1px solid var(--line);
+  background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+  opacity: 0; transform: translateY(16px); transition: opacity .8s, transform .8s;
+}
+.card.show { opacity: 1; transform: none; }
+.avatar {
+  width: 96px; height: 96px; margin: 0 auto 12px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 52px; background: rgba(255,255,255,.18); border: 3px solid #fff;
+  box-shadow: 0 0 0 5px rgba(125,211,252,.35); animation: bob 3.5s ease-in-out infinite;
+}
+@keyframes bob { 50% { transform: translateY(-6px) rotate(-4deg); } }
+h1 { font-family: "Pacifico", cursive; font-weight: 400; font-size: 32px; }
+.bio { min-height: 24px; margin: 6px 0 4px; font-size: 17px; opacity: .92; }
+.bio::after { content: "|"; margin-left: 2px; animation: pulse 1s steps(1) infinite; }
+.tag { display: inline-block; margin: 6px 0 18px; padding: 3px 12px; font-size: 13px; border-radius: 99px; background: rgba(255,255,255,.16); }
+
+.links { display: grid; gap: 10px; }
+.links a {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px;
+  color: #fff; text-decoration: none; font-size: 18px; text-align: left;
+  background: rgba(255,255,255,.14); border: 1px solid var(--line);
+  transition: transform .2s, background .2s;
+}
+.links a:hover { transform: translateY(-3px) scale(1.02); background: rgba(255,255,255,.28); }
+.links .ico { width: 26px; text-align: center; font-size: 22px; }
+.links .arrow { margin-left: auto; opacity: .6; }
+
+.foot { margin-top: 18px; font-size: 13px; opacity: .75; }
+.foot a { color: #fff; }
+.sound {
+  position: fixed; right: 14px; bottom: 14px; z-index: 5; width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--glass); color: #fff; font-size: 18px; cursor: pointer;
+}
+
+/* ===== TRANG TRÍ ===== */
+.rays { position: fixed; inset: 0; pointer-events: none; opacity: .5;
+  background: repeating-linear-gradient(105deg, transparent 0 70px, rgba(255,255,255,.07) 70px 120px);
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent 75%); mask-image: linear-gradient(180deg, #000, transparent 75%);
+  animation: sway 9s ease-in-out infinite alternate; }
+@keyframes sway { to { transform: translateX(40px) skewX(-4deg); } }
+.swimmers { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.swimmers svg { position: absolute; left: 0; opacity: .85; animation: swim linear infinite; }
+@keyframes swim { from { transform: translateX(-120px) var(--flip, scaleX(1)); } to { transform: translateX(calc(100vw + 120px)) var(--flip, scaleX(1)); } }
+.seafloor { position: fixed; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none; overflow: hidden; }
+.seafloor .wave { position: absolute; left: 0; bottom: 0; width: 200%; height: 70px; animation: slide 12s linear infinite; }
+.seafloor .wave.w2 { height: 52px; opacity: .8; animation-duration: 8s; animation-direction: reverse; }
+@keyframes slide { to { transform: translateX(-50%); } }
+.seafloor .plant { position: absolute; bottom: 4px; font-size: 34px; transform-origin: 50% 100%; animation: wave 3s ease-in-out infinite alternate; }
+@keyframes wave { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+.sparkle { position: absolute; font-size: 18px; animation: twinkle 2.4s ease-in-out infinite; pointer-events: none; }
+.sparkle:nth-of-type(1) { top: -10px; left: 12%; }
+.sparkle:nth-of-type(2) { top: 18%; right: -12px; animation-delay: .6s; }
+.sparkle:nth-of-type(3) { bottom: 22%; left: -12px; animation-delay: 1.2s; }
+.sparkle:nth-of-type(4) { bottom: -10px; right: 18%; animation-delay: 1.8s; }
+@keyframes twinkle { 0%, 100% { opacity: .2; transform: scale(.6) rotate(0); } 50% { opacity: 1; transform: scale(1.15) rotate(25deg); } }
+.card.show { animation: glow 4s ease-in-out infinite; }
+@keyframes glow { 50% { box-shadow: 0 18px 50px rgba(0,0,0,.35), 0 0 46px rgba(125,211,252,.55); } }
+.links a { position: relative; overflow: hidden; }
+.links a::after { content: ""; position: absolute; top: 0; left: -80%; width: 50%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent); transform: skewX(-20deg); transition: left .6s; }
+.links a:hover::after { left: 130%; }
+.pop { position: fixed; z-index: 4; border-radius: 50%; pointer-events: none; border: 1px solid rgba(255,255,255,.8);
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9) 0 15%, rgba(125,211,252,.3) 60%); animation: popUp 1.1s ease-out forwards; }
+@keyframes popUp { to { transform: translateY(-70px) scale(1.4); opacity: 0; } }
+
+/* ===== MƯA + NỀN DỊCH THEO CHUỘT ===== */
+#rain { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.bubbles, .rays, .swimmers, .seafloor { will-change: transform; transform: scale(1.1); }
+.seafloor { transform-origin: 50% 100%; }
+#musicBtn { right: 64px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="bubbles" id="bubbles" aria-hidden="true"></div>
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="rays" aria-hidden="true"></div>
+<div class="swimmers" id="swimmers" aria-hidden="true"></div>
+<div class="seafloor" aria-hidden="true">
+  <svg class="wave" viewBox="0 0 2400 100" preserveAspectRatio="none"><path fill="rgba(14,165,233,.45)" d="M0 50 Q150 10 300 50 T600 50 T900 50 T1200 50 T1500 50 T1800 50 T2100 50 T2400 50 V100 H0Z"/></svg>
+  <svg class="wave w2" viewBox="0 0 2400 100" preserveAspectRatio="none"><path fill="rgba(15,42,74,.7)" d="M0 50 Q150 90 300 50 T600 50 T900 50 T1200 50 T1500 50 T1800 50 T2100 50 T2400 50 V100 H0Z"/></svg>
+  <span class="plant" style="left:4%">🌿</span><span class="plant" style="left:11%;animation-delay:-1s;font-size:26px">🐚</span>
+  <span class="plant" style="right:5%;animation-delay:-2s">🌿</span><span class="plant" style="right:13%;animation-delay:-.5s;font-size:28px">🌿</span>
+</div>
+<div id="gate"><span>🐟 bấm để vào hồ cá</span></div>
+
+<main class="card" id="card">
+  <span class="sparkle">✨</span><span class="sparkle">⭐</span><span class="sparkle">✨</span><span class="sparkle">⭐</span>
+  <div class="avatar">🐠</div>
+  <h1>saka</h1>
+  <p class="bio" id="bio"></p>
+  <span class="tag">🌊 miền nam</span>
+
+  <nav class="links">
+    <!-- ĐỔI các link "#" bên dưới thành link thật của bạn -->
+    <a href="https://nhatminhvu21-cell.github.io/website-cua-saka/"><span class="ico">🏠</span>Wedsite của saka<span class="arrow">→</span></a>
+    <a href="https://www.facebook.com/lam.vu.482157" target="_blank" rel="noopener"><span class="ico">📘</span>Facebook<span class="arrow">→</span></a>
+    <a href="https://discordapp.com/users/860363757833289748" target="_blank" rel="noopener"><span class="ico">💬</span>Discord<span class="arrow">→</span></a>
+  </nav>
+
+  <p class="foot">🐟 hồ cá của saka</p>
+</main>
+
+<audio id="music" src="nh%E1%BA%A1c%20c%C3%A1.mp3" loop preload="auto"></audio>
+<button class="sound" id="musicBtn" aria-label="Bật tắt nhạc" aria-pressed="false" title="Nhạc">🎵</button>
+<button class="sound" id="sound" aria-label="Bật tắt tiếng sóng" aria-pressed="false">🔇</button>
+
+<script>
+/* bong bóng */
+(function () {
+  const box = document.getElementById("bubbles");
+  for (let i = 0; i < 22; i++) {
+    const b = document.createElement("i"), s = 8 + Math.random() * 26;
+    b.style.cssText = "left:" + Math.random() * 100 + "%;width:" + s + "px;height:" + s + "px;" +
+      "animation-duration:" + (8 + Math.random() * 12) + "s;animation-delay:" + (-Math.random() * 14) + "s";
+    box.appendChild(b);
+  }
+})();
+
+/* vào trang + gõ chữ */
+(function () {
+  const gate = document.getElementById("gate"), card = document.getElementById("card"), bio = document.getElementById("bio");
+  const TEXT = "một con cá nhỏ đang bơi trên mạng ~";
+  let started = false;
+  function enter() {
+    if (started) return; started = true;
+    gate.classList.add("hide"); card.classList.add("show");
+    if (window.startMusic) window.startMusic();
+    let i = 0;
+    (function type() { bio.textContent = TEXT.slice(0, ++i); if (i < TEXT.length) setTimeout(type, 55); })();
+  }
+  gate.addEventListener("click", enter);
+  document.addEventListener("keydown", enter);
+})();
+
+/* nghiêng thẻ theo chuột (chỉ máy có chuột) */
+(function () {
+  const card = document.getElementById("card");
+  if (!window.matchMedia("(hover: hover)").matches) return;
+  document.addEventListener("mousemove", function (e) {
+    const x = (e.clientX / innerWidth - .5) * 8, y = (e.clientY / innerHeight - .5) * -8;
+    card.style.transform = "perspective(800px) rotateY(" + x + "deg) rotateX(" + y + "deg)";
+  });
+})();
+
+/* tiếng sóng: tạo bằng Web Audio, không cần file */
+(function () {
+  const btn = document.getElementById("sound"), AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) { btn.hidden = true; return; }
+  let ctx, gain, on = false;
+  function build() {
+    ctx = new AC(); gain = ctx.createGain(); gain.gain.value = 0; gain.connect(ctx.destination);
+    const len = ctx.sampleRate * 4, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < len; i++) { last = (last + .02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }
+    const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+    const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 700;
+    const lfo = ctx.createOscillator(), amt = ctx.createGain(); lfo.frequency.value = .11; amt.gain.value = 400;
+    lfo.connect(amt); amt.connect(lp.frequency);
+    src.connect(lp); lp.connect(gain); src.start(); lfo.start();
+  }
+  btn.addEventListener("click", function () {
+    on = !on; btn.textContent = on ? "🔊" : "🔇"; btn.setAttribute("aria-pressed", on);
+    if (on && !ctx) build();
+    if (ctx) { ctx.resume(); gain.gain.setTargetAtTime(on ? .5 : 0, ctx.currentTime, .3); }
+  });
+})();
+</script>
+<script>
+/* cá bơi ngang màn hình + bong bóng khi bấm */
+(function () {
+  const box = document.getElementById("swimmers"), cols = ["#fb923c", "#facc15", "#f472b6", "#2dd4bf", "#a78bfa", "#fff"];
+  function fish(c) {
+    return '<path d="M9 7 L1 1 C3 5 3 9 1 13 Z" fill="' + c + '"/><path d="M7 7 C11 0 22 0 28 7 C22 14 11 14 7 7 Z" fill="' + c + '"/>' +
+      '<circle cx="23" cy="5.5" r="1.6" fill="#fff"/><circle cx="23.4" cy="5.5" r=".8" fill="#1f2937"/>';
+  }
+  for (let i = 0; i < 6; i++) {
+    const w = 26 + Math.random() * 26, back = i % 2, e = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    e.setAttribute("viewBox", "0 0 30 14"); e.setAttribute("width", w); e.setAttribute("height", w * 14 / 30);
+    e.innerHTML = fish(cols[i]);
+    e.style.top = (8 + Math.random() * 62) + "%";
+    e.style.animationDuration = (16 + Math.random() * 18) + "s";
+    e.style.animationDelay = (-Math.random() * 20) + "s";
+    if (back) { e.style.setProperty("--flip", "scaleX(-1)"); e.style.animationDirection = "reverse"; }
+    box.appendChild(e);
+  }
+  document.addEventListener("click", function (ev) {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    for (let i = 0; i < 3; i++) {
+      const b = document.createElement("i"), s = 8 + Math.random() * 14;
+      b.className = "pop";
+      b.style.cssText = "width:" + s + "px;height:" + s + "px;left:" + (ev.clientX - s / 2 + (Math.random() * 30 - 15)) + "px;top:" + (ev.clientY - s / 2) + "px";
+      document.body.appendChild(b); setTimeout(function () { b.remove(); }, 1200);
+    }
+  });
+})();
+</script>
+<script>
+/* mưa: chuột đi hướng nào thì mưa và cả nền phía sau trôi về hướng đó */
+(function () {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv = document.getElementById("rain"), g = cv.getContext("2d");
+  let W = 0, H = 0, dpr = 1, drops = [];
+  const many = innerWidth < 700 ? 90 : 170;
+  function size() {
+    dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function make(top) {
+    const z = Math.random();                       /* z: xa (0) -> gần (1) */
+    return { x: Math.random() * (W + 400) - 200, y: top ? -20 : Math.random() * H,
+             len: 10 + z * 22, sp: 380 + z * 620, a: .18 + z * .45, w: .6 + z * 1.2, z: z };
+  }
+  size(); for (let i = 0; i < many; i++) drops.push(make(false));
+  addEventListener("resize", size);
+
+  let tx = .5, ty = .5, lastX = null, lastY = null, kickX = 0, kickY = 0, wx = 0, vf = 1, ox = 0, oy = 0;
+  function point(x, y) {
+    tx = x / W; ty = y / H;
+    if (lastX !== null) { kickX += (x - lastX) * .012; kickY += (y - lastY) * .006; }
+    lastX = x; lastY = y;
+  }
+  addEventListener("mousemove", function (e) { point(e.clientX, e.clientY); });
+  addEventListener("touchmove", function (e) { const t = e.touches[0]; if (t) point(t.clientX, t.clientY); }, { passive: true });
+
+  const layers = [[".bubbles", .6], [".rays", .35], [".swimmers", 1], [".seafloor", .8]].map(function (l) {
+    return [document.querySelector(l[0]), l[1]];
+  });
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    kickX *= .9; kickY *= .9;
+    /* gió: vị trí chuột (trái = gió trái, phải = gió phải) + cú hất khi kéo chuột nhanh */
+    const wantW = Math.max(-1.6, Math.min(1.6, (tx - .5) * 2 * 1.1 + kickX));
+    const wantV = Math.max(.45, Math.min(1.7, 1 + (ty - .5) * .9 + kickY));
+    wx += (wantW - wx) * Math.min(1, dt * 4); vf += (wantV - vf) * Math.min(1, dt * 4);
+
+    g.clearRect(0, 0, W, H);
+    g.lineCap = "round";
+    for (let i = 0; i < drops.length; i++) {
+      const d = drops[i], vy = d.sp * vf, vx = d.sp * wx * .55;
+      d.x += vx * dt; d.y += vy * dt;
+      if (d.y > H + 30 || d.x < -260 || d.x > W + 260) { drops[i] = make(true); drops[i].x = Math.random() * (W + 400) - 200 + (wx > 0 ? -100 : 100); continue; }
+      const k = d.len / Math.hypot(vx, vy);
+      g.strokeStyle = "rgba(220,240,255," + d.a + ")"; g.lineWidth = d.w;
+      g.beginPath(); g.moveTo(d.x, d.y); g.lineTo(d.x - vx * k, d.y - vy * k); g.stroke();
+    }
+    /* cả nền phía sau dịch theo hướng chuột */
+    ox += ((tx - .5) * 2 - ox) * Math.min(1, dt * 3); oy += ((ty - .5) * 2 - oy) * Math.min(1, dt * 3);
+    layers.forEach(function (l) {
+      if (l[0]) l[0].style.transform = "translate(" + (ox * 36 * l[1]).toFixed(1) + "px," + (oy * 18 * l[1]).toFixed(1) + "px) scale(1.1)";
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+<script>
+/* nhạc nền: đặt file "nhạc cá.mp3" cùng thư mục với bio.html */
+(function () {
+  const au = document.getElementById("music"), btn = document.getElementById("musicBtn");
+  let broken = false;
+  au.volume = .5;
+  au.addEventListener("error", function () { broken = true; btn.hidden = true; });
+  function ui() { btn.style.opacity = au.paused ? ".55" : "1"; btn.setAttribute("aria-pressed", au.paused ? "false" : "true"); }
+  window.startMusic = function () { if (broken) return; au.play().then(ui).catch(ui); };   /* trình duyệt chỉ cho phát sau khi người xem bấm */
+  btn.addEventListener("click", function () { if (au.paused) au.play().then(ui).catch(ui); else { au.pause(); ui(); } });
+  ui();
+})();
+</script>
+</body>
+</html>
